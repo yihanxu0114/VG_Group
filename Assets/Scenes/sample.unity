@@ -537,7 +537,7 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0.5, y: 0}
     oldSize: {x: 0.9, y: 1.52}
     newSize: {x: 5.23, y: 4.84}
     adaptiveTilingThreshold: 0.5
@@ -654,7 +654,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rightDavid: {fileID: 21300000, guid: 09ba4631eaebb4f6bbe38a71e7cebec3, type: 3}
-  leftDavid: {fileID: 21300000, guid: dff0efc8bffa3460a8ddad10b8e95503, type: 3}
+  walkingFrames:
+  - {fileID: -814355670, guid: dd7b46ff87c0fa942a4ee8c713f14d45, type: 3}
+  - {fileID: 142080226, guid: dd7b46ff87c0fa942a4ee8c713f14d45, type: 3}
+  - {fileID: 194746880, guid: dd7b46ff87c0fa942a4ee8c713f14d45, type: 3}
+  - {fileID: 1734985403, guid: dd7b46ff87c0fa942a4ee8c713f14d45, type: 3}
+  - {fileID: -1300018991, guid: dd7b46ff87c0fa942a4ee8c713f14d45, type: 3}
+  - {fileID: -650756216, guid: dd7b46ff87c0fa942a4ee8c713f14d45, type: 3}
+  - {fileID: -913793296, guid: dd7b46ff87c0fa942a4ee8c713f14d45, type: 3}
+  - {fileID: -54540141, guid: dd7b46ff87c0fa942a4ee8c713f14d45, type: 3}
+  - {fileID: 1508391514, guid: dd7b46ff87c0fa942a4ee8c713f14d45, type: 3}
+  - {fileID: 611400980, guid: dd7b46ff87c0fa942a4ee8c713f14d45, type: 3}
+  - {fileID: -96655535, guid: dd7b46ff87c0fa942a4ee8c713f14d45, type: 3}
+  frameRate: 27
+  jumpSprite: {fileID: 21300000, guid: aa710f9ec14f08d46ae0f6d4f6956c50, type: 3}
+  jetpackSprite: {fileID: 21300000, guid: eee9d3b3e6912824995b7eee35a1abb0, type: 3}
 --- !u!114 &813604508
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1002,7 +1016,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.3999939, y: 0.80999756}
+  m_AnchoredPosition: {x: -0.39996338, y: 0.80999756}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1513601341
