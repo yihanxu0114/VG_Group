@@ -13,8 +13,9 @@ public class Sprite_left_right_shift : MonoBehaviour
     [Header("jumping animation")]
     public Sprite jumpSprite;  
     
-    [Header("jackpet")]
-    public Sprite jetpackSprite;  
+    [Header("jetpack animation")]
+    public Sprite[] jetpackFrames;  
+    public float jetpackFrameRate = 10f;  
     
     private SpriteRenderer sr;
     private const float deadzone = 0.01f;
@@ -24,6 +25,8 @@ public class Sprite_left_right_shift : MonoBehaviour
     private bool isUsingJetpack = false;  
     private float frameTimer = 0f;
     private int currentFrame = 0;
+    private float jetpackFrameTimer = 0f;
+    private int currentJetpackFrame = 0;
 
     void Awake()
     {
@@ -34,16 +37,24 @@ public class Sprite_left_right_shift : MonoBehaviour
 
     void Update()
     {
-  
-
+        // pirority 1: jetpack animation
         if (isUsingJetpack)
         {
-            if (jetpackSprite != null)
-                sr.sprite = jetpackSprite;
+            if (jetpackFrames != null && jetpackFrames.Length > 0)
+            {
+                jetpackFrameTimer += Time.deltaTime;
+                
+                if (jetpackFrameTimer >= 1f / jetpackFrameRate)
+                {
+                    jetpackFrameTimer = 0f;
+                    currentJetpackFrame = (currentJetpackFrame + 1) % jetpackFrames.Length;
+                    sr.sprite = jetpackFrames[currentJetpackFrame];
+                }
+            }
             return;
         }
         
-  
+        // pirority 2: jumping sprite
         if (isJumping)
         {
             if (jumpSprite != null)
@@ -51,7 +62,7 @@ public class Sprite_left_right_shift : MonoBehaviour
             return;
         }
         
-     
+        // pirority 3: walking animation
         if (isWalking && walkingFrames != null && walkingFrames.Length > 0)
         {
             frameTimer += Time.deltaTime;
@@ -102,15 +113,21 @@ public class Sprite_left_right_shift : MonoBehaviour
             sr.sprite = rightDavid;
         }
     }
-    
-
+    // set jetpack state
     public void SetJetpack(bool usingJetpack)
     {
+        // if state changed, reset animation
+        if (isUsingJetpack != usingJetpack)
+        {
+            currentJetpackFrame = 0;
+            jetpackFrameTimer = 0f;
+        }
+        
         isUsingJetpack = usingJetpack;
         
         if (!usingJetpack && !isJumping && !isWalking)
         {
-      
+            // back to still sprite
             sr.sprite = rightDavid;
         }
     }

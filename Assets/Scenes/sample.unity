@@ -14459,7 +14459,14 @@ MonoBehaviour:
   - {fileID: -96655535, guid: dd7b46ff87c0fa942a4ee8c713f14d45, type: 3}
   frameRate: 27
   jumpSprite: {fileID: 21300000, guid: aa710f9ec14f08d46ae0f6d4f6956c50, type: 3}
-  jetpackSprite: {fileID: 21300000, guid: eee9d3b3e6912824995b7eee35a1abb0, type: 3}
+  jetpackFrames:
+  - {fileID: -2023645544, guid: cfb8bc569fcc8484ea1fee0d70ad1b7e, type: 3}
+  - {fileID: -1526079956, guid: cfb8bc569fcc8484ea1fee0d70ad1b7e, type: 3}
+  - {fileID: -581860212, guid: cfb8bc569fcc8484ea1fee0d70ad1b7e, type: 3}
+  - {fileID: 233617706, guid: cfb8bc569fcc8484ea1fee0d70ad1b7e, type: 3}
+  - {fileID: 89657350, guid: cfb8bc569fcc8484ea1fee0d70ad1b7e, type: 3}
+  - {fileID: -1592298362, guid: cfb8bc569fcc8484ea1fee0d70ad1b7e, type: 3}
+  jetpackFrameRate: 20
 --- !u!114 &813604508
 MonoBehaviour:
   m_ObjectHideFlags: 0
