@@ -41,35 +41,35 @@ public class moving_logic : MonoBehaviour
         wasGrounded = isGrounded;
         isGrounded = CheckGrounded();
 
-        // W键 - 普通跳跃（只能在地面）
+      
         if (isGrounded && Input.GetKeyDown(KeyCode.W))
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpSpeed);
         }
         
-        // 空格键 - 喷气背包（可以在空中使用）
+   
         bool usingJetpack = Input.GetKey(KeyCode.Space);
         if (usingJetpack)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpSpeed);
         }
 
-        // 更新精灵状态
+ 
         if (facing != null)
         {
             facing.SetFacing(x);
             
-            // 设置喷气背包状态
+          
             facing.SetJetpack(usingJetpack);
             
-            // 设置跳跃状态（只在不使用喷气背包时生效）
+           
             if (!usingJetpack)
             {
                 facing.SetJumping(!isGrounded);
             }
             else
             {
-                // 使用喷气背包时，关闭普通跳跃状态
+               
                 facing.SetJumping(false);
             }
         }
