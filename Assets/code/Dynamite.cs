@@ -24,14 +24,14 @@ public class Dynamite : MonoBehaviour
         exploded = true;
 
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, radius, obstacleMask);
-        Debug.Log($"[Dynamite] hits = {hits.Length}, mask = {obstacleMask.value}, radius={radius}, pos={transform.position}");
+       
 
         foreach (var hit in hits)
         {
-            Debug.Log($"[Dynamite] hit: {hit.name}, layer={LayerMask.LayerToName(hit.gameObject.layer)}");
+            
 
             BlockDynamite b = hit.GetComponent<BlockDynamite>();
-            Debug.Log($"[Dynamite] BlockDynamite on hit? {(b != null ? "YES" : "NO")}");
+            
 
             if (b != null) b.Break();
         }
