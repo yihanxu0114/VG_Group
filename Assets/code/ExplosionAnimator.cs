@@ -15,12 +15,12 @@ public class ExplosionAnimator : MonoBehaviour
         
         if (frames == null || frames.Length == 0)
         {
-            Debug.LogError("ExplosionAnimator: 没有动画帧！");
+            Debug.LogError("ExplosionAnimator: No animation frames assigned.");
             Destroy(gameObject);
             return;
         }
         
-        Debug.Log($"ExplosionAnimator 开始播放，共 {frames.Length} 帧，帧率 {frameRate}");
+        Debug.Log($"ExplosionAnimator started. {frames.Length} frames at {frameRate} FPS.");
         spriteRenderer.sprite = frames[0];
     }
 
@@ -38,7 +38,7 @@ public class ExplosionAnimator : MonoBehaviour
 
             if (currentFrame >= frames.Length)
             {
-                Debug.Log("动画播放完毕，销毁");
+                Debug.Log("Explosion animation finished. Cleaning up.");
                 Destroy(gameObject);
                 return;
             }

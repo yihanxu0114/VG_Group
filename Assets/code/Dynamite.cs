@@ -19,7 +19,7 @@ public class Dynamite : MonoBehaviour
     void Start()
     {
         Invoke(nameof(Explode), fuseTime);
-        Debug.Log($"炸弹启动，{fuseTime}秒后爆炸");
+        Debug.Log($"Dynamite lit. Going off in {fuseTime} seconds.");
     }
 
     private void Explode()
@@ -27,16 +27,16 @@ public class Dynamite : MonoBehaviour
         if (exploded) return;
         exploded = true;
 
-        Debug.Log("💥 爆炸！");
+        Debug.Log("Boom! Explosion triggered.");
 
-        // 播放爆炸动画
+        // Play explosion animation
         if (explosionFrames == null || explosionFrames.Length == 0)
         {
-            Debug.LogError("❌ 没有设置爆炸帧！请在Inspector中拖入图片");
+            Debug.LogError("No explosion frames assigned. Drop them into the Inspector.");
         }
         else
         {
-            Debug.Log($"✅ 开始播放爆炸动画，共 {explosionFrames.Length} 帧");
+            Debug.Log($"Starting explosion animation with {explosionFrames.Length} frames.");
             
             GameObject explosion = new GameObject("Explosion");
             explosion.transform.position = transform.position;
@@ -44,7 +44,7 @@ public class Dynamite : MonoBehaviour
             
             SpriteRenderer sr = explosion.AddComponent<SpriteRenderer>();
             
-            // 获取炸弹的SpriteRenderer设置
+            // Match sorting settings with the dynamite sprite
             SpriteRenderer mySr = GetComponent<SpriteRenderer>();
             if (mySr != null)
             {
@@ -60,12 +60,12 @@ public class Dynamite : MonoBehaviour
             animator.frames = explosionFrames;
             animator.frameRate = frameRate;
             
-            Debug.Log($"爆炸对象创建在位置: {transform.position}");
+            Debug.Log($"Explosion object spawned at position: {transform.position}");
         }
 
-        // 破坏逻辑
+        // Destruction logic
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, radius, obstacleMask);
-        Debug.Log($"爆炸范围内检测到 {hits.Length} 个对象");
+        Debug.Log($"Found {hits.Length} objects inside explosion radius.");
         
         foreach (var hit in hits)
         {
