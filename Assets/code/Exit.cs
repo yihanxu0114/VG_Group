@@ -1,76 +1,119 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using System.Collections;
 
-public class Exit : MonoBehaviour
+public class PauseMenuController : MonoBehaviour
 {
     public GameObject pauseMenuUI;
+    public Button resumeButton;
+    public Button exitButton;
+
+    public MonoBehaviour playerController; // ✅ NEW：拖 moving_logic 脚本进来
 
     private bool isPaused = false;
-    // Start is called before the first frame update
+    private int selectedIndex = 0;
+    private Button[] menuButtons;
+
+    void Awake()
+    {
+        menuButtons = new Button[] { resumeButton, exitButton };
+    }
+
     void Start()
     {
-        if(pauseMenuUI != null)
+        if (pauseMenuUI != null) pauseMenuUI.SetActive(false);
+        selectedIndex = 0;
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            pauseMenuUI.SetActive(false);
+            if (!isPaused) PauseGame();
+            else ResumeGame();
+        }
+
+        if (isPaused)
+        {
+            HandleKeyboardNavigation();
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    void HandleKeyboardNavigation()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.W))
         {
-            if(isPaused)
-            {
-                ResumeGame();
-            }
-            else
-            {
-                PauseGame();
-            }
+            selectedIndex = (selectedIndex - 1 + menuButtons.Length) % menuButtons.Length;
+            SelectButton(selectedIndex);
         }
+        else if (Input.GetKeyDown(KeyCode.S))
+        {
+            selectedIndex = (selectedIndex + 1) % menuButtons.Length;
+            SelectButton(selectedIndex);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space))
+        {
+            if (menuButtons[selectedIndex] != null)
+                menuButtons[selectedIndex].onClick.Invoke();
+        }
+    }
+
+    void SelectButton(int index)
+    {
+        var btn = menuButtons[index];
+        if (btn == null || EventSystem.current == null) return;
+
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(btn.gameObject);
     }
 
     public void PauseGame()
     {
-        if(pauseMenuUI != null)
-        {
-            pauseMenuUI.SetActive(true);
-        }
-        Time.timeScale = 0f; // Pause the game
         isPaused = true;
+
+        if (playerController != null) playerController.enabled = false; // ✅ NEW：暂停时禁用玩家输入脚本
+
+        Time.timeScale = 0f;
+
+        if (pauseMenuUI != null) pauseMenuUI.SetActive(true);
+
+        selectedIndex = 0;
+        StartCoroutine(SelectNextFrame());
+    }
+
+    IEnumerator SelectNextFrame()
+    {
+        yield return null;
+        SelectButton(selectedIndex);
+    }
+
+    IEnumerator EnablePlayerNextFrame() // ✅ NEW：恢复后一帧再启用，避免吞掉 Space/W
+    {
+        yield return null;
+        if (playerController != null) playerController.enabled = true;
     }
 
     public void ResumeGame()
     {
-        if(pauseMenuUI != null)
-        {
-            pauseMenuUI.SetActive(false);
-        }
-        Time.timeScale = 1f; // Resume the game
         isPaused = false;
-    }
+        Time.timeScale = 1f;
 
-    public void RestartGame()
-    {
-        Time.timeScale = 1f; // Ensure the game is running
-        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
-    }
+        if (pauseMenuUI != null) pauseMenuUI.SetActive(false);
 
-    public void QuitToMainMenu()
-    {
-        Time.timeScale = 1f; // Ensure the game is running
-        SceneManager.LoadScene("MainMenu"); // Replace "MainMenu" with your main menu scene name
+        if (EventSystem.current != null)
+            EventSystem.current.SetSelectedGameObject(null);
+
+        StartCoroutine(EnablePlayerNextFrame()); // ✅ NEW
     }
 
     public void QuitGame()
     {
-        #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-        #else
-            Application.Quit();
-        #endif
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
     }
 }
