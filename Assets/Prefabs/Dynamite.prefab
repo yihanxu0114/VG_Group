@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 438479133365191113}
   - component: {fileID: 6528307469122835822}
   m_Layer: 0
-  m_Name: dynamite
+  m_Name: Dynamite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -104,8 +104,20 @@ MonoBehaviour:
   obstacleMask:
     serializedVersion: 2
     m_Bits: 64
-  explosionVfx: {fileID: 0}
-  vfxLife: 1
+  explosionFrames:
+  - {fileID: 906184241, guid: b2ba0c15f12debc40bd37e7a0f3ed9e8, type: 3}
+  - {fileID: 341314747, guid: b2ba0c15f12debc40bd37e7a0f3ed9e8, type: 3}
+  - {fileID: -1820572993, guid: b2ba0c15f12debc40bd37e7a0f3ed9e8, type: 3}
+  - {fileID: 1043451031, guid: b2ba0c15f12debc40bd37e7a0f3ed9e8, type: 3}
+  - {fileID: 2083743982, guid: b2ba0c15f12debc40bd37e7a0f3ed9e8, type: 3}
+  - {fileID: -337209288, guid: b2ba0c15f12debc40bd37e7a0f3ed9e8, type: 3}
+  - {fileID: -211213805, guid: b2ba0c15f12debc40bd37e7a0f3ed9e8, type: 3}
+  - {fileID: 1943182094, guid: b2ba0c15f12debc40bd37e7a0f3ed9e8, type: 3}
+  - {fileID: -1359984232, guid: b2ba0c15f12debc40bd37e7a0f3ed9e8, type: 3}
+  - {fileID: 369722284, guid: b2ba0c15f12debc40bd37e7a0f3ed9e8, type: 3}
+  - {fileID: -372862901, guid: b2ba0c15f12debc40bd37e7a0f3ed9e8, type: 3}
+  frameRate: 24
+  explosionScale: {x: 0.15, y: 0.15, z: 1}
 --- !u!50 &438479133365191113
 Rigidbody2D:
   serializedVersion: 4
