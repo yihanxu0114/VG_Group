@@ -4,46 +4,66 @@ using UnityEngine;
 public class Sprite_left_right_shift : MonoBehaviour
 {
     [Header("still")]
-    public Sprite rightDavid; 
-    
+    public Sprite rightDavid;
+
     [Header("walking animation")]
-    public Sprite[] walkingFrames;  
-    public float frameRate = 10f;   
-    
+    public Sprite[] walkingFrames;
+    public float frameRate = 10f;
+
     [Header("jumping animation")]
-    public Sprite jumpSprite;  
-    
+    public Sprite jumpSprite;
+
     [Header("jetpack animation")]
-    public Sprite[] jetpackFrames;  
-    public float jetpackFrameRate = 10f;  
-    
+    public Sprite[] jetpackFrames;
+    public float jetpackFrameRate = 10f;
+
+    // ================= NEW ADDITION: DIGGING ANIMATION =================
+    [Header("Digging Animation")]
+    public Sprite[] digSideFrames; // from dig_00 to dig_07
+    public Sprite[] digDownFrames; 
+    public float digFrameRate = 12f;
+    // ===================================================================
+
     private SpriteRenderer sr;
     private const float deadzone = 0.01f;
-    
+
     private bool isWalking = false;
     private bool isJumping = false;
-    private bool isUsingJetpack = false;  
+    private bool isUsingJetpack = false;
+
+    private bool isDigging = false;
+    private bool isDiggingDown = false;
+
     private float frameTimer = 0f;
     private int currentFrame = 0;
     private float jetpackFrameTimer = 0f;
     private int currentJetpackFrame = 0;
 
+    private float digTimer = 0f;
+    private int currentDigFrame = 0;
+
     void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
-        if (rightDavid != null) 
+        if (rightDavid != null)
             sr.sprite = rightDavid;
     }
 
     void Update()
     {
-        // pirority 1: jetpack animation
+        // Priority 0: Digging (Highest Priority)
+        if (isDigging)
+        {
+            HandleDigAnimation();
+            return;
+        }
+
+        // Priority 1: jetpack animation
         if (isUsingJetpack)
         {
             if (jetpackFrames != null && jetpackFrames.Length > 0)
             {
                 jetpackFrameTimer += Time.deltaTime;
-                
                 if (jetpackFrameTimer >= 1f / jetpackFrameRate)
                 {
                     jetpackFrameTimer = 0f;
@@ -53,20 +73,19 @@ public class Sprite_left_right_shift : MonoBehaviour
             }
             return;
         }
-        
-        // pirority 2: jumping sprite
+
+        // Priority 2: jumping sprite
         if (isJumping)
         {
             if (jumpSprite != null)
                 sr.sprite = jumpSprite;
             return;
         }
-        
-        // pirority 3: walking animation
+
+        // Priority 3: walking animation
         if (isWalking && walkingFrames != null && walkingFrames.Length > 0)
         {
             frameTimer += Time.deltaTime;
-            
             if (frameTimer >= 1f / frameRate)
             {
                 frameTimer = 0f;
@@ -76,22 +95,37 @@ public class Sprite_left_right_shift : MonoBehaviour
         }
     }
 
+    void HandleDigAnimation()
+    {
+        Sprite[] currentAnim = isDiggingDown ? digDownFrames : digSideFrames;
+
+        if (currentAnim != null && currentAnim.Length > 0)
+        {
+            digTimer += Time.deltaTime;
+            if (digTimer >= 1f / digFrameRate)
+            {
+                digTimer = 0f;
+                currentDigFrame = (currentDigFrame + 1) % currentAnim.Length;
+                sr.sprite = currentAnim[currentDigFrame];
+            }
+        }
+    }
+
     public void SetFacing(float x)
     {
-    
+        if (isDigging) return;
+
         if (Mathf.Abs(x) > deadzone)
         {
             isWalking = true;
-            
-      
-            if (x > deadzone) 
-                sr.flipX = false;
-            else if (x < -deadzone) 
-                sr.flipX = true;
         }
+
+        if (x > deadzone)
+            sr.flipX = false;
+        else if (x < -deadzone)
+            sr.flipX = true;
         else
         {
-         
             isWalking = false;
             if (!isJumping && !isUsingJetpack)
             {
@@ -101,34 +135,38 @@ public class Sprite_left_right_shift : MonoBehaviour
             frameTimer = 0f;
         }
     }
-    
-  
+
     public void SetJumping(bool jumping)
     {
         isJumping = jumping;
-        
-        if (!jumping && !isWalking && !isUsingJetpack)
-        {
-        
-            sr.sprite = rightDavid;
-        }
     }
-    // set jetpack state
+
     public void SetJetpack(bool usingJetpack)
     {
-        // if state changed, reset animation
-        if (isUsingJetpack != usingJetpack)
-        {
-            currentJetpackFrame = 0;
-            jetpackFrameTimer = 0f;
-        }
-        
         isUsingJetpack = usingJetpack;
-        
-        if (!usingJetpack && !isJumping && !isWalking)
+    }
+
+    public void SetDigging(bool digging, bool down)
+    {
+        isDigging = digging;
+        isDiggingDown = down;
+
+        // every time we start digging, reset the animation to the first frame and timer
+        if (digging)
         {
-            // back to still sprite
-            sr.sprite = rightDavid;
+            currentDigFrame = 0;
+            digTimer = 0f;
+
+            // set the sprite to the first frame of the appropriate digging animation
+            Sprite[] currentAnim = isDiggingDown ? digDownFrames : digSideFrames;
+            if (currentAnim != null && currentAnim.Length > 0)
+                sr.sprite = currentAnim[0];
+        }
+        else
+        {
+            // when we stop digging, reset to idle sprite if not doing anything else
+            if (!isJumping && !isUsingJetpack && !isWalking)
+                sr.sprite = rightDavid;
         }
     }
 }
