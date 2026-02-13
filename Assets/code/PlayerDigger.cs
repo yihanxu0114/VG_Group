@@ -29,7 +29,7 @@ public class PlayerDigger : MonoBehaviour
 
     private float bufferTimer = 0f;
     private Vector3 targetPosition;
-    private Animator animator; // 预留给动画组件
+    private Animator animator; 
 
     void Awake()
     {
@@ -78,7 +78,7 @@ public class PlayerDigger : MonoBehaviour
         }
         else if (bufferTimer <= 0)
         {
-            Debug.Log("Input timeout, cancel action.");
+            //Debug.Log("Input timeout, cancel action.");
             currentState = State.Idle;
         }
     }
@@ -87,20 +87,25 @@ public class PlayerDigger : MonoBehaviour
 
     void AttemptAction(Vector2 direction)
     {
-        currentState = State.Acting; 
-
+        currentState = State.Acting;
+        if (direction.x != 0)
+        {
+            Vector3 newScale = transform.localScale;
+            newScale.x = (direction.x > 0) ? 1 : -1;
+            transform.localScale = newScale;
+        }
         RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, gridSize, groundLayer);
 
         if (hit.collider != null)
         {
             // Case A: There is an obstacle ahead -> Perform excavation
-            Debug.Log($"{direction} There is an obstacle ahead，Perform excavation");
-            StartCoroutine(DigRoutine(hit.collider.gameObject));
+            //Debug.Log($"{direction} There is an obstacle ahead，Perform excavation");
+            StartCoroutine(DigRoutine(hit.collider.gameObject, direction));
         }
         else
         {
             // Case B: No obstacles ahead -> Proceed with movement
-            Debug.Log($"{direction} No obstacles ahead，Proceed with movement");
+            //Debug.Log($"{direction} No obstacles ahead，Proceed with movement");
             StartCoroutine(MoveRoutine(direction));
         }
     }
@@ -108,21 +113,27 @@ public class PlayerDigger : MonoBehaviour
     // Animator Part
 
     // Digging
-    IEnumerator DigRoutine(GameObject targetTile)
+    IEnumerator DigRoutine(GameObject targetTile, Vector2 dir)
     {
-        // animate
-        if (animator != null) animator.SetTrigger("Dig");
+        if (animator != null)
+        {
+            if (dir == Vector2.down)
+            {
+                animator.SetTrigger("DigDown");
+            }
+            else
+            {
+                animator.SetTrigger("DigSide");
+            }
+        }
 
-        // Waiting Time
         yield return new WaitForSeconds(digDuration);
 
-        // Destroying soil clumps
         if (targetTile != null)
         {
             Destroy(targetTile);
         }
 
-        // Change to idle state
         currentState = State.Idle;
     }
 
