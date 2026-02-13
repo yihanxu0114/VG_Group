@@ -8,24 +8,22 @@ public class moving_logic : MonoBehaviour
     public float jumpSpeed = 12f;
 
     [Header("Digging Settings")]
-    public float digDistance = 1.2f;     // how far the player can dig
-    public float digDuration = 0.5f;     // how long the digging action takes (animation time)
+    public float defaultDigDuration = 0.5f; // digTime is the time it takes to dig through a block without a BlockHardness component. If a block has BlockHardness, we will use that value instead.
+    public float digDistance = 1.2f;
     public LayerMask obstacleMask;       
 
     [Header("References")]
     public Rigidbody2D rb;
     private Collider2D col;
-    // animScript
     private Sprite_left_right_shift animScript;
 
     [Header("Ground Detection")]
     public float groundDistance = 0.05f;
     public LayerMask groundMask = ~0;
 
-   
     bool isGrounded;
     bool wasGrounded;
-    bool isDiggingAction = false; 
+    bool isDiggingAction = false;
 
     RaycastHit2D[] hitBuffer = new RaycastHit2D[4];
     ContactFilter2D filter;
@@ -43,17 +41,14 @@ public class moving_logic : MonoBehaviour
 
     void Update()
     {
-        // 1. if digging, lock all other inputs until the digging action is complete
         if (isDiggingAction)
         {
             rb.velocity = Vector2.zero;
             return;
         }
 
-        // 2. Only allow digging when grounded (you can change this if you want to allow mid-air digging)
         if (Input.GetKeyDown(KeyCode.J) && isGrounded)
         {
-            // If player presses J, check if they are also holding S to determine digging direction
             bool isDiggingDown = Input.GetKey(KeyCode.S);
 
             Vector2 direction = Vector2.right;
@@ -63,15 +58,15 @@ public class moving_logic : MonoBehaviour
             }
             else
             {
-                // get facing direction from the animation script (assuming it has a bool or method to determine facing direction)
                 bool isFacingLeft = animScript.GetComponent<SpriteRenderer>().flipX;
                 direction = isFacingLeft ? Vector2.left : Vector2.right;
             }
 
             StartCoroutine(DigRoutine(direction, isDiggingDown));
-            return; 
+            return;
         }
 
+        // Movement (WASD)
         float x = 0f;
         if (Input.GetKey(KeyCode.A)) x = -1f;
         if (Input.GetKey(KeyCode.D)) x = 1f;
@@ -103,33 +98,41 @@ public class moving_logic : MonoBehaviour
 
     IEnumerator DigRoutine(Vector2 dir, bool isDown)
     {
-        isDiggingAction = true; // lock input
+        isDiggingAction = true;
 
-        // 1. Start digging animation
-        if (animScript != null) animScript.SetDigging(true, isDown);
-
-        yield return new WaitForSeconds(digDuration);
-
-        // 3. Judge if there is an obstacle in the digging direction within digDistance using Raycast
-        Debug.DrawRay(transform.position, dir * digDistance, Color.red, 1.0f);
-
+        // 1. first, we do a raycast in the direction we want to dig to see if there's a block there and how long it takes to dig through it
         RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, digDistance, obstacleMask);
+
+        // 2. determine how long we need to wait based on the block's hardness. If there's no block, we can just use the default dig duration.
+        float actualWaitTime = defaultDigDuration;
 
         if (hit.collider != null)
         {
-            Debug.Log("dig something£∫" + hit.collider.name);
-            // destroy the hit object (you can replace this with a more complex logic if you want, e.g. play a breaking animation, drop items, etc.)
-            Destroy(hit.collider.gameObject);
+            // judge if the block has a BlockHardness component, if it does, we use that value instead of the default dig duration
+            BlockHardness hardness = hit.collider.GetComponent<BlockHardness>();
+            if (hardness != null)
+            {
+                actualWaitTime = hardness.digTime;
+                Debug.Log($"need time {actualWaitTime} s");
+            }
         }
-        else
+
+        // 3. start the digging animation (if we have one)
+        if (animScript != null) animScript.SetDigging(true, isDown);
+
+        // 4. wait for the required time to simulate digging
+        yield return new WaitForSeconds(actualWaitTime);
+
+        // 5. time's up, we check again if the block is still there (it might have been removed by another player or something). If it is, we destroy it.
+        if (hit.collider != null)
         {
-            Debug.Log("Layer Error");
+            Destroy(hit.collider.gameObject);
+            Debug.Log("Sucessfully Digging£°");
         }
 
-        // 4. digging action complete, reset animation and unlock input
+        // 6. end the digging animation
         if (animScript != null) animScript.SetDigging(false, isDown);
-
-        isDiggingAction = false; // Ω‚À¯ ‰»Î
+        isDiggingAction = false;
     }
 
     bool CheckGrounded()
