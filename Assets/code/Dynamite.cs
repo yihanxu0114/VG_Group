@@ -19,7 +19,7 @@ public class Dynamite : MonoBehaviour
     void Start()
     {
         Invoke(nameof(Explode), fuseTime);
-        Debug.Log($"Dynamite lit. Going off in {fuseTime} seconds.");
+       
     }
 
     private void Explode()
@@ -27,16 +27,16 @@ public class Dynamite : MonoBehaviour
         if (exploded) return;
         exploded = true;
 
-        Debug.Log("Boom! Explosion triggered.");
+        
 
         // Play explosion animation
         if (explosionFrames == null || explosionFrames.Length == 0)
         {
-            Debug.LogError("No explosion frames assigned. Drop them into the Inspector.");
+           
         }
         else
         {
-            Debug.Log($"Starting explosion animation with {explosionFrames.Length} frames.");
+            
             
             GameObject explosion = new GameObject("Explosion");
             explosion.transform.position = transform.position;
@@ -60,15 +60,24 @@ public class Dynamite : MonoBehaviour
             animator.frames = explosionFrames;
             animator.frameRate = frameRate;
             
-            Debug.Log($"Explosion object spawned at position: {transform.position}");
+            
         }
 
         // Destruction logic
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, radius, obstacleMask);
-        Debug.Log($"Found {hits.Length} objects inside explosion radius.");
+
         
         foreach (var hit in hits)
         {
+  
+            Portal p = hit.GetComponent<Portal>();
+            if (p != null)
+            {
+                Destroy(p.gameObject);
+                continue;
+            }
+
+
             BlockDynamite b = hit.GetComponent<BlockDynamite>();
             if (b != null) b.Break();
         }

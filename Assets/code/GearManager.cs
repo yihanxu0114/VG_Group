@@ -5,6 +5,9 @@ public class GearManager : MonoBehaviour
     [Header("Slot 1 - Dynamite")]
     public Dynamite dynamitePrefab;
 
+    [Header("Slot 2 - Portal")]
+    public Portal portalPrefab;
+
     public void UseCurrentGear(int slot)
     {
         switch (slot)
@@ -13,7 +16,7 @@ public class GearManager : MonoBehaviour
                 PlaceDynamite();
                 break;
             case 2:
-                Debug.Log("Use Gear 2 (future: Metal Detector)");
+                PlacePortal();
                 break;
             case 3:
                 Debug.Log("Use Gear 3");
@@ -26,12 +29,27 @@ public class GearManager : MonoBehaviour
 
     private void PlaceDynamite()
     {
-        if (dynamitePrefab == null)
+      
+
+        Instantiate(dynamitePrefab, transform.position + Vector3.up * 1.3f, Quaternion.identity);
+    }
+
+    private void PlacePortal()
+    {
+        if (portalPrefab == null)
         {
-            Debug.LogWarning("GearManager: dynamitePrefab not assigned!");
+            Debug.LogWarning("GearManager: portalPrefab not assigned!");
             return;
         }
 
-        Instantiate(dynamitePrefab, transform.position+ Vector3.up * 1.3f, Quaternion.identity);
+      
+        if (PortalSystem.Instance != null && PortalSystem.Instance.Count() >= 2)
+        {
+            Debug.Log("Already has 2 portals.");
+            return;
+        }
+
+        Instantiate(portalPrefab, transform.position + Vector3.up * 1.3f, Quaternion.identity);
+       
     }
 }
