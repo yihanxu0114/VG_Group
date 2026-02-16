@@ -29,22 +29,19 @@ public class Dynamite : MonoBehaviour
 
         Debug.Log("Boom! Explosion triggered.");
 
-        // Play explosion animation
+        // 1. boom anim 
         if (explosionFrames == null || explosionFrames.Length == 0)
         {
-            Debug.LogError("No explosion frames assigned. Drop them into the Inspector.");
+            Debug.LogError("No explosion frames assigned.");
         }
         else
         {
-            Debug.Log($"Starting explosion animation with {explosionFrames.Length} frames.");
-            
             GameObject explosion = new GameObject("Explosion");
             explosion.transform.position = transform.position;
             explosion.transform.localScale = explosionScale;
-            
+
             SpriteRenderer sr = explosion.AddComponent<SpriteRenderer>();
             
-            // Match sorting settings with the dynamite sprite
             SpriteRenderer mySr = GetComponent<SpriteRenderer>();
             if (mySr != null)
             {
@@ -55,22 +52,28 @@ public class Dynamite : MonoBehaviour
             {
                 sr.sortingOrder = 100;
             }
-            
+
             ExplosionAnimator animator = explosion.AddComponent<ExplosionAnimator>();
             animator.frames = explosionFrames;
             animator.frameRate = frameRate;
-            
-            Debug.Log($"Explosion object spawned at position: {transform.position}");
         }
 
-        // Destruction logic
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, radius, obstacleMask);
-        Debug.Log($"Found {hits.Length} objects inside explosion radius.");
         
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, radius);
+
         foreach (var hit in hits)
         {
             BlockDynamite b = hit.GetComponent<BlockDynamite>();
-            if (b != null) b.Break();
+            if (b != null)
+            {
+                b.Break();
+            }
+
+            PlayerHealth player = hit.GetComponent<PlayerHealth>();
+            if (player != null)
+            {
+                player.TakeDamage(1);
+            }
         }
 
         Destroy(gameObject);
