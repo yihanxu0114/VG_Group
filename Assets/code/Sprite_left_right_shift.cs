@@ -16,6 +16,8 @@ public class Sprite_left_right_shift : MonoBehaviour
     [Header("jetpack animation")]
     public Sprite[] jetpackFrames;
     public float jetpackFrameRate = 10f;
+    [Tooltip("启动动画的帧数，这些帧只播放一次，之后循环播放剩余帧")]
+    public int jetpackIntroFrames = 0; // 例如：如果设为3，则前3帧只播放一次
 
     // ================= NEW ADDITION: DIGGING ANIMATION =================
     [Header("Digging Animation")]
@@ -38,6 +40,7 @@ public class Sprite_left_right_shift : MonoBehaviour
     private int currentFrame = 0;
     private float jetpackFrameTimer = 0f;
     private int currentJetpackFrame = 0;
+    private bool hasPlayedJetpackIntro = false; // 是否已播放完启动动画
 
     private float digTimer = 0f;
     private int currentDigFrame = 0;
@@ -67,7 +70,41 @@ public class Sprite_left_right_shift : MonoBehaviour
                 if (jetpackFrameTimer >= 1f / jetpackFrameRate)
                 {
                     jetpackFrameTimer = 0f;
-                    currentJetpackFrame = (currentJetpackFrame + 1) % jetpackFrames.Length;
+                    
+                    // 如果还在播放启动动画
+                    if (!hasPlayedJetpackIntro && jetpackIntroFrames > 0)
+                    {
+                        currentJetpackFrame++;
+                        
+                        // 如果启动动画播放完毕
+                        if (currentJetpackFrame >= jetpackIntroFrames)
+                        {
+                            hasPlayedJetpackIntro = true;
+                            // 从循环动画的起始帧开始（如果有启动帧）
+                            if (jetpackIntroFrames < jetpackFrames.Length)
+                            {
+                                currentJetpackFrame = jetpackIntroFrames;
+                            }
+                            else
+                            {
+                                // 如果启动帧数 >= 总帧数，从头循环
+                                currentJetpackFrame = 0;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // 播放循环动画
+                        currentJetpackFrame++;
+                        
+                        // 循环范围：从 jetpackIntroFrames 到最后一帧
+                        int loopStart = Mathf.Min(jetpackIntroFrames, jetpackFrames.Length - 1);
+                        if (currentJetpackFrame >= jetpackFrames.Length)
+                        {
+                            currentJetpackFrame = loopStart;
+                        }
+                    }
+                    
                     sr.sprite = jetpackFrames[currentJetpackFrame];
                 }
             }
@@ -143,6 +180,18 @@ public class Sprite_left_right_shift : MonoBehaviour
 
     public void SetJetpack(bool usingJetpack)
     {
+        // 如果是开始使用喷气背包，重置动画状态
+        if (usingJetpack && !isUsingJetpack)
+        {
+            currentJetpackFrame = 0;
+            jetpackFrameTimer = 0f;
+            hasPlayedJetpackIntro = false;
+            
+            // 立即显示第一帧
+            if (jetpackFrames != null && jetpackFrames.Length > 0)
+                sr.sprite = jetpackFrames[0];
+        }
+        
         isUsingJetpack = usingJetpack;
     }
 

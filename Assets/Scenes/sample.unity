@@ -17979,7 +17979,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.49685526, g: 0.49685526, b: 0.49685526, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -18004,7 +18004,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 11
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -18029,7 +18029,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.68, z: -10}
+  m_LocalPosition: {x: 0, y: 0.76, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -29484,13 +29484,17 @@ MonoBehaviour:
   frameRate: 27
   jumpSprite: {fileID: 21300000, guid: aa710f9ec14f08d46ae0f6d4f6956c50, type: 3}
   jetpackFrames:
-  - {fileID: -2023645544, guid: cfb8bc569fcc8484ea1fee0d70ad1b7e, type: 3}
-  - {fileID: -1526079956, guid: cfb8bc569fcc8484ea1fee0d70ad1b7e, type: 3}
-  - {fileID: -581860212, guid: cfb8bc569fcc8484ea1fee0d70ad1b7e, type: 3}
-  - {fileID: 233617706, guid: cfb8bc569fcc8484ea1fee0d70ad1b7e, type: 3}
-  - {fileID: 89657350, guid: cfb8bc569fcc8484ea1fee0d70ad1b7e, type: 3}
-  - {fileID: -1592298362, guid: cfb8bc569fcc8484ea1fee0d70ad1b7e, type: 3}
-  jetpackFrameRate: 20
+  - {fileID: -2114282373, guid: 8a9278caad13dea4cb744e5b01698f92, type: 3}
+  - {fileID: -439992025, guid: 8a9278caad13dea4cb744e5b01698f92, type: 3}
+  - {fileID: 1487592400, guid: 8a9278caad13dea4cb744e5b01698f92, type: 3}
+  - {fileID: 1115204947, guid: 8a9278caad13dea4cb744e5b01698f92, type: 3}
+  - {fileID: 507477925, guid: 8a9278caad13dea4cb744e5b01698f92, type: 3}
+  - {fileID: 1845645991, guid: 8a9278caad13dea4cb744e5b01698f92, type: 3}
+  - {fileID: 2093747548, guid: 8a9278caad13dea4cb744e5b01698f92, type: 3}
+  - {fileID: -1827331289, guid: 8a9278caad13dea4cb744e5b01698f92, type: 3}
+  - {fileID: -268257115, guid: 8a9278caad13dea4cb744e5b01698f92, type: 3}
+  jetpackFrameRate: 25
+  jetpackIntroFrames: 3
   digSideFrames:
   - {fileID: -1849668310, guid: 5d34644fb6cd1e84aa1d693b3109e3f4, type: 3}
   - {fileID: -253798892, guid: 5d34644fb6cd1e84aa1d693b3109e3f4, type: 3}
