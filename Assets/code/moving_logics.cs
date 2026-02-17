@@ -98,39 +98,50 @@ public class moving_logic : MonoBehaviour
 
     IEnumerator DigRoutine(Vector2 dir, bool isDown)
     {
-        isDiggingAction = true;
+        isDiggingAction = true; // Lock movement input
 
-        // 1. first, we do a raycast in the direction we want to dig to see if there's a block there and how long it takes to dig through it
+        // 1. Raycast to detect obstacles
         RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, digDistance, obstacleMask);
 
-        // 2. determine how long we need to wait based on the block's hardness. If there's no block, we can just use the default dig duration.
+        // 2. Calculate digging duration based on block hardness
         float actualWaitTime = defaultDigDuration;
+        bool targetIsUndiggable = false; // Flag: is the target impossible to dig?
 
         if (hit.collider != null)
         {
-            // judge if the block has a BlockHardness component, if it does, we use that value instead of the default dig duration
             BlockHardness hardness = hit.collider.GetComponent<BlockHardness>();
             if (hardness != null)
             {
-                actualWaitTime = hardness.digTime;
-                Debug.Log($"need time {actualWaitTime} s");
+                actualWaitTime = hardness.digTime; // Get custom dig time
+                targetIsUndiggable = hardness.isUndiggable; // Check if this block is undiggable
             }
         }
 
-        // 3. start the digging animation (if we have one)
+        // 3. [ANIMATION] Start the digging animation regardless of block type
+        // This allows the player to swing at rocks without them breaking
         if (animScript != null) animScript.SetDigging(true, isDown);
 
-        // 4. wait for the required time to simulate digging
+        // 4. Wait for the animation to play (simulate the effort of digging)
         yield return new WaitForSeconds(actualWaitTime);
 
-        // 5. time's up, we check again if the block is still there (it might have been removed by another player or something). If it is, we destroy it.
+        // 5. Time's up! Decide whether to destroy the block
         if (hit.collider != null)
         {
-            Destroy(hit.collider.gameObject);
-            Debug.Log("Sucessfully Digging£¡");
+            // If it is marked as undiggable (like your Rock)
+            if (targetIsUndiggable)
+            {
+                // Do nothing to the GameObject.
+                Debug.Log("It's a rock! The pickaxe did nothing.");
+            }
+            else
+            {
+                // If it's a normal block (Dirt/Gold/Diamond), destroy it.
+                Destroy(hit.collider.gameObject);
+                Debug.Log("Digging successful!");
+            }
         }
 
-        // 6. end the digging animation
+        // 6. Stop the animation and unlock movement
         if (animScript != null) animScript.SetDigging(false, isDown);
         isDiggingAction = false;
     }
