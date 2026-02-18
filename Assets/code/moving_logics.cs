@@ -135,6 +135,17 @@ public class moving_logic : MonoBehaviour
             }
             else
             {
+                // before destroying the block, check if it's a valuable block (like Gold/Diamond). If it is, give the player the corresponding item.
+                ValuableBlock valuable = hit.collider.GetComponent<ValuableBlock>();
+                if (valuable != null)
+                {
+                    // find the PlayerInventory component and give the player the item
+                    PlayerInventory inventory = GetComponent<PlayerInventory>();
+                    if (inventory != null)
+                    {
+                        inventory.CollectItem(valuable.blockType);
+                    }
+                }
                 // If it's a normal block (Dirt/Gold/Diamond), destroy it.
                 Destroy(hit.collider.gameObject);
                 Debug.Log("Digging successful!");
