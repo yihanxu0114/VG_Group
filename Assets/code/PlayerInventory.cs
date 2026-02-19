@@ -41,7 +41,7 @@ public class PlayerInventory : MonoBehaviour
             {
                 goldFragments--;
                 money += goldPrice;
-                Debug.Log("Sell one gold£¡");
+                Debug.Log("Sell one goldï¿½ï¿½");
             }
         }
         else if (type == ValuableBlock.Type.Diamond)
@@ -50,11 +50,12 @@ public class PlayerInventory : MonoBehaviour
             {
                 diamondFragments--;
                 money += diamondPrice;
-                Debug.Log("Sell one diamond£¡");
+                Debug.Log("Sell one diamondï¿½ï¿½");
             }
         }
 
         UpdateUI(); 
+        CheckWin();
     }
     public void SellAllItems()
     {
