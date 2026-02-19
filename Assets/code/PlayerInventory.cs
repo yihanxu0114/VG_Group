@@ -35,7 +35,7 @@ public class PlayerInventory : MonoBehaviour
     }
     public void SellAllItems()
     {
-        ebug.Log("[SellAllItems] called");
+        Debug.Log("[SellAllItems] called");
         int earnings = (goldFragments * goldPrice) + (diamondFragments * diamondPrice);
 
         if (earnings > 0)
