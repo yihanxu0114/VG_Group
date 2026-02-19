@@ -14,20 +14,20 @@ public class Dynamite : MonoBehaviour
     public float frameRate = 12f;
     public Vector3 explosionScale = Vector3.one;
 
+    [Header("Damage Settings")]
+    public int playerDamage = 20;
+
     private bool exploded = false;
 
     void Start()
     {
         Invoke(nameof(Explode), fuseTime);
-       
     }
 
     private void Explode()
     {
         if (exploded) return;
         exploded = true;
-
-        
 
         // 1. boom anim 
         if (explosionFrames == null || explosionFrames.Length == 0)
@@ -41,7 +41,7 @@ public class Dynamite : MonoBehaviour
             explosion.transform.localScale = explosionScale;
 
             SpriteRenderer sr = explosion.AddComponent<SpriteRenderer>();
-            
+
             SpriteRenderer mySr = GetComponent<SpriteRenderer>();
             if (mySr != null)
             {
@@ -58,19 +58,16 @@ public class Dynamite : MonoBehaviour
             animator.frameRate = frameRate;
         }
 
-        
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, radius);
 
         foreach (var hit in hits)
         {
-  
             Portal p = hit.GetComponent<Portal>();
             if (p != null)
             {
                 Destroy(p.gameObject);
                 continue;
             }
-
 
             BlockDynamite b = hit.GetComponent<BlockDynamite>();
             if (b != null)
@@ -81,7 +78,7 @@ public class Dynamite : MonoBehaviour
             PlayerHealth player = hit.GetComponent<PlayerHealth>();
             if (player != null)
             {
-                player.TakeDamage(1);
+                player.TakeDamage(playerDamage);
             }
         }
 
