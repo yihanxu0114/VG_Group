@@ -8,6 +8,10 @@ public class GearManager : MonoBehaviour
     [Header("Slot 2 - Portal")]
     public Portal portalPrefab;
 
+    [Header("Placement Offsets")]
+    public float dynamiteOffset = 1.3f;
+    public float portalOffset = 0.05f;
+
     public void UseCurrentGear(int slot)
     {
         switch (slot)
@@ -29,9 +33,7 @@ public class GearManager : MonoBehaviour
 
     private void PlaceDynamite()
     {
-      
-
-        Instantiate(dynamitePrefab, transform.position + Vector3.up * 1.3f, Quaternion.identity);
+        Instantiate(dynamitePrefab, transform.position + Vector3.up * dynamiteOffset, Quaternion.identity);
     }
 
     private void PlacePortal()
@@ -42,14 +44,12 @@ public class GearManager : MonoBehaviour
             return;
         }
 
-      
         if (PortalSystem.Instance != null && PortalSystem.Instance.Count() >= 2)
         {
             Debug.Log("Already has 2 portals.");
             return;
         }
 
-        Instantiate(portalPrefab, transform.position + Vector3.up * 1.3f, Quaternion.identity);
-       
+        Instantiate(portalPrefab, transform.position + Vector3.up * portalOffset, Quaternion.identity);
     }
 }
