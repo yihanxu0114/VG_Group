@@ -13,7 +13,7 @@ public class PlayerInventory : MonoBehaviour
 
     public TextMeshProUGUI moneyText; // MoneyText
 
-    public int winMoney = 200;         
+    public int winMoney = 150;         
     public GameObject winPanel;         
     public AudioSource sfxSource;       
     public AudioClip winClip;           
