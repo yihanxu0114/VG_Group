@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 8a9278caad13dea4cb744e5b01698f92
+guid: 9f2204656e1e15e4daf7e7dbf57edd01
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,190 +97,127 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: jetpack_sprite_frames_0
+      name: drill_downward_sprite_frames_0
       rect:
         serializedVersion: 2
-        x: 7
-        y: 38
-        width: 96
-        height: 152
-      alignment: 9
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 47a91dd680b6dcf49ba11c8da7c29a0b
-      internalID: -2114282373
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: jetpack_sprite_frames_1
-      rect:
-        serializedVersion: 2
-        x: 122
-        y: 38
-        width: 96
-        height: 152
-      alignment: 9
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 91d20d8d97b08e74686e518d5ade5543
-      internalID: -439992025
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: jetpack_sprite_frames_2
-      rect:
-        serializedVersion: 2
-        x: 239
-        y: 22
-        width: 96
-        height: 168
-      alignment: 9
-      pivot: {x: 0.5, y: 0.09722918}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f19f0c9f6cc521747bf36c85e7fbc2b1
-      internalID: 1487592400
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: jetpack_sprite_frames_3
-      rect:
-        serializedVersion: 2
-        x: 354
-        y: 4
-        width: 96
-        height: 186
-      alignment: 9
-      pivot: {x: 0.5, y: 0.18498224}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 70fce5f13f73dce4c925f5347d2778ac
-      internalID: 1115204947
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: jetpack_sprite_frames_4
-      rect:
-        serializedVersion: 2
-        x: 473
-        y: 1
-        width: 96
-        height: 189
-      alignment: 9
-      pivot: {x: 0.5, y: 0.19771719}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f6bd778dd9fb5a647b76d5e08fcd0ae0
-      internalID: 507477925
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: jetpack_sprite_frames_5
-      rect:
-        serializedVersion: 2
-        x: 587
-        y: 3
-        width: 96
-        height: 187
-      alignment: 9
-      pivot: {x: 0.5, y: 0.18908812}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a5e402b0f8afb3d4f8a4f7e895137d03
-      internalID: 1845645991
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: jetpack_sprite_frames_6
-      rect:
-        serializedVersion: 2
-        x: 705
+        x: 13
         y: 7
-        width: 96
-        height: 183
+        width: 93
+        height: 172
       alignment: 9
-      pivot: {x: 0.5, y: 0.1717034}
+      pivot: {x: 0.48, y: 0.123}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8434b49b707daec43ae0f385c9e1a7ce
-      internalID: 2093747548
+      spriteID: 5206b8349dd5d6940a8fae98fecba284
+      internalID: -1405097609
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: jetpack_sprite_frames_7
+      name: drill_downward_sprite_frames_1
       rect:
         serializedVersion: 2
-        x: 824
-        y: 4
-        width: 96
-        height: 186
-      alignment: 9
-      pivot: {x: 0.5, y: 0.18513608}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 1ba7d9e55efd9494eaf22b31930e8a8d
-      internalID: -1827331289
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: jetpack_sprite_frames_8
-      rect:
-        serializedVersion: 2
-        x: 937
+        x: 114
         y: 6
-        width: 96
-        height: 184
+        width: 93
+        height: 173
       alignment: 9
-      pivot: {x: 0.5, y: 0.17644802}
+      pivot: {x: 0.48, y: 0.134}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 916f2aff6dfb5cd489f150e0601cdd26
-      internalID: -268257115
+      spriteID: 9098fa7b0df914e4481b3adf2a7dc31e
+      internalID: -444047997
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drill_downward_sprite_frames_2
+      rect:
+        serializedVersion: 2
+        x: 215
+        y: 8
+        width: 93
+        height: 171
+      alignment: 9
+      pivot: {x: 0.48, y: 0.123}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c3867aab7e7759148a92d4608ee24ca3
+      internalID: 1515964787
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drill_downward_sprite_frames_3
+      rect:
+        serializedVersion: 2
+        x: 319
+        y: 6
+        width: 93
+        height: 173
+      alignment: 9
+      pivot: {x: 0.48, y: 0.134}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6d6a4977b79d2e14582340f35307f44f
+      internalID: 1173771297
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drill_downward_sprite_frames_4
+      rect:
+        serializedVersion: 2
+        x: 422
+        y: 8
+        width: 93
+        height: 171
+      alignment: 9
+      pivot: {x: 0.48, y: 0.123}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ab9ede46f987bb444a60b623944c4614
+      internalID: 79138688
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drill_downward_sprite_frames_5
+      rect:
+        serializedVersion: 2
+        x: 528
+        y: 6
+        width: 93
+        height: 173
+      alignment: 9
+      pivot: {x: 0.48, y: 0.134}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9c77f073b19172e4b9d923c267ceed4e
+      internalID: 1397200927
       vertices: []
       indices: 
       edges: []
@@ -296,15 +233,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      jetpack_sprite_frames_0: -2114282373
-      jetpack_sprite_frames_1: -439992025
-      jetpack_sprite_frames_2: 1487592400
-      jetpack_sprite_frames_3: 1115204947
-      jetpack_sprite_frames_4: 507477925
-      jetpack_sprite_frames_5: 1845645991
-      jetpack_sprite_frames_6: 2093747548
-      jetpack_sprite_frames_7: -1827331289
-      jetpack_sprite_frames_8: -268257115
+      drill_downward_sprite_frames_0: -1405097609
+      drill_downward_sprite_frames_1: -444047997
+      drill_downward_sprite_frames_2: 1515964787
+      drill_downward_sprite_frames_3: 1173771297
+      drill_downward_sprite_frames_4: 79138688
+      drill_downward_sprite_frames_5: 1397200927
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

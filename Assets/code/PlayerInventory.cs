@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class PlayerInventory : MonoBehaviour
 {
@@ -12,8 +13,17 @@ public class PlayerInventory : MonoBehaviour
 
     public TextMeshProUGUI moneyText; // MoneyText
 
+    public int winMoney = 150;         
+    public GameObject winPanel;         
+    public AudioSource sfxSource;       
+    public AudioClip winClip;           
+    public string mainMenuSceneName = "MainMenu"; 
+
+    private bool hasWon = false;
+
     void Start()
     {
+        if (winPanel != null) winPanel.SetActive(false);
         UpdateUI();
     }
 
@@ -23,8 +33,32 @@ public class PlayerInventory : MonoBehaviour
         else if (type == ValuableBlock.Type.Diamond) diamondFragments++;
 
     }
+    public void SellOneItem(ValuableBlock.Type type)
+    {
+        if (type == ValuableBlock.Type.Gold)
+        {
+            if (goldFragments > 0)
+            {
+                goldFragments--;
+                money += goldPrice;
+                Debug.Log("Sell one gold£¡");
+            }
+        }
+        else if (type == ValuableBlock.Type.Diamond)
+        {
+            if (diamondFragments > 0)
+            {
+                diamondFragments--;
+                money += diamondPrice;
+                Debug.Log("Sell one diamond£¡");
+            }
+        }
+
+        UpdateUI(); 
+    }
     public void SellAllItems()
     {
+        Debug.Log("[SellAllItems] called");
         int earnings = (goldFragments * goldPrice) + (diamondFragments * diamondPrice);
 
         if (earnings > 0)
@@ -33,6 +67,7 @@ public class PlayerInventory : MonoBehaviour
             goldFragments = 0;
             diamondFragments = 0;
             UpdateUI();
+            CheckWin();
         }
     }
 
@@ -42,5 +77,33 @@ public class PlayerInventory : MonoBehaviour
         {
             moneyText.text = "$ " + money.ToString();
         }
+    }
+
+    void CheckWin()
+    {
+        if (hasWon) return;
+        if (money < winMoney) return;
+
+        hasWon = true;
+        Debug.Log("YOU WIN!");
+
+        if (winPanel != null) winPanel.SetActive(true);
+
+        if (sfxSource != null && winClip != null)
+            sfxSource.PlayOneShot(winClip);
+
+        Time.timeScale = 0f;
+    }
+
+    public void RestartLevel()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void GoToMainMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(mainMenuSceneName);
     }
 }

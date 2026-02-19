@@ -11,18 +11,39 @@ public class Portal : MonoBehaviour
     [Header("Teleport")]
     public float cooldown = 0.15f;
 
+    [Header("Animation")]
+    public Sprite[] frames;
+    public float frameRate = 12f;
+
+    private SpriteRenderer _sr;
+    private float _frameTimer;
+    private int _currentFrame;
+
     private void Start()
     {
         PortalSystem.Instance?.Register(this);
 
-
         var col = GetComponent<Collider2D>();
         if (col) col.isTrigger = true;
+
+        _sr = GetComponent<SpriteRenderer>();
+    }
+
+    private void Update()
+    {
+        if (frames == null || frames.Length == 0 || _sr == null) return;
+
+        _frameTimer += Time.deltaTime;
+        if (_frameTimer >= 1f / frameRate)
+        {
+            _frameTimer = 0f;
+            _currentFrame = (_currentFrame + 1) % frames.Length;
+            _sr.sprite = frames[_currentFrame];
+        }
     }
 
     private void OnDestroy()
     {
-
         if (PortalSystem.Instance != null)
             PortalSystem.Instance.Unregister(this);
     }

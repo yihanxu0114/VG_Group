@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,6 +6,11 @@ public class Shop : MonoBehaviour
 {
     [Header("UI References")]
     public GameObject shopUI;
+
+    public GameObject goldItemObj;
+    public GameObject diamondItemObj;
+    public TextMeshProUGUI goldCountText;
+    public TextMeshProUGUI diamondCountText;
 
     private bool isPlayerInRange = false; // player is in the shop area or not
     private PlayerInventory currentPlayer; // reference to the player's inventory, so we can call sell functions
@@ -21,10 +27,18 @@ public class Shop : MonoBehaviour
         if (isPlayerInRange && Input.GetKeyDown(KeyCode.E))
         {
             // if the shop UI is already active, this will close it; if it's closed, this will open it
-            bool isActive = shopUI.activeSelf;
-            shopUI.SetActive(!isActive);
+            if (shopUI != null)
+            {
+                bool isActive = shopUI.activeSelf;
+                shopUI.SetActive(!isActive); // switch the active state of the shop UI
 
-            Time.timeScale = isActive ? 1 : 0;
+                if (!isActive && currentPlayer != null)
+                {
+                    UpdateShopDisplay(currentPlayer);
+                }
+
+                Time.timeScale = isActive ? 1 : 0;
+            }
         }
     }
 
@@ -69,5 +83,32 @@ public class Shop : MonoBehaviour
         }
 
         Time.timeScale = 1;
+    }
+
+    public void UpdateShopDisplay(PlayerInventory playerInv)
+    {
+        if (playerInv == null) return;
+
+        // 1. display gold fragments
+        if (playerInv.goldFragments > 0)
+        {
+            goldItemObj.SetActive(true); // if player has gold fragments, show the gold icon
+            goldCountText.text = "x" + playerInv.goldFragments;
+        }
+        else
+        {
+            goldItemObj.SetActive(false); // if player has no gold fragments, hide the gold icon
+        }
+
+        // 2. display diamond fragments
+        if (playerInv.diamondFragments > 0)
+        {
+            diamondItemObj.SetActive(true);
+            diamondCountText.text = "x" + playerInv.diamondFragments;
+        }
+        else
+        {
+            diamondItemObj.SetActive(false);
+        }
     }
 }
