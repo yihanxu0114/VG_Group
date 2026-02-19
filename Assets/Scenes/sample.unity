@@ -32314,25 +32314,19 @@ MonoBehaviour:
   jetpackFrameRate: 25
   jetpackIntroFrames: 3
   digSideFrames:
-  - {fileID: -1849668310, guid: 5d34644fb6cd1e84aa1d693b3109e3f4, type: 3}
-  - {fileID: -253798892, guid: 5d34644fb6cd1e84aa1d693b3109e3f4, type: 3}
-  - {fileID: 1704629159, guid: 5d34644fb6cd1e84aa1d693b3109e3f4, type: 3}
-  - {fileID: 1653347585, guid: 5d34644fb6cd1e84aa1d693b3109e3f4, type: 3}
-  - {fileID: -492213964, guid: 5d34644fb6cd1e84aa1d693b3109e3f4, type: 3}
-  - {fileID: 951850809, guid: 5d34644fb6cd1e84aa1d693b3109e3f4, type: 3}
-  - {fileID: -172995181, guid: 5d34644fb6cd1e84aa1d693b3109e3f4, type: 3}
-  - {fileID: -492213964, guid: 5d34644fb6cd1e84aa1d693b3109e3f4, type: 3}
-  - {fileID: 1704629159, guid: 5d34644fb6cd1e84aa1d693b3109e3f4, type: 3}
+  - {fileID: 1352345642, guid: 9f040a1208ec71b42b49aa3ee20783d5, type: 3}
+  - {fileID: -1292253183, guid: 9f040a1208ec71b42b49aa3ee20783d5, type: 3}
+  - {fileID: -316197463, guid: 9f040a1208ec71b42b49aa3ee20783d5, type: 3}
+  - {fileID: 2085992948, guid: 9f040a1208ec71b42b49aa3ee20783d5, type: 3}
+  - {fileID: -1656613199, guid: 9f040a1208ec71b42b49aa3ee20783d5, type: 3}
+  - {fileID: 1947453892, guid: 9f040a1208ec71b42b49aa3ee20783d5, type: 3}
   digDownFrames:
-  - {fileID: -1849668310, guid: 5d34644fb6cd1e84aa1d693b3109e3f4, type: 3}
-  - {fileID: -253798892, guid: 5d34644fb6cd1e84aa1d693b3109e3f4, type: 3}
-  - {fileID: 1704629159, guid: 5d34644fb6cd1e84aa1d693b3109e3f4, type: 3}
-  - {fileID: 1653347585, guid: 5d34644fb6cd1e84aa1d693b3109e3f4, type: 3}
-  - {fileID: -492213964, guid: 5d34644fb6cd1e84aa1d693b3109e3f4, type: 3}
-  - {fileID: 951850809, guid: 5d34644fb6cd1e84aa1d693b3109e3f4, type: 3}
-  - {fileID: -172995181, guid: 5d34644fb6cd1e84aa1d693b3109e3f4, type: 3}
-  - {fileID: -492213964, guid: 5d34644fb6cd1e84aa1d693b3109e3f4, type: 3}
-  - {fileID: 1704629159, guid: 5d34644fb6cd1e84aa1d693b3109e3f4, type: 3}
+  - {fileID: -1405097609, guid: 9f2204656e1e15e4daf7e7dbf57edd01, type: 3}
+  - {fileID: -444047997, guid: 9f2204656e1e15e4daf7e7dbf57edd01, type: 3}
+  - {fileID: 1515964787, guid: 9f2204656e1e15e4daf7e7dbf57edd01, type: 3}
+  - {fileID: 1173771297, guid: 9f2204656e1e15e4daf7e7dbf57edd01, type: 3}
+  - {fileID: 79138688, guid: 9f2204656e1e15e4daf7e7dbf57edd01, type: 3}
+  - {fileID: 1397200927, guid: 9f2204656e1e15e4daf7e7dbf57edd01, type: 3}
   digFrameRate: 32
 --- !u!114 &813604509
 MonoBehaviour:
