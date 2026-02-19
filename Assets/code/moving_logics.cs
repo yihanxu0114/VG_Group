@@ -7,10 +7,13 @@ public class moving_logic : MonoBehaviour
     public float moveSpeed = 6f;
     public float jumpSpeed = 12f;
 
+    [Header("Status")]
+    public float stunTimer = 0f;
+
     [Header("Digging Settings")]
-    public float defaultDigDuration = 0.5f; // digTime is the time it takes to dig through a block without a BlockHardness component. If a block has BlockHardness, we will use that value instead.
+    public float defaultDigDuration = 0.5f;
     public float digDistance = 1.2f;
-    public LayerMask obstacleMask;       
+    public LayerMask obstacleMask;
 
     [Header("References")]
     public Rigidbody2D rb;
@@ -41,6 +44,12 @@ public class moving_logic : MonoBehaviour
 
     void Update()
     {
+        if (stunTimer > 0)
+        {
+            stunTimer -= Time.deltaTime;
+            return;
+        }
+
         if (isDiggingAction)
         {
             rb.velocity = Vector2.zero;
@@ -66,7 +75,6 @@ public class moving_logic : MonoBehaviour
             return;
         }
 
-        // Movement (WASD)
         float x = 0f;
         if (Input.GetKey(KeyCode.A)) x = -1f;
         if (Input.GetKey(KeyCode.D)) x = 1f;
@@ -98,61 +106,49 @@ public class moving_logic : MonoBehaviour
 
     IEnumerator DigRoutine(Vector2 dir, bool isDown)
     {
-        isDiggingAction = true; // Lock movement input
+        isDiggingAction = true;
 
-        // 1. Raycast to detect obstacles
         RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, digDistance, obstacleMask);
 
-        // 2. Calculate digging duration based on block hardness
         float actualWaitTime = defaultDigDuration;
-        bool targetIsUndiggable = false; // Flag: is the target impossible to dig?
+        bool targetIsUndiggable = false;
 
         if (hit.collider != null)
         {
             BlockHardness hardness = hit.collider.GetComponent<BlockHardness>();
             if (hardness != null)
             {
-                actualWaitTime = hardness.digTime; // Get custom dig time
-                targetIsUndiggable = hardness.isUndiggable; // Check if this block is undiggable
+                actualWaitTime = hardness.digTime;
+                targetIsUndiggable = hardness.isUndiggable;
             }
         }
 
-        // 3. [ANIMATION] Start the digging animation regardless of block type
-        // This allows the player to swing at rocks without them breaking
         if (animScript != null) animScript.SetDigging(true, isDown);
 
-        // 4. Wait for the animation to play (simulate the effort of digging)
         yield return new WaitForSeconds(actualWaitTime);
 
-        // 5. Time's up! Decide whether to destroy the block
         if (hit.collider != null)
         {
-            // If it is marked as undiggable (like your Rock)
             if (targetIsUndiggable)
             {
-                // Do nothing to the GameObject.
                 Debug.Log("It's a rock! The pickaxe did nothing.");
             }
             else
             {
-                // before destroying the block, check if it's a valuable block (like Gold/Diamond). If it is, give the player the corresponding item.
                 ValuableBlock valuable = hit.collider.GetComponent<ValuableBlock>();
                 if (valuable != null)
                 {
-                    // find the PlayerInventory component and give the player the item
                     PlayerInventory inventory = GetComponent<PlayerInventory>();
                     if (inventory != null)
                     {
                         inventory.CollectItem(valuable.blockType);
                     }
                 }
-                // If it's a normal block (Dirt/Gold/Diamond), destroy it.
                 Destroy(hit.collider.gameObject);
                 Debug.Log("Digging successful!");
             }
         }
 
-        // 6. Stop the animation and unlock movement
         if (animScript != null) animScript.SetDigging(false, isDown);
         isDiggingAction = false;
     }
