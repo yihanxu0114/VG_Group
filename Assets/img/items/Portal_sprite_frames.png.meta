@@ -43,7 +43,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -134,7 +134,133 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Portal_sprite_frames_0
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 130
+        width: 562
+        height: 589
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 699abe161c073f94bb2bfba125b880e2
+      internalID: -168618342
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Portal_sprite_frames_1
+      rect:
+        serializedVersion: 2
+        x: 666
+        y: 130
+        width: 560
+        height: 589
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 04c1852c2374bf343905fd1d5306cbfc
+      internalID: 1845940784
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Portal_sprite_frames_2
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 130
+        width: 562
+        height: 589
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b477a04b64c750b4fa1a83aafbe310d4
+      internalID: -1384865235
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Portal_sprite_frames_3
+      rect:
+        serializedVersion: 2
+        x: 1882
+        y: 130
+        width: 563
+        height: 589
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d8de9353123ef2443aac417977770e6f
+      internalID: 1142250296
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Portal_sprite_frames_4
+      rect:
+        serializedVersion: 2
+        x: 2482
+        y: 130
+        width: 563
+        height: 589
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 53248f28fa2b41841a5c4cc7c8d744aa
+      internalID: 171758967
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Portal_sprite_frames_5
+      rect:
+        serializedVersion: 2
+        x: 3079
+        y: 131
+        width: 562
+        height: 588
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 735953132d019af4e96eec5a84ce70f9
+      internalID: 901812439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -145,7 +271,13 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Portal_sprite_frames_0: -168618342
+      Portal_sprite_frames_1: 1845940784
+      Portal_sprite_frames_2: -1384865235
+      Portal_sprite_frames_3: 1142250296
+      Portal_sprite_frames_4: 171758967
+      Portal_sprite_frames_5: 901812439
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
