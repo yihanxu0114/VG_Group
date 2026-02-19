@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class PlayerInventory : MonoBehaviour
 {
@@ -12,8 +13,17 @@ public class PlayerInventory : MonoBehaviour
 
     public TextMeshProUGUI moneyText; // MoneyText
 
+    public int winMoney = 200;         
+    public GameObject winPanel;         
+    public AudioSource sfxSource;       
+    public AudioClip winClip;           
+    public string mainMenuSceneName = "MainMenu"; 
+
+    private bool hasWon = false;
+
     void Start()
     {
+        if (winPanel != null) winPanel.SetActive(false);
         UpdateUI();
     }
 
@@ -33,6 +43,7 @@ public class PlayerInventory : MonoBehaviour
             goldFragments = 0;
             diamondFragments = 0;
             UpdateUI();
+            CheckWin();
         }
     }
 
@@ -42,5 +53,33 @@ public class PlayerInventory : MonoBehaviour
         {
             moneyText.text = "$ " + money.ToString();
         }
+    }
+
+    void CheckWin()
+    {
+        if (hasWon) return;
+        if (money < winMoney) return;
+
+        hasWon = true;
+        Debug.Log("YOU WIN!");
+
+        if (winPanel != null) winPanel.SetActive(true);
+
+        if (sfxSource != null && winClip != null)
+            sfxSource.PlayOneShot(winClip);
+
+        Time.timeScale = 0f;
+    }
+
+    public void RestartLevel()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void GoToMainMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(mainMenuSceneName);
     }
 }
