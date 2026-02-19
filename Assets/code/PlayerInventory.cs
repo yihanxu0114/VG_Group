@@ -33,6 +33,29 @@ public class PlayerInventory : MonoBehaviour
         else if (type == ValuableBlock.Type.Diamond) diamondFragments++;
 
     }
+    public void SellOneItem(ValuableBlock.Type type)
+    {
+        if (type == ValuableBlock.Type.Gold)
+        {
+            if (goldFragments > 0)
+            {
+                goldFragments--;
+                money += goldPrice;
+                Debug.Log("Sell one gold£¡");
+            }
+        }
+        else if (type == ValuableBlock.Type.Diamond)
+        {
+            if (diamondFragments > 0)
+            {
+                diamondFragments--;
+                money += diamondPrice;
+                Debug.Log("Sell one diamond£¡");
+            }
+        }
+
+        UpdateUI(); 
+    }
     public void SellAllItems()
     {
         Debug.Log("[SellAllItems] called");
