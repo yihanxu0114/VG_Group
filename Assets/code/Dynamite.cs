@@ -16,6 +16,7 @@ public class Dynamite : MonoBehaviour
 
     [Header("Damage Settings")]
     public int playerDamage = 20;
+    public int enemyDamage = 20;
 
     private bool exploded = false;
 
@@ -58,6 +59,7 @@ public class Dynamite : MonoBehaviour
             animator.frameRate = frameRate;
         }
 
+        // 2. damage and destroy
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, radius);
 
         foreach (var hit in hits)
@@ -79,6 +81,12 @@ public class Dynamite : MonoBehaviour
             if (player != null)
             {
                 player.TakeDamage(playerDamage);
+            }
+
+            EnemyHealth enemy = hit.GetComponent<EnemyHealth>();
+            if (enemy != null)
+            {
+                enemy.TakeDamage(enemyDamage);
             }
         }
 

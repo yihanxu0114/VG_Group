@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 6704220983514905630}
   - component: {fileID: 6371569356466240261}
   - component: {fileID: 6161712449466256049}
-  m_Layer: 0
+  - component: {fileID: -8622601918399733468}
+  m_Layer: 8
   m_Name: Enemy_Slime
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -202,3 +203,16 @@ MonoBehaviour:
   damageAmount: 10
   knockbackForceX: 10
   knockbackForceY: 5
+--- !u!114 &-8622601918399733468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7849274986493425146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c022957f9d23e0b44af40fef88950e76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 20
