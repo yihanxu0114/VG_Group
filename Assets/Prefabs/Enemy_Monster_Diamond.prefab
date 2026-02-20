@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 6701380747077871265}
   - component: {fileID: 6311719779722784348}
   - component: {fileID: 8800432107433451478}
-  m_Layer: 0
+  - component: {fileID: -8236703646979082852}
+  m_Layer: 8
   m_Name: Enemy_Monster_Diamond
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -191,3 +192,16 @@ MonoBehaviour:
   knockbackForceY: 5
   attackRange: 4
   damageFrame: 6
+--- !u!114 &-8236703646979082852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8008655588575976585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c022957f9d23e0b44af40fef88950e76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 150
