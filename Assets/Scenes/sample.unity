@@ -32496,7 +32496,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 6
-  jumpSpeed: 7
+  jumpSpeed: 10
   defaultDigDuration: 0.5
   digDistance: 1.2
   obstacleMask:

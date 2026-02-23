@@ -27,9 +27,14 @@ public class moving_logic : MonoBehaviour
 
     RaycastHit2D[] hitBuffer = new RaycastHit2D[4];
     ContactFilter2D filter;
+    [Header("No-collision at spawn")]
+    public float noCollisionTime = 0.3f;
 
+    private Collider2D bombCol;
+    private Collider2D playerCol;
     void Awake()
     {
+        bombCol = GetComponent<Collider2D>();
         if (rb == null) rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
         animScript = GetComponent<Sprite_left_right_shift>();
@@ -161,5 +166,22 @@ public class moving_logic : MonoBehaviour
     {
         if (col == null) return false;
         return col.Cast(Vector2.down, filter, hitBuffer, groundDistance) > 0;
+    }
+ 
+
+    void Start()
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null) playerCol = player.GetComponent<Collider2D>();
+
+        if (bombCol != null && playerCol != null)
+            StartCoroutine(TempIgnorePlayerCollision());
+    }
+
+    IEnumerator TempIgnorePlayerCollision()
+    {
+        Physics2D.IgnoreCollision(bombCol, playerCol, true);
+        yield return new WaitForSeconds(noCollisionTime);
+        Physics2D.IgnoreCollision(bombCol, playerCol, false);
     }
 }
