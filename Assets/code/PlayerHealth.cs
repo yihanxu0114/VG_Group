@@ -1,13 +1,17 @@
 using UnityEngine;
 using UnityEngine.SceneManagement; // restart game
+using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
     [Header("Health Settings")]
-    public int maxHealth = 1;     // maximum health
+    public int maxHealth = 100;     // maximum health
     private int currentHealth;
 
-    public bool isDead = false;   
+    public bool isDead = false;
+
+    [Header("UI References")]
+    public Image healthFill;
 
     private moving_logic moveScript;      
     private SpriteRenderer sr;             
@@ -17,6 +21,7 @@ public class PlayerHealth : MonoBehaviour
         currentHealth = maxHealth;
         moveScript = GetComponent<moving_logic>();
         sr = GetComponent<SpriteRenderer>();
+        UpdateHealthUI();
     }
 
     void Update()
@@ -37,12 +42,29 @@ public class PlayerHealth : MonoBehaviour
         currentHealth -= damage;
         Debug.Log($"current HP: {currentHealth}");
 
+        if (currentHealth < 0)
+        {
+            currentHealth = 0;
+        }
+
+        Debug.Log($"current HP: {currentHealth}");
+
+        UpdateHealthUI();
+
         if (sr != null) sr.color = Color.red;
         Invoke("ResetColor", 0.2f); 
 
         if (currentHealth <= 0)
         {
             Die();
+        }
+    }
+
+    void UpdateHealthUI()
+    {
+        if (healthFill != null)
+        {
+            healthFill.fillAmount = (float)currentHealth / maxHealth;
         }
     }
 
