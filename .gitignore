@@ -97,3 +97,16 @@ ServerData
 
 # Auto-generated scenes by play mode tests
 [Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+
+# macOS 
+.DS_Store
+**/.DS_Store
+.AppleDouble
+.LSOverride
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# JetBrains / IDEA (Rider, WebStorm 
+.idea/

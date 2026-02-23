@@ -1,7 +1,13 @@
+using System.Collections;
 using UnityEngine;
 
 public class Dynamite : MonoBehaviour
 {
+    [Header("Spawn No Collision")]
+    public float noCollisionTime = 0.7f;
+
+    private Collider2D[] myCols;
+
     [Header("Fuse")]
     public float fuseTime = 1.2f;
 
@@ -14,14 +20,40 @@ public class Dynamite : MonoBehaviour
     public float frameRate = 12f;
     public Vector3 explosionScale = Vector3.one;
 
-    [Header("Damage Settings")]
-    public int playerDamage = 20;
-
     private bool exploded = false;
+
+    void Awake()
+    {
+        myCols = GetComponentsInChildren<Collider2D>(true);
+    }
 
     void Start()
     {
         Invoke(nameof(Explode), fuseTime);
+    }
+
+    // ⭐ GearManager 会调用这个
+    public void InitIgnorePlayer(Collider2D[] playerCols, float seconds)
+    {
+        if (playerCols == null || playerCols.Length == 0) return;
+        if (myCols == null || myCols.Length == 0) return;
+
+        StartCoroutine(IgnoreRoutine(playerCols, seconds));
+    }
+
+    private IEnumerator IgnoreRoutine(Collider2D[] playerCols, float seconds)
+    {
+        foreach (var mc in myCols)
+            foreach (var pc in playerCols)
+                if (mc != null && pc != null)
+                    Physics2D.IgnoreCollision(mc, pc, true);
+
+        yield return new WaitForSeconds(seconds);
+
+        foreach (var mc in myCols)
+            foreach (var pc in playerCols)
+                if (mc != null && pc != null)
+                    Physics2D.IgnoreCollision(mc, pc, false);
     }
 
     private void Explode()
@@ -29,12 +61,8 @@ public class Dynamite : MonoBehaviour
         if (exploded) return;
         exploded = true;
 
-        // 1. boom anim 
-        if (explosionFrames == null || explosionFrames.Length == 0)
-        {
-            Debug.LogError("No explosion frames assigned.");
-        }
-        else
+        // ===== explosion animation =====
+        if (explosionFrames != null && explosionFrames.Length > 0)
         {
             GameObject explosion = new GameObject("Explosion");
             explosion.transform.position = transform.position;
@@ -48,38 +76,26 @@ public class Dynamite : MonoBehaviour
                 sr.sortingLayerName = mySr.sortingLayerName;
                 sr.sortingOrder = mySr.sortingOrder + 10;
             }
-            else
-            {
-                sr.sortingOrder = 100;
-            }
+            else sr.sortingOrder = 100;
 
             ExplosionAnimator animator = explosion.AddComponent<ExplosionAnimator>();
             animator.frames = explosionFrames;
             animator.frameRate = frameRate;
         }
 
+        // ===== damage / destroy =====
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, radius);
 
         foreach (var hit in hits)
         {
             Portal p = hit.GetComponent<Portal>();
-            if (p != null)
-            {
-                Destroy(p.gameObject);
-                continue;
-            }
+            if (p != null) { Destroy(p.gameObject); continue; }
 
             BlockDynamite b = hit.GetComponent<BlockDynamite>();
-            if (b != null)
-            {
-                b.Break();
-            }
+            if (b != null) b.Break();
 
             PlayerHealth player = hit.GetComponent<PlayerHealth>();
-            if (player != null)
-            {
-                player.TakeDamage(playerDamage);
-            }
+            if (player != null) player.TakeDamage(1);
         }
 
         Destroy(gameObject);
