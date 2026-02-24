@@ -21,9 +21,8 @@ public class ParallaxBackground : MonoBehaviour
     {
         Vector3 delta = cameraTransform.position - lastCameraPos;
 
-        // 在这里分别应用 X 和 Y 的倍率
-        // 如果 Y 想正常随相机移动，Inspector 里把 Y 设为 1 即可
-        transform.position -= new Vector3(
+        // ✅ 方向反转（由 -= 改为 +=）
+        transform.position += new Vector3(
             delta.x * parallaxEffectMultiplier.x, 
             delta.y * parallaxEffectMultiplier.y, 
             0
