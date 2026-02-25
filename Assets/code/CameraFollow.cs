@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    [Header("地图世界坐标边界")]
+    [Header("set the boundaries of the camera movement")]
     public float minX;
     public float maxX;
     public float minY;
