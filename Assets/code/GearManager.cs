@@ -45,28 +45,57 @@ public class GearManager : MonoBehaviour
         }
     }
 
-    // ===== Inventory-backed bomb count (teammate logic kept) =====
+    // ===== Inventory-backed bomb count (no dynamic) =====
 
     public bool AddDynamite(int amount)
     {
-        if (amount <= 0 || _inv == null) return false;
+        if (amount <= 0 || _inv == null || _inv.myItems == null) return false;
 
-        var item = FindBombItem();
-        if (item == null) return false;
-
-        int before = item.count;
-        item.count = Mathf.Clamp(item.count + amount, 0, dynamiteMaxCount);
-        if (item.count != before) _inv.UpdateUI();
-        return item.count > before;
+        foreach (var item in _inv.myItems)
+        {
+            if (item != null && item.itemName == "Bomb")
+            {
+                int before = item.count;
+                item.count = Mathf.Clamp(item.count + amount, 0, dynamiteMaxCount);
+                if (item.count != before) _inv.UpdateUI();
+                return item.count > before;
+            }
+        }
+        return false;
     }
 
     public int GetDynamiteCount()
     {
-        var item = FindBombItem();
-        return item != null ? item.count : 0;
+        if (_inv == null || _inv.myItems == null) return 0;
+
+        foreach (var item in _inv.myItems)
+        {
+            if (item != null && item.itemName == "Bomb")
+                return item.count;
+        }
+        return 0;
     }
 
-    public bool CanPlaceDynamite() => GetDynamiteCount() > 0 && Time.time >= _nextDynamiteTime;
+    public bool CanPlaceDynamite()
+    {
+        return GetDynamiteCount() > 0 && Time.time >= _nextDynamiteTime;
+    }
+
+    private bool TryConsumeBomb(int amount = 1)
+    {
+        if (_inv == null || _inv.myItems == null) return false;
+
+        foreach (var item in _inv.myItems)
+        {
+            if (item != null && item.itemName == "Bomb" && item.count >= amount)
+            {
+                item.count -= amount;
+                _inv.UpdateUI();
+                return true;
+            }
+        }
+        return false;
+    }
 
     private void PlaceBomb(Dynamite prefab)
     {
@@ -82,12 +111,7 @@ public class GearManager : MonoBehaviour
             return;
         }
 
-        var item = FindBombItem();
-        if (item == null || item.count <= 0) return;
-
-        // consume one bomb
-        item.count--;
-        _inv.UpdateUI();
+        if (!TryConsumeBomb(1)) return;
 
         float facing = (_sr != null && _sr.flipX) ? -1f : 1f;
         Vector3 spawnPos =
@@ -118,18 +142,5 @@ public class GearManager : MonoBehaviour
         }
 
         Instantiate(portalPrefab, transform.position + Vector3.up * portalOffset, Quaternion.identity);
-    }
-
-    // Helper: locate the "Bomb" item in inventory
-    private dynamic FindBombItem()
-    {
-        if (_inv == null || _inv.myItems == null) return null;
-
-        foreach (var item in _inv.myItems)
-        {
-            if (item != null && item.itemName == "Bomb")
-                return item;
-        }
-        return null;
     }
 }
