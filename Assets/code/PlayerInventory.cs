@@ -1,6 +1,17 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
+
+[System.Serializable]
+public class ShopItemData
+{
+    public string itemName;     
+    public int count = 0;          
+    public int price;
+    public GameObject inventorySlotObj;
+    public TextMeshProUGUI uiText;  
+}
 
 public class PlayerInventory : MonoBehaviour
 {
@@ -10,14 +21,16 @@ public class PlayerInventory : MonoBehaviour
 
     public int goldPrice = 50;
     public int diamondPrice = 100;
+    public TextMeshProUGUI moneyText;
 
-    public TextMeshProUGUI moneyText; // MoneyText
+    [Header("Shop & Inventory")]
+    public List<ShopItemData> myItems = new List<ShopItemData>();
 
-    public int winMoney = 150;         
-    public GameObject winPanel;         
-    public AudioSource sfxSource;       
-    public AudioClip winClip;           
-    public string mainMenuSceneName = "MainMenu"; 
+    public int winMoney = 150;
+    public GameObject winPanel;
+    public AudioSource sfxSource;
+    public AudioClip winClip;
+    public string mainMenuSceneName = "MainMenu";
 
     private bool hasWon = false;
 
@@ -31,37 +44,27 @@ public class PlayerInventory : MonoBehaviour
     {
         if (type == ValuableBlock.Type.Gold) goldFragments++;
         else if (type == ValuableBlock.Type.Diamond) diamondFragments++;
-
     }
+
     public void SellOneItem(ValuableBlock.Type type)
     {
-        if (type == ValuableBlock.Type.Gold)
+        if (type == ValuableBlock.Type.Gold && goldFragments > 0)
         {
-            if (goldFragments > 0)
-            {
-                goldFragments--;
-                money += goldPrice;
-                Debug.Log("Sell one gold��");
-            }
+            goldFragments--;
+            money += goldPrice;
         }
-        else if (type == ValuableBlock.Type.Diamond)
+        else if (type == ValuableBlock.Type.Diamond && diamondFragments > 0)
         {
-            if (diamondFragments > 0)
-            {
-                diamondFragments--;
-                money += diamondPrice;
-                Debug.Log("Sell one diamond��");
-            }
+            diamondFragments--;
+            money += diamondPrice;
         }
-
-        UpdateUI(); 
+        UpdateUI();
         CheckWin();
     }
+
     public void SellAllItems()
     {
-        Debug.Log("[SellAllItems] called");
         int earnings = (goldFragments * goldPrice) + (diamondFragments * diamondPrice);
-
         if (earnings > 0)
         {
             money += earnings;
@@ -72,11 +75,50 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
-    void UpdateUI()
+    public bool BuyItem(string targetItemName)
     {
-        if (moneyText != null)
+        foreach (var item in myItems)
         {
-            moneyText.text = "$ " + money.ToString();
+            if (item.itemName == targetItemName)
+            {
+                if (money >= item.price)
+                {
+                    money -= item.price; 
+                    item.count++;     
+                    UpdateUI();         
+                    Debug.Log($"Buy {targetItemName} successfully！current：{item.count}");
+                    return true;
+                }
+                else
+                {
+                    Debug.Log($"don't have enough money {targetItemName}！");
+                    return false;
+                }
+            }
+        }
+
+        Debug.LogError($"Error：Bag system doesn't have {targetItemName} ！");
+        return false;
+    }
+
+    public void UpdateUI()
+    {
+        if (moneyText != null) moneyText.text = "$ " + money.ToString();
+
+        foreach (var item in myItems)
+        {
+            if (item.inventorySlotObj != null)
+            {
+                if (item.count > 0)
+                {
+                    item.inventorySlotObj.SetActive(true);
+                    if (item.uiText != null) item.uiText.text = "x" + item.count.ToString();
+                }
+                else
+                {
+                    item.inventorySlotObj.SetActive(false);
+                }
+            }
         }
     }
 
@@ -86,13 +128,8 @@ public class PlayerInventory : MonoBehaviour
         if (money < winMoney) return;
 
         hasWon = true;
-        Debug.Log("YOU WIN!");
-
         if (winPanel != null) winPanel.SetActive(true);
-
-        if (sfxSource != null && winClip != null)
-            sfxSource.PlayOneShot(winClip);
-
+        if (sfxSource != null && winClip != null) sfxSource.PlayOneShot(winClip);
         Time.timeScale = 0f;
     }
 

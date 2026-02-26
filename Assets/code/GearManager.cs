@@ -15,15 +15,17 @@ public class GearManager : MonoBehaviour
 
     [Header("Dynamite Limits")]
     public int dynamiteMaxCount = 30;
-    public int dynamiteCount = 15;
     public float dynamitePlaceCooldown = 0.8f;
 
     private float _nextDynamiteTime = 0f;
     private SpriteRenderer _sr;
 
+    private PlayerInventory _inv;
+
     private void Awake()
     {
         _sr = GetComponentInChildren<SpriteRenderer>();
+        _inv = GetComponent<PlayerInventory>();
     }
 
     public void UseCurrentGear(int slot)
@@ -37,17 +39,34 @@ public class GearManager : MonoBehaviour
         }
     }
 
-    // store interface
     public bool AddDynamite(int amount)
     {
-        if (amount <= 0) return false;
-        int before = dynamiteCount;
-        dynamiteCount = Mathf.Clamp(dynamiteCount + amount, 0, dynamiteMaxCount);
-        return dynamiteCount > before;
+        if (amount <= 0 || _inv == null) return false;
+        foreach (var item in _inv.myItems)
+        {
+            if (item.itemName == "Bomb")
+            {
+                item.count = Mathf.Clamp(item.count + amount, 0, dynamiteMaxCount);
+                _inv.UpdateUI();
+                return true;
+            }
+        }
+        return false;
     }
-    
-    public int GetDynamiteCount() => dynamiteCount;
-    public bool CanPlaceDynamite() => dynamiteCount > 0 && Time.time >= _nextDynamiteTime;
+
+    public int GetDynamiteCount()
+    {
+        if (_inv != null)
+        {
+            foreach (var item in _inv.myItems)
+            {
+                if (item.itemName == "Bomb") return item.count;
+            }
+        }
+        return 0;
+    }
+
+    public bool CanPlaceDynamite() => GetDynamiteCount() > 0 && Time.time >= _nextDynamiteTime;
 
     private void PlaceDynamite()
     {
@@ -57,18 +76,28 @@ public class GearManager : MonoBehaviour
             return;
         }
 
-        if (dynamiteCount <= 0)
+        if (!CanPlaceDynamite())
         {
-            Debug.Log("No dynamite left. Buy more in shop.");
+            Debug.Log("bomb is in cooling or you don't have bomb£¡");
             return;
         }
 
-        if (Time.time < _nextDynamiteTime)
+        bool consumeSuccess = false;
+        if (_inv != null)
         {
-            float remain = _nextDynamiteTime - Time.time;
-            Debug.Log($"Dynamite cooldown: {remain:F2}s");
-            return;
+            foreach (var item in _inv.myItems)
+            {
+                if (item.itemName == "Bomb" && item.count > 0)
+                {
+                    item.count--;    
+                    _inv.UpdateUI();   
+                    consumeSuccess = true;
+                    break;
+                }
+            }
         }
+
+        if (!consumeSuccess) return;
 
         float facing = (_sr != null && _sr.flipX) ? -1f : 1f;
         Vector3 spawnPos =
@@ -81,8 +110,6 @@ public class GearManager : MonoBehaviour
         Collider2D[] playerCols = GetComponentsInChildren<Collider2D>(true);
         dyn.InitIgnorePlayer(playerCols, dyn.noCollisionTime);
 
-
-        dynamiteCount--;
         _nextDynamiteTime = Time.time + dynamitePlaceCooldown;
     }
 
