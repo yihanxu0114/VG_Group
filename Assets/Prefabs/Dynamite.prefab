@@ -99,11 +99,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 947cc192265e04c238b62ce1352333e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  noCollisionTime: 0.3
+  damage: 5
   fuseTime: 3
   radius: 2
   obstacleMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 1345
   explosionFrames:
   - {fileID: 906184241, guid: b2ba0c15f12debc40bd37e7a0f3ed9e8, type: 3}
   - {fileID: 341314747, guid: b2ba0c15f12debc40bd37e7a0f3ed9e8, type: 3}
@@ -117,9 +119,7 @@ MonoBehaviour:
   - {fileID: 369722284, guid: b2ba0c15f12debc40bd37e7a0f3ed9e8, type: 3}
   - {fileID: -372862901, guid: b2ba0c15f12debc40bd37e7a0f3ed9e8, type: 3}
   frameRate: 24
-  explosionScale: {x: 0.15, y: 0.15, z: 1}
-  playerDamage: 20
-  enemyDamage: 20
+  explosionScale: {x: 0.2, y: 0.2, z: 1}
 --- !u!50 &438479133365191113
 Rigidbody2D:
   serializedVersion: 4

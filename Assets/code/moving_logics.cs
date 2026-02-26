@@ -149,8 +149,15 @@ public class moving_logic : MonoBehaviour
                         inventory.CollectItem(valuable.blockType);
                     }
                 }
-                Destroy(hit.collider.gameObject);
-                Debug.Log("Digging successful!");
+                if (hit.collider.GetComponent<Portal>() != null)
+                {
+                    Debug.Log("Portal cannot be dug.");
+                }
+                else
+                {
+                    Destroy(hit.collider.gameObject);
+                    Debug.Log("Digging successful!");
+                }
             }
         }
 

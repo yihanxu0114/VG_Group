@@ -8,6 +8,11 @@ public class GearManager : MonoBehaviour
     [Header("Slot 2 - Portal")]
     public Portal portalPrefab;
 
+    [Header("Slot 3-5 - Extra Bombs")]
+    public Dynamite bombSlot3;
+    public Dynamite bombSlot4;
+    public Dynamite bombSlot5;
+
     [Header("Placement Offsets")]
     public float dynamiteForwardOffset = 1.0f;
     public float dynamiteUpOffset = 0.2f;
@@ -30,14 +35,15 @@ public class GearManager : MonoBehaviour
     {
         switch (slot)
         {
-            case 1: PlaceDynamite(); break;
+            case 1: PlaceBomb(dynamitePrefab); break;
             case 2: PlacePortal(); break;
-            case 3: Debug.Log("Use Gear 3"); break;
-            case 4: Debug.Log("Use Gear 4"); break;
+            case 3: PlaceBomb(bombSlot3); break;
+            case 4: PlaceBomb(bombSlot4); break;
+            case 5: PlaceBomb(bombSlot5); break;
+            default: Debug.Log($"No gear assigned for slot {slot}"); break;
         }
     }
 
-    // store interface
     public bool AddDynamite(int amount)
     {
         if (amount <= 0) return false;
@@ -45,15 +51,15 @@ public class GearManager : MonoBehaviour
         dynamiteCount = Mathf.Clamp(dynamiteCount + amount, 0, dynamiteMaxCount);
         return dynamiteCount > before;
     }
-    
+
     public int GetDynamiteCount() => dynamiteCount;
     public bool CanPlaceDynamite() => dynamiteCount > 0 && Time.time >= _nextDynamiteTime;
 
-    private void PlaceDynamite()
+    private void PlaceBomb(Dynamite prefab)
     {
-        if (dynamitePrefab == null)
+        if (prefab == null)
         {
-            Debug.LogWarning("GearManager: dynamitePrefab not assigned!");
+            Debug.LogWarning("GearManager: bomb prefab not assigned for this slot!");
             return;
         }
 
@@ -76,11 +82,10 @@ public class GearManager : MonoBehaviour
             Vector3.right * (facing * dynamiteForwardOffset) +
             Vector3.up * dynamiteUpOffset;
 
-        Dynamite dyn = Instantiate(dynamitePrefab, spawnPos, Quaternion.identity);
+        Dynamite dyn = Instantiate(prefab, spawnPos, Quaternion.identity);
 
         Collider2D[] playerCols = GetComponentsInChildren<Collider2D>(true);
         dyn.InitIgnorePlayer(playerCols, dyn.noCollisionTime);
-
 
         dynamiteCount--;
         _nextDynamiteTime = Time.time + dynamitePlaceCooldown;

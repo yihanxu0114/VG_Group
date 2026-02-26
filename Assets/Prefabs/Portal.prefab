@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2670809776711508493}
   - component: {fileID: -608670771228248129}
   - component: {fileID: 7568690292287590748}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: Portal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -239,7 +239,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5, y: 0.2}
+  m_Size: {x: 5.5, y: 0.1}
   m_EdgeRadius: 0
 --- !u!1 &3275569272905533727
 GameObject:
@@ -250,7 +250,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 428898564592799105}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: ExitPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}

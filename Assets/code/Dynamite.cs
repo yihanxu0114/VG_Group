@@ -5,7 +5,7 @@ public class Dynamite : MonoBehaviour
 {
     [Header("Spawn No Collision")]
     public float noCollisionTime = 0.7f;
-
+    public int damage = 1;
     private Collider2D[] myCols;
 
     [Header("Fuse")]
@@ -32,7 +32,7 @@ public class Dynamite : MonoBehaviour
         Invoke(nameof(Explode), fuseTime);
     }
 
-    // ⭐ GearManager 会调用这个
+ 
     public void InitIgnorePlayer(Collider2D[] playerCols, float seconds)
     {
         if (playerCols == null || playerCols.Length == 0) return;
@@ -84,7 +84,7 @@ public class Dynamite : MonoBehaviour
         }
 
         // ===== damage / destroy =====
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, radius);
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, radius, obstacleMask);
 
         foreach (var hit in hits)
         {
@@ -94,8 +94,11 @@ public class Dynamite : MonoBehaviour
             BlockDynamite b = hit.GetComponent<BlockDynamite>();
             if (b != null) b.Break();
 
-            PlayerHealth player = hit.GetComponent<PlayerHealth>();
-            if (player != null) player.TakeDamage(1);
+            PlayerHealth player = hit.GetComponentInParent<PlayerHealth>();
+            if (player != null) player.TakeDamage(damage);
+
+            EnemyHealth enemy = hit.GetComponentInParent<EnemyHealth>();
+            if (enemy != null) enemy.TakeDamage(damage);
         }
 
         Destroy(gameObject);
