@@ -111,4 +111,16 @@ public class Shop : MonoBehaviour
             diamondItemObj.SetActive(false);
         }
     }
+
+    public void OnBuyItemClick(string itemName)
+    {
+        if (currentPlayer != null)
+        {
+            bool success = currentPlayer.BuyItem(itemName);
+            if (success)
+            {
+                Debug.Log($"Store£ºSell Successfully {itemName}£¡");
+            }
+        }
+    }
 }
