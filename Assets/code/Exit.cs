@@ -10,7 +10,7 @@ public class PauseMenuController : MonoBehaviour
     public Button resumeButton;
     public Button exitButton;
 
-    public MonoBehaviour playerController; // ✅ NEW：拖 moving_logic 脚本进来
+    public MonoBehaviour playerController; 
 
     private bool isPaused = false;
     private int selectedIndex = 0;
@@ -74,7 +74,7 @@ public class PauseMenuController : MonoBehaviour
     {
         isPaused = true;
 
-        if (playerController != null) playerController.enabled = false; // ✅ NEW：暂停时禁用玩家输入脚本
+        if (playerController != null) playerController.enabled = false; 
 
         Time.timeScale = 0f;
 
@@ -90,7 +90,7 @@ public class PauseMenuController : MonoBehaviour
         SelectButton(selectedIndex);
     }
 
-    IEnumerator EnablePlayerNextFrame() // ✅ NEW：恢复后一帧再启用，避免吞掉 Space/W
+    IEnumerator EnablePlayerNextFrame() 
     {
         yield return null;
         if (playerController != null) playerController.enabled = true;
@@ -106,20 +106,16 @@ public class PauseMenuController : MonoBehaviour
         if (EventSystem.current != null)
             EventSystem.current.SetSelectedGameObject(null);
 
-        StartCoroutine(EnablePlayerNextFrame()); // ✅ NEW
+        StartCoroutine(EnablePlayerNextFrame()); 
     }
 
     public void QuitGame()
 {
-    // 1. 必须先恢复时间轴，否则主界面也会卡死不动
     Time.timeScale = 1f;
 
-    // 2. 如果是在编辑器里，依然保持退出功能
 #if UNITY_EDITOR
     UnityEditor.EditorApplication.isPlaying = false;
 #else
-    // 3. 在 WebGL 或发布版中，加载主菜单场景 (假设名字叫 "MainMenu")
-    // 请确保 "MainMenu" 已经在 Build Settings 的列表里
     SceneManager.LoadScene("MainMenu"); 
 #endif
 }
