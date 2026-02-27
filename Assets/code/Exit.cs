@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class PauseMenuController : MonoBehaviour
 {
@@ -109,11 +110,17 @@ public class PauseMenuController : MonoBehaviour
     }
 
     public void QuitGame()
-    {
+{
+    // 1. 必须先恢复时间轴，否则主界面也会卡死不动
+    Time.timeScale = 1f;
+
+    // 2. 如果是在编辑器里，依然保持退出功能
 #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
+    UnityEditor.EditorApplication.isPlaying = false;
 #else
-        Application.Quit();
+    // 3. 在 WebGL 或发布版中，加载主菜单场景 (假设名字叫 "MainMenu")
+    // 请确保 "MainMenu" 已经在 Build Settings 的列表里
+    SceneManager.LoadScene("MainMenu"); 
 #endif
-    }
+}
 }
