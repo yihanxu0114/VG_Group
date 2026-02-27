@@ -150,8 +150,6 @@ public class Sprite_left_right_shift : MonoBehaviour
 
     public void SetFacing(float x)
     {
-        if (isDigging) return;
-
         if (Mathf.Abs(x) > deadzone)
         {
             isWalking = true;
@@ -164,7 +162,7 @@ public class Sprite_left_right_shift : MonoBehaviour
         else
         {
             isWalking = false;
-            if (!isJumping && !isUsingJetpack)
+            if (!isJumping && !isUsingJetpack && !isDigging)
             {
                 sr.sprite = rightDavid;
             }

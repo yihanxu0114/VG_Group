@@ -11,7 +11,6 @@ public class moving_logic : MonoBehaviour
     public float stunTimer = 0f;
 
     [Header("Digging Settings")]
-    public float defaultDigDuration = 0.5f;
     public float digDistance = 1.2f;
     public LayerMask obstacleMask;
 
@@ -26,15 +25,18 @@ public class moving_logic : MonoBehaviour
 
     bool isGrounded;
     bool wasGrounded;
+
     bool isDiggingAction = false;
+    bool lastDigDirectionDown = false;
 
     RaycastHit2D[] hitBuffer = new RaycastHit2D[4];
     ContactFilter2D filter;
+
     [Header("No-collision at spawn")]
     public float noCollisionTime = 0.3f;
-
     private Collider2D bombCol;
     private Collider2D playerCol;
+
     void Awake()
     {
         bombCol = GetComponent<Collider2D>();
@@ -47,6 +49,15 @@ public class moving_logic : MonoBehaviour
         filter.SetLayerMask(groundMask);
     }
 
+    void Start()
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null) playerCol = player.GetComponent<Collider2D>();
+
+        if (bombCol != null && playerCol != null)
+            StartCoroutine(TempIgnorePlayerCollision());
+    }
+
     void Update()
     {
         if (stunTimer > 0)
@@ -55,39 +66,14 @@ public class moving_logic : MonoBehaviour
             return;
         }
 
-        if (isDiggingAction)
-        {
-            rb.velocity = Vector2.zero;
-            return;
-        }
-
-        if (Input.GetKeyDown(KeyCode.J) && isGrounded)
-        {
-            bool isDiggingDown = Input.GetKey(KeyCode.S);
-
-            Vector2 direction = Vector2.right;
-            if (isDiggingDown)
-            {
-                direction = Vector2.down;
-            }
-            else
-            {
-                bool isFacingLeft = animScript.GetComponent<SpriteRenderer>().flipX;
-                direction = isFacingLeft ? Vector2.left : Vector2.right;
-            }
-
-            StartCoroutine(DigRoutine(direction, isDiggingDown));
-            return;
-        }
-
         float x = 0f;
         if (Input.GetKey(KeyCode.A)) x = -1f;
         if (Input.GetKey(KeyCode.D)) x = 1f;
 
-        rb.velocity = new Vector2(x * moveSpeed, rb.velocity.y);
-
         wasGrounded = isGrounded;
         isGrounded = CheckGrounded();
+
+        rb.velocity = new Vector2(x * moveSpeed, rb.velocity.y);
 
         if (isGrounded && Input.GetKeyDown(KeyCode.W))
         {
@@ -107,71 +93,60 @@ public class moving_logic : MonoBehaviour
             if (!usingJetpack) animScript.SetJumping(!isGrounded);
             else animScript.SetJumping(false);
         }
-    }
 
-    IEnumerator DigRoutine(Vector2 dir, bool isDown)
-    {
-        isDiggingAction = true;
+        bool wantsToDig = Input.GetKey(KeyCode.J) && isGrounded;
+        bool actuallyDigging = false; 
 
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, digDistance, obstacleMask);
-
-        float actualWaitTime = defaultDigDuration;
-        bool targetIsUndiggable = false;
-
-        if (hit.collider != null)
+        if (wantsToDig)
         {
-            BlockHardness hardness = hit.collider.GetComponent<BlockHardness>();
-            if (hardness != null)
-            {
-                actualWaitTime = hardness.digTime;
-                targetIsUndiggable = hardness.isUndiggable;
-            }
-        }
+            bool isDiggingDown = Input.GetKey(KeyCode.S);
 
-        if (animScript != null) animScript.SetDigging(true, isDown);
+            Vector2 direction = isDiggingDown ? Vector2.down : (animScript.GetComponent<SpriteRenderer>().flipX ? Vector2.left : Vector2.right);
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, digDistance, obstacleMask);
 
-        yield return new WaitForSeconds(actualWaitTime);
-
-        if (hit.collider != null)
-        {
-            if (targetIsUndiggable)
+            if (hit.collider != null)
             {
-                Debug.Log("It's a rock! The pickaxe did nothing.");
-            }
-            else
-            {
-                ValuableBlock valuable = hit.collider.GetComponent<ValuableBlock>();
-                if (valuable != null)
+                BlockHardness hardness = hit.collider.GetComponent<BlockHardness>();
+                if (hardness != null && !hardness.isUndiggable)
                 {
-                    PlayerInventory inventory = GetComponent<PlayerInventory>();
-                    if (inventory != null)
+                    actuallyDigging = true;
+
+                    if (!isDiggingAction || lastDigDirectionDown != isDiggingDown)
                     {
-                        inventory.CollectItem(valuable.blockType);
+                        isDiggingAction = true;
+                        lastDigDirectionDown = isDiggingDown;
+                        if (animScript != null) animScript.SetDigging(true, isDiggingDown);
+                    }
+
+                    bool destroyed = hardness.TakeDamage(Time.deltaTime);
+                    if (destroyed)
+                    {
+                        ValuableBlock valuable = hit.collider.GetComponent<ValuableBlock>();
+                        if (valuable != null)
+                        {
+                            PlayerInventory inventory = GetComponent<PlayerInventory>();
+                            if (inventory != null) inventory.CollectItem(valuable.blockType);
+                        }
+                        Destroy(hit.collider.gameObject);
                     }
                 }
-                Destroy(hit.collider.gameObject);
-                Debug.Log("Digging successful!");
             }
         }
 
-        if (animScript != null) animScript.SetDigging(false, isDown);
-        isDiggingAction = false;
+        if (!actuallyDigging)
+        {
+            if (isDiggingAction)
+            {
+                isDiggingAction = false;
+                if (animScript != null) animScript.SetDigging(false, false);
+            }
+        }
     }
 
     bool CheckGrounded()
     {
         if (col == null) return false;
         return col.Cast(Vector2.down, filter, hitBuffer, groundDistance) > 0;
-    }
- 
-
-    void Start()
-    {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (player != null) playerCol = player.GetComponent<Collider2D>();
-
-        if (bombCol != null && playerCol != null)
-            StartCoroutine(TempIgnorePlayerCollision());
     }
 
     IEnumerator TempIgnorePlayerCollision()

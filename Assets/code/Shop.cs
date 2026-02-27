@@ -9,8 +9,12 @@ public class Shop : MonoBehaviour
 
     public GameObject goldItemObj;
     public GameObject diamondItemObj;
+    public GameObject rubyItemObj;
+    public GameObject emeraldItemObj;
     public TextMeshProUGUI goldCountText;
     public TextMeshProUGUI diamondCountText;
+    public TextMeshProUGUI rubyCountText;
+    public TextMeshProUGUI emeraldCountText;
 
     private bool isPlayerInRange = false; // player is in the shop area or not
     private PlayerInventory currentPlayer; // reference to the player's inventory, so we can call sell functions
@@ -89,27 +93,33 @@ public class Shop : MonoBehaviour
     {
         if (playerInv == null) return;
 
-        // 1. display gold fragments
         if (playerInv.goldFragments > 0)
         {
-            goldItemObj.SetActive(true); // if player has gold fragments, show the gold icon
+            goldItemObj.SetActive(true);
             goldCountText.text = "x" + playerInv.goldFragments;
         }
-        else
-        {
-            goldItemObj.SetActive(false); // if player has no gold fragments, hide the gold icon
-        }
+        else goldItemObj.SetActive(false);
 
-        // 2. display diamond fragments
         if (playerInv.diamondFragments > 0)
         {
             diamondItemObj.SetActive(true);
             diamondCountText.text = "x" + playerInv.diamondFragments;
         }
-        else
+        else diamondItemObj.SetActive(false);
+
+        if (playerInv.rubyFragments > 0)
         {
-            diamondItemObj.SetActive(false);
+            if (rubyItemObj != null) rubyItemObj.SetActive(true);
+            if (rubyCountText != null) rubyCountText.text = "x" + playerInv.rubyFragments;
         }
+        else if (rubyItemObj != null) rubyItemObj.SetActive(false);
+
+        if (playerInv.emeraldFragments > 0)
+        {
+            if (emeraldItemObj != null) emeraldItemObj.SetActive(true);
+            if (emeraldCountText != null) emeraldCountText.text = "x" + playerInv.emeraldFragments;
+        }
+        else if (emeraldItemObj != null) emeraldItemObj.SetActive(false);
     }
 
     public void OnBuyItemClick(string itemName)
