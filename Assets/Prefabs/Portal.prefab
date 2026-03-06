@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2670809776711508493}
   - component: {fileID: -608670771228248129}
   - component: {fileID: 7568690292287590748}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Portal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -250,7 +250,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 428898564592799105}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: ExitPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
