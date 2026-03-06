@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class PauseMenuController : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class PauseMenuController : MonoBehaviour
     public Button resumeButton;
     public Button exitButton;
 
-    public MonoBehaviour playerController; // ✅ NEW：拖 moving_logic 脚本进来
+    public MonoBehaviour playerController; 
 
     private bool isPaused = false;
     private int selectedIndex = 0;
@@ -73,7 +74,7 @@ public class PauseMenuController : MonoBehaviour
     {
         isPaused = true;
 
-        if (playerController != null) playerController.enabled = false; // ✅ NEW：暂停时禁用玩家输入脚本
+        if (playerController != null) playerController.enabled = false; 
 
         Time.timeScale = 0f;
 
@@ -89,7 +90,7 @@ public class PauseMenuController : MonoBehaviour
         SelectButton(selectedIndex);
     }
 
-    IEnumerator EnablePlayerNextFrame() // ✅ NEW：恢复后一帧再启用，避免吞掉 Space/W
+    IEnumerator EnablePlayerNextFrame() 
     {
         yield return null;
         if (playerController != null) playerController.enabled = true;
@@ -105,15 +106,17 @@ public class PauseMenuController : MonoBehaviour
         if (EventSystem.current != null)
             EventSystem.current.SetSelectedGameObject(null);
 
-        StartCoroutine(EnablePlayerNextFrame()); // ✅ NEW
+        StartCoroutine(EnablePlayerNextFrame()); 
     }
 
     public void QuitGame()
-    {
+{
+    Time.timeScale = 1f;
+
 #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
+    UnityEditor.EditorApplication.isPlaying = false;
 #else
-        Application.Quit();
+    SceneManager.LoadScene("MainMenu"); 
 #endif
-    }
+}
 }

@@ -18,9 +18,14 @@ public class PlayerInventory : MonoBehaviour
     public int money = 0;
     public int goldFragments = 0;
     public int diamondFragments = 0;
+    public int rubyFragments = 0;
+    public int emeraldFragments = 0;
 
     public int goldPrice = 50;
-    public int diamondPrice = 100;
+    public int emeraldPrice = 100;
+    public int rubyPrice = 150;
+    public int diamondPrice = 200;
+    
     public TextMeshProUGUI moneyText;
 
     [Header("Shop & Inventory")]
@@ -44,6 +49,8 @@ public class PlayerInventory : MonoBehaviour
     {
         if (type == ValuableBlock.Type.Gold) goldFragments++;
         else if (type == ValuableBlock.Type.Diamond) diamondFragments++;
+        else if (type == ValuableBlock.Type.Ruby) rubyFragments++;
+        else if (type == ValuableBlock.Type.Emerald) emeraldFragments++;
     }
 
     public void SellOneItem(ValuableBlock.Type type)
@@ -58,18 +65,34 @@ public class PlayerInventory : MonoBehaviour
             diamondFragments--;
             money += diamondPrice;
         }
+        else if (type == ValuableBlock.Type.Ruby && rubyFragments > 0)
+        {
+            rubyFragments--;
+            money += rubyPrice;
+        }
+        else if (type == ValuableBlock.Type.Emerald && emeraldFragments > 0)
+        {
+            emeraldFragments--;
+            money += emeraldPrice;
+        }
         UpdateUI();
         CheckWin();
     }
 
     public void SellAllItems()
     {
-        int earnings = (goldFragments * goldPrice) + (diamondFragments * diamondPrice);
+        int earnings = (goldFragments * goldPrice) +
+                       (diamondFragments * diamondPrice) +
+                       (rubyFragments * rubyPrice) +
+                       (emeraldFragments * emeraldPrice);
+
         if (earnings > 0)
         {
             money += earnings;
             goldFragments = 0;
             diamondFragments = 0;
+            rubyFragments = 0;
+            emeraldFragments = 0;
             UpdateUI();
             CheckWin();
         }
