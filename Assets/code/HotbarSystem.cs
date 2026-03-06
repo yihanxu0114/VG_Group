@@ -39,10 +39,19 @@ public class HotbarSystem : MonoBehaviour
     void Start()
     {
         if (hotbarUI == null) hotbarUI = FindObjectOfType<HotbarUI>();
-        if (gearManager == null) gearManager = FindObjectOfType<GearManager>();
-        if (inv == null) inv = FindObjectOfType<PlayerInventory>();
 
-        RefreshAll(true);
+        Debug.Log("[HotbarSystem] portalIcon = " + (portalIcon == null ? "NULL" : portalIcon.name));
+        Debug.Log("[HotbarSystem] bomb2Icon = " + (bomb2Icon == null ? "NULL" : bomb2Icon.name));
+        Debug.Log("[HotbarSystem] bomb3Icon = " + (bomb3Icon == null ? "NULL" : bomb3Icon.name));
+        Debug.Log("[HotbarSystem] bomb4Icon = " + (bomb4Icon == null ? "NULL" : bomb4Icon.name));
+        Debug.Log("[HotbarSystem] bomb5Icon = " + (bomb5Icon == null ? "NULL" : bomb5Icon.name));
+
+        hotbarUI.ClearAll();
+        hotbarUI.SetSlot(0, portalIcon, 1);
+        hotbarUI.SetSlot(1, bomb2Icon, 5);
+        hotbarUI.SetSlot(2, bomb3Icon, 5);
+        hotbarUI.SetSlot(3, bomb4Icon, 5);
+        hotbarUI.SetSlot(4, bomb5Icon, 5);
     }
 
     void Update()
