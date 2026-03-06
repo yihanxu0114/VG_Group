@@ -1,113 +1,131 @@
-using System.Collections;
 using UnityEngine;
 
 public class HotbarSystem : MonoBehaviour
 {
-    public GearManager gearManager;
-
-    [Header("UI")]
     public HotbarUI hotbarUI;
+    public GearManager gearManager;
+    public PlayerInventory inv;
 
-    [Header("Icons")]
-    public Sprite pickaxeIcon;
-    public Sprite bombIcon;
+    public int gearSlotCount = 5;
+    public int totalSlots = 10;
 
-    [Header("Config")]
-    public int bombCount = 5;
+    public Sprite portalIcon;
+    public Sprite bomb2Icon;
+    public Sprite bomb3Icon;
+    public Sprite bomb4Icon;
+    public Sprite bomb5Icon;
 
-    public enum ToolType { Pickaxe, Bomb }
-    public ToolType selectedTool = ToolType.Pickaxe;
+    public Sprite goldIcon;
+    public Sprite diamondIcon;
+    public Sprite rubyIcon;
+    public Sprite emeraldIcon;
 
-    private int slotCountCached = 10; // 兜底：默认 10 格
+    int _gold;
+    int _diamond;
+    int _ruby;
+    int _emerald;
 
-    IEnumerator Start()
+    int _bomb2;
+    int _bomb3;
+    int _bomb4;
+    int _bomb5;
+
+    bool _hasPortal;
+    bool _hasBomb2;
+    bool _hasBomb3;
+    bool _hasBomb4;
+    bool _hasBomb5;
+
+    void Start()
     {
-        // 1) 自动找 UI（你也可以只靠手动拖）
-        if (hotbarUI == null)
-            hotbarUI = FindObjectOfType<HotbarUI>();
+        if (hotbarUI == null) hotbarUI = FindObjectOfType<HotbarUI>();
+        if (gearManager == null) gearManager = FindObjectOfType<GearManager>();
+        if (inv == null) inv = FindObjectOfType<PlayerInventory>();
 
-        if (hotbarUI == null)
-        {
-            Debug.LogError("HotbarSystem: hotbarUI is null. 请把 HotbarRoot(HotbarUI) 拖到 HotbarSystem 的 Hotbar UI 字段。");
-            yield break;
-        }
-
-        // 2) 等一帧：确保 HotbarUI.Awake/Start 已经把 slots 收集好
-        yield return null;
-
-        // 3) 尝试从 HotbarUI 拿实际槽位数（如果你没加这个属性，就会走兜底 10）
-        //    你如果不想改 HotbarUI，这段会安全兜底。
-        try
-        {
-            slotCountCached = Mathf.Max(2, hotbarUI.SlotCount);
-        }
-        catch
-        {
-            slotCountCached = 10;
-        }
-
-        RefreshAllSlots();
-        SelectSlot(0);
+        RefreshAll(true);
     }
 
     void Update()
     {
-        int idx = ReadHotkeyIndex();
-        if (idx != -1) SelectSlot(idx);
+        RefreshAll(false);
     }
 
-    void RefreshAllSlots()
-    {
-        // slot 0: pickaxe (不显示数量)
-        hotbarUI.SetSlot(0, pickaxeIcon, 1);
-
-        // slot 1: bomb (显示数量)
-        hotbarUI.SetSlot(1, bombIcon, bombCount);
-
-        // 其它槽清空
-        for (int i = 2; i < slotCountCached; i++)
-            hotbarUI.SetSlot(i, null, 0);
-    }
-
-    int ReadHotkeyIndex()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1)) return 0;
-        if (Input.GetKeyDown(KeyCode.Alpha2)) return 1;
-        if (Input.GetKeyDown(KeyCode.Alpha3)) return 2;
-        if (Input.GetKeyDown(KeyCode.Alpha4)) return 3;
-        if (Input.GetKeyDown(KeyCode.Alpha5)) return 4;
-        if (Input.GetKeyDown(KeyCode.Alpha6)) return 5;
-        if (Input.GetKeyDown(KeyCode.Alpha7)) return 6;
-        if (Input.GetKeyDown(KeyCode.Alpha8)) return 7;
-        if (Input.GetKeyDown(KeyCode.Alpha9)) return 8;
-        if (Input.GetKeyDown(KeyCode.Alpha0)) return 9;
-        return -1;
-    }
-
-    public void SelectSlot(int index)
+    void RefreshAll(bool force)
     {
         if (hotbarUI == null) return;
+        if (gearManager == null) gearManager = FindObjectOfType<GearManager>();
+        if (inv == null) inv = FindObjectOfType<PlayerInventory>();
 
-        // 防止越界（你只有 10 格时也 ok）
-        index = Mathf.Clamp(index, 0, slotCountCached - 1);
+        int gold = inv != null ? inv.goldFragments : 0;
+        int diamond = inv != null ? inv.diamondFragments : 0;
+        int ruby = inv != null ? inv.rubyFragments : 0;
+        int emerald = inv != null ? inv.emeraldFragments : 0;
 
-        hotbarUI.SetSelected(index);
+        bool hasPortal = gearManager != null && gearManager.portalPrefab != null;
 
-        if (index == 0) selectedTool = ToolType.Pickaxe;
-        else if (index == 1) selectedTool = ToolType.Bomb;
-        // 其它格子先不做功能
+        int bomb2 = gearManager != null ? gearManager.GetBombCount(gearManager.bombName2) : 0;
+        int bomb3 = gearManager != null ? gearManager.GetBombCount(gearManager.bombName3) : 0;
+        int bomb4 = gearManager != null ? gearManager.GetBombCount(gearManager.bombName4) : 0;
+        int bomb5 = gearManager != null ? gearManager.GetBombCount(gearManager.bombName5) : 0;
 
-        
+        bool hasBomb2 = gearManager != null && gearManager.dynamitePrefab != null && bomb2 > 0;
+        bool hasBomb3 = gearManager != null && gearManager.bombSlot3 != null && bomb3 > 0;
+        bool hasBomb4 = gearManager != null && gearManager.bombSlot4 != null && bomb4 > 0;
+        bool hasBomb5 = gearManager != null && gearManager.bombSlot5 != null && bomb5 > 0;
+
+        if (!force &&
+            gold == _gold &&
+            diamond == _diamond &&
+            ruby == _ruby &&
+            emerald == _emerald &&
+            bomb2 == _bomb2 &&
+            bomb3 == _bomb3 &&
+            bomb4 == _bomb4 &&
+            bomb5 == _bomb5 &&
+            hasPortal == _hasPortal &&
+            hasBomb2 == _hasBomb2 &&
+            hasBomb3 == _hasBomb3 &&
+            hasBomb4 == _hasBomb4 &&
+            hasBomb5 == _hasBomb5)
+            return;
+
+        _gold = gold;
+        _diamond = diamond;
+        _ruby = ruby;
+        _emerald = emerald;
+
+        _bomb2 = bomb2;
+        _bomb3 = bomb3;
+        _bomb4 = bomb4;
+        _bomb5 = bomb5;
+
+        _hasPortal = hasPortal;
+        _hasBomb2 = hasBomb2;
+        _hasBomb3 = hasBomb3;
+        _hasBomb4 = hasBomb4;
+        _hasBomb5 = hasBomb5;
+
+        hotbarUI.ClearAll();
+
+        hotbarUI.SetSlot(0, hasPortal ? portalIcon : null, hasPortal ? 1 : 0);
+        hotbarUI.SetSlot(1, hasBomb2 ? bomb2Icon : null, bomb2);
+        hotbarUI.SetSlot(2, hasBomb3 ? bomb3Icon : null, bomb3);
+        hotbarUI.SetSlot(3, hasBomb4 ? bomb4Icon : null, bomb4);
+        hotbarUI.SetSlot(4, hasBomb5 ? bomb5Icon : null, bomb5);
+
+        int write = gearSlotCount;
+        write = WriteMat(write, goldIcon, gold);
+        write = WriteMat(write, diamondIcon, diamond);
+        write = WriteMat(write, rubyIcon, ruby);
+        write = WriteMat(write, emeraldIcon, emerald);
     }
 
-    // 让炸弹脚本在“成功扔出/放下炸弹”后调用这个
-    public void ConsumeBomb(int amount = 1)
+    int WriteMat(int index, Sprite icon, int count)
     {
-        bombCount = Mathf.Max(0, bombCount - amount);
+        if (count <= 0) return index;
+        if (index >= totalSlots) return index;
 
-        if (hotbarUI != null)
-            hotbarUI.SetSlot(1, bombIcon, bombCount);
+        hotbarUI.SetSlot(index, icon, count);
+        return index + 1;
     }
-
-    public bool HasBomb() => bombCount > 0;
 }

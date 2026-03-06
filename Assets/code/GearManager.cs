@@ -2,31 +2,29 @@ using UnityEngine;
 
 public class GearManager : MonoBehaviour
 {
-    [Header("Slot 1 - Dynamite")]
-    public Dynamite dynamitePrefab;
+    public string bombName2 = "Bomb";
+    public string bombName3 = "Bomb1";
+    public string bombName4 = "Bomb2";
+    public string bombName5 = "Bomb3";
 
-    [Header("Slot 2 - Portal")]
     public Portal portalPrefab;
-
-    [Header("Slot 3-5 - Extra Bombs")]
+    public Dynamite dynamitePrefab;
     public Dynamite bombSlot3;
     public Dynamite bombSlot4;
     public Dynamite bombSlot5;
 
-    [Header("Placement Offsets")]
     public float dynamiteForwardOffset = 1.0f;
     public float dynamiteUpOffset = 0.2f;
     public float portalOffset = 0.05f;
 
-    [Header("Dynamite Limits")]
     public int dynamiteMaxCount = 30;
     public float dynamitePlaceCooldown = 0.8f;
 
-    private float _nextDynamiteTime = 0f;
-    private SpriteRenderer _sr;
-    private PlayerInventory _inv;
+    float _nextDynamiteTime = 0f;
+    SpriteRenderer _sr;
+    PlayerInventory _inv;
 
-    private void Awake()
+    void Awake()
     {
         _sr = GetComponentInChildren<SpriteRenderer>();
         _inv = GetComponent<PlayerInventory>();
@@ -34,26 +32,32 @@ public class GearManager : MonoBehaviour
 
     public void UseCurrentGear(int slot)
     {
-        switch (slot)
-        {
-            case 1: PlaceBomb(dynamitePrefab); break;
-            case 2: PlacePortal(); break;
-            case 3: PlaceBomb(bombSlot3); break;
-            case 4: PlaceBomb(bombSlot4); break;
-            case 5: PlaceBomb(bombSlot5); break;
-            default: Debug.Log($"No gear assigned for slot {slot}"); break;
-        }
+        Debug.Log("UseCurrentGear slot = " + slot);
+
+        if (slot == 1) PlacePortal();
+        else if (slot == 2) PlaceBomb(dynamitePrefab, bombName2);
+        else if (slot == 3) PlaceBomb(bombSlot3, bombName3);
+        else if (slot == 4) PlaceBomb(bombSlot4, bombName4);
+        else if (slot == 5) PlaceBomb(bombSlot5, bombName5);
+        else Debug.Log($"No gear assigned for slot {slot}");
     }
 
-    // ===== Inventory-backed bomb count (no dynamic) =====
+    public int GetBombCount(string bombName)
+    {
+        if (_inv == null || _inv.myItems == null) return 0;
+        foreach (var item in _inv.myItems)
+            if (item != null && item.itemName == bombName)
+                return item.count;
+        return 0;
+    }
 
-    public bool AddDynamite(int amount)
+    public bool AddBomb(string bombName, int amount)
     {
         if (amount <= 0 || _inv == null || _inv.myItems == null) return false;
 
         foreach (var item in _inv.myItems)
         {
-            if (item != null && item.itemName == "Bomb")
+            if (item != null && item.itemName == bombName)
             {
                 int before = item.count;
                 item.count = Mathf.Clamp(item.count + amount, 0, dynamiteMaxCount);
@@ -64,30 +68,18 @@ public class GearManager : MonoBehaviour
         return false;
     }
 
-    public int GetDynamiteCount()
+    bool CanPlaceBomb(string bombName)
     {
-        if (_inv == null || _inv.myItems == null) return 0;
-
-        foreach (var item in _inv.myItems)
-        {
-            if (item != null && item.itemName == "Bomb")
-                return item.count;
-        }
-        return 0;
+        return GetBombCount(bombName) > 0 && Time.time >= _nextDynamiteTime;
     }
 
-    public bool CanPlaceDynamite()
-    {
-        return GetDynamiteCount() > 0 && Time.time >= _nextDynamiteTime;
-    }
-
-    private bool TryConsumeBomb(int amount = 1)
+    bool TryConsumeBomb(string bombName, int amount = 1)
     {
         if (_inv == null || _inv.myItems == null) return false;
 
         foreach (var item in _inv.myItems)
         {
-            if (item != null && item.itemName == "Bomb" && item.count >= amount)
+            if (item != null && item.itemName == bombName && item.count >= amount)
             {
                 item.count -= amount;
                 _inv.UpdateUI();
@@ -96,22 +88,30 @@ public class GearManager : MonoBehaviour
         }
         return false;
     }
-
-    private void PlaceBomb(Dynamite prefab)
+    void PlaceBomb(Dynamite prefab, string bombName)
     {
+        Debug.Log("Try place bomb: " + bombName);
+
         if (prefab == null)
         {
-            Debug.LogWarning("GearManager: bomb prefab not assigned for this slot!");
+            Debug.Log("prefab is null: " + bombName);
             return;
         }
 
-        if (!CanPlaceDynamite())
+        int count = GetBombCount(bombName);
+        Debug.Log("bomb count = " + count);
+
+        if (!CanPlaceBomb(bombName))
         {
-            Debug.Log("Bomb is on cooldown or you have no bombs.");
+            Debug.Log("CanPlaceBomb false: " + bombName);
             return;
         }
 
-        if (!TryConsumeBomb(1)) return;
+        if (!TryConsumeBomb(bombName, 1))
+        {
+            Debug.Log("TryConsumeBomb false: " + bombName);
+            return;
+        }
 
         float facing = (_sr != null && _sr.flipX) ? -1f : 1f;
         Vector3 spawnPos =
@@ -125,22 +125,27 @@ public class GearManager : MonoBehaviour
         dyn.InitIgnorePlayer(playerCols, dyn.noCollisionTime);
 
         _nextDynamiteTime = Time.time + dynamitePlaceCooldown;
+
+        Debug.Log("Bomb placed: " + bombName);
     }
 
-    private void PlacePortal()
+    void PlacePortal()
     {
+        Debug.Log("Try place portal");
+
         if (portalPrefab == null)
         {
-            Debug.LogWarning("GearManager: portalPrefab not assigned!");
+            Debug.Log("portalPrefab is null");
             return;
         }
 
         if (PortalSystem.Instance != null && PortalSystem.Instance.Count() >= 2)
         {
-            Debug.Log("Already has 2 portals.");
+            Debug.Log("Already has 2 portals");
             return;
         }
 
         Instantiate(portalPrefab, transform.position + Vector3.up * portalOffset, Quaternion.identity);
+        Debug.Log("Portal placed");
     }
 }

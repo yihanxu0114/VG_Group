@@ -1,24 +1,33 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class SlotUI : MonoBehaviour
 {
     public Image icon;
+    public TMP_Text countText;
+    public GameObject highlight;
 
-    public void SetItem(Sprite sprite)
+    public void Set(Sprite sprite, int count)
     {
-        if (sprite == null)
+        if (icon != null)
         {
-            icon.enabled = false;
-            return;
+            icon.sprite = sprite;
+            icon.enabled = (sprite != null);
         }
 
-        icon.enabled = true;
-        icon.sprite = sprite;
+        if (countText != null)
+            countText.text = (sprite != null && count > 1) ? $"x{count}" : "";
     }
 
     public void Clear()
     {
-        icon.enabled = false;
+        Set(null, 0);
+        if (highlight != null) highlight.SetActive(false);
+    }
+
+    public void SetSelected(bool on)
+    {
+        if (highlight != null) highlight.SetActive(on);
     }
 }

@@ -160,7 +160,7 @@ MonoBehaviour:
   linkedPortal: {fileID: 0}
   exitPoint: {fileID: 428898564592799105}
   cooldown: 0.3
-  interactKey: 101
+  interactKey: 113
   frames:
   - {fileID: -168618342, guid: b50adbb51d558c44cb72fd4c3163c42f, type: 3}
   - {fileID: 1845940784, guid: b50adbb51d558c44cb72fd4c3163c42f, type: 3}
