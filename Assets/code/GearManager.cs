@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class GearManager : MonoBehaviour
 {
-    public string bombName2 = "Bomb";
-    public string bombName3 = "Bomb1";
-    public string bombName4 = "Bomb2";
-    public string bombName5 = "Bomb3";
+    public string bombName2 = "Bomb";      
+    public string bombName3 = "BlueBomb"; 
+    public string bombName4 = "RedBomb";  
+    public string bombName5 = "GrayBomb";
 
     public Portal portalPrefab;
     public Dynamite dynamitePrefab;

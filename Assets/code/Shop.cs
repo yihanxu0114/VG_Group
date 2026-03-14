@@ -93,6 +93,8 @@ public class Shop : MonoBehaviour
     {
         if (playerInv == null) return;
 
+        playerInv.UpdateUI();
+
         if (playerInv.goldFragments > 0)
         {
             goldItemObj.SetActive(true);
