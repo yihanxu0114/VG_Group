@@ -10,6 +10,10 @@ public class moving_logic : MonoBehaviour
     [Header("Status")]
     public float stunTimer = 0f;
 
+    [Header("Jetpack Settings")]
+    public float jetpackMaxTime = 5f;
+    private float jetpackTimeLeft;
+
     [Header("Digging Settings")]
     public float digDistance = 1.2f;
     public LayerMask obstacleMask;
@@ -39,6 +43,8 @@ public class moving_logic : MonoBehaviour
 
     void Awake()
     {
+        jetpackTimeLeft = jetpackMaxTime;
+
         bombCol = GetComponent<Collider2D>();
         if (rb == null) rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
@@ -80,10 +86,19 @@ public class moving_logic : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, jumpSpeed);
         }
 
-        bool usingJetpack = Input.GetKey(KeyCode.Space);
-        if (usingJetpack)
+        bool wantsJetpack = Input.GetKey(KeyCode.Space);
+        bool usingJetpack = false;
+
+        if (wantsJetpack && jetpackTimeLeft > 0f)
         {
+            usingJetpack = true;
+            jetpackTimeLeft -= Time.deltaTime;
+            jetpackTimeLeft = Mathf.Max(jetpackTimeLeft, 0f);
             rb.velocity = new Vector2(rb.velocity.x, jumpSpeed);
+        }
+        else if (!wasGrounded && isGrounded)
+        {
+            jetpackTimeLeft = jetpackMaxTime;
         }
 
         if (animScript != null)
@@ -95,7 +110,7 @@ public class moving_logic : MonoBehaviour
         }
 
         bool wantsToDig = Input.GetKey(KeyCode.J) && isGrounded;
-        bool actuallyDigging = false; 
+        bool actuallyDigging = false;
 
         if (wantsToDig)
         {
@@ -154,5 +169,10 @@ public class moving_logic : MonoBehaviour
         Physics2D.IgnoreCollision(bombCol, playerCol, true);
         yield return new WaitForSeconds(noCollisionTime);
         Physics2D.IgnoreCollision(bombCol, playerCol, false);
+    }
+
+    public float GetJetpackFuelRatio()
+    {
+        return jetpackMaxTime > 0f ? jetpackTimeLeft / jetpackMaxTime : 0f;
     }
 }
