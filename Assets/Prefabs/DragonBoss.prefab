@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 868865083564694758}
   - component: {fileID: 574613321742956174}
   - component: {fileID: 8640116698782008426}
+  - component: {fileID: 2831195277563174667}
   m_Layer: 8
   m_Name: DragonBoss
   m_TagString: Untagged
@@ -761,6 +762,19 @@ PolygonCollider2D:
       - {x: 1.165, y: 3.6599998}
       - {x: 1.1949999, y: 3.6299999}
   m_UseDelaunayMesh: 0
+--- !u!114 &2831195277563174667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6806158186292247423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c022957f9d23e0b44af40fef88950e76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 9999
 --- !u!1 &8401821290398424489
 GameObject:
   m_ObjectHideFlags: 0
