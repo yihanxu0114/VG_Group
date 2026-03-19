@@ -14,6 +14,12 @@ public class moving_logic : MonoBehaviour
     public float jetpackMaxTime = 5f;
     private float jetpackTimeLeft;
 
+    [Header("Fall Damage Settings")]
+    public float safeFallDistance = 6f;    
+    public int fallDamageMultiplier = 5;   
+    private float highestYInAir;           
+    private PlayerHealth playerHealth;   
+
     [Header("Digging Settings")]
     public float digDistance = 1.2f;
     public LayerMask obstacleMask;
@@ -50,6 +56,8 @@ public class moving_logic : MonoBehaviour
         col = GetComponent<Collider2D>();
         animScript = GetComponent<Sprite_left_right_shift>();
 
+        playerHealth = GetComponent<PlayerHealth>();
+
         filter = new ContactFilter2D();
         filter.useTriggers = false;
         filter.SetLayerMask(groundMask);
@@ -62,6 +70,8 @@ public class moving_logic : MonoBehaviour
 
         if (bombCol != null && playerCol != null)
             StartCoroutine(TempIgnorePlayerCollision());
+
+        highestYInAir = transform.position.y;
     }
 
     void Update()
@@ -96,9 +106,34 @@ public class moving_logic : MonoBehaviour
             jetpackTimeLeft = Mathf.Max(jetpackTimeLeft, 0f);
             rb.velocity = new Vector2(rb.velocity.x, jumpSpeed);
         }
+
+        if (!isGrounded)
+        {
+            if (transform.position.y > highestYInAir)
+            {
+                highestYInAir = transform.position.y;
+            }
+        }
         else if (!wasGrounded && isGrounded)
         {
+            float fallDistance = highestYInAir - transform.position.y;
+
+            if (fallDistance > safeFallDistance)
+            {
+                int damage = Mathf.RoundToInt((fallDistance - safeFallDistance) * fallDamageMultiplier);
+                if (damage > 0 && playerHealth != null)
+                {
+                    Debug.Log($"Falling damage! Drop height: {fallDistance:F1}, Deal {damage} points of damage.");
+                    playerHealth.TakeDamage(damage);
+                }
+            }
+
             jetpackTimeLeft = jetpackMaxTime;
+        }
+
+        if (isGrounded)
+        {
+            highestYInAir = transform.position.y;
         }
 
         if (animScript != null)

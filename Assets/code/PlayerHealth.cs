@@ -1,4 +1,4 @@
-using UnityEngine;
+锘縰sing UnityEngine;
 using UnityEngine.SceneManagement; // restart game
 using UnityEngine.UI;
 
@@ -75,20 +75,26 @@ public class PlayerHealth : MonoBehaviour
 
     void Die()
     {
+        if (isDead) return; 
         isDead = true;
         Debug.Log("Game Over!");
 
-        // 1. ban moving
         if (moveScript != null)
         {
-            moveScript.GetComponent<Rigidbody2D>().velocity = Vector2.zero; // stop now !!!
-            moveScript.enabled = false; 
+            moveScript.enabled = false;
         }
 
-        // 2. 可以在这里播放死亡动画 (如果有)
-        // GetComponent<Animator>().SetTrigger("Die");
-
         if (sr != null) sr.color = Color.gray;
+        Collider2D col = GetComponent<Collider2D>();
+        if (col != null) col.enabled = false;
+
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.velocity = new Vector2(0, 10f);
+        }
+
+        Invoke("RestartGame", 2.5f);
     }
 
     // restart game
