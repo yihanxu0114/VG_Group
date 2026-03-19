@@ -4,11 +4,28 @@ public class GearSwitcher : MonoBehaviour
 {
     private int selectedSlot = 1;
     private GearManager gearManager;
+    private HotbarSystem hotbarSystem;
+
+    public int GetSelectedSlot()
+    {
+        return selectedSlot;
+    }
 
     void Awake()
     {
         if (gearManager == null)
             gearManager = GetComponent<GearManager>();
+
+        if (hotbarSystem == null)
+            hotbarSystem = FindObjectOfType<HotbarSystem>();
+    }
+
+    void Start()
+    {
+        if (hotbarSystem != null)
+        {
+            hotbarSystem.SetSelectedSlot(selectedSlot);
+        }
     }
 
     void Update()
@@ -23,7 +40,13 @@ public class GearSwitcher : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha8)) SetSlot(8);
         if (Input.GetKeyDown(KeyCode.Alpha9)) SetSlot(9);
 
-        if (Input.GetKeyDown(KeyCode.K))
+        // 额外 4 个槽位
+        if (Input.GetKeyDown(KeyCode.Z)) SetSlot(10);
+        if (Input.GetKeyDown(KeyCode.X)) SetSlot(11);
+        if (Input.GetKeyDown(KeyCode.C)) SetSlot(12);
+        if (Input.GetKeyDown(KeyCode.V)) SetSlot(13);
+
+        if (Input.GetMouseButtonDown(0))
         {
             if (gearManager != null)
                 gearManager.UseCurrentGear(selectedSlot);
@@ -32,10 +55,18 @@ public class GearSwitcher : MonoBehaviour
 
     private void SetSlot(int slot)
     {
-        slot = Mathf.Clamp(slot, 1, 9);
+        slot = Mathf.Clamp(slot, 1, 13);
         if (slot == selectedSlot) return;
 
         selectedSlot = slot;
         Debug.Log($"[GearSwitcher] Selected slot = {selectedSlot}");
+
+        if (hotbarSystem == null)
+            hotbarSystem = FindObjectOfType<HotbarSystem>();
+
+        if (hotbarSystem != null)
+        {
+            hotbarSystem.SetSelectedSlot(selectedSlot);
+        }
     }
 }

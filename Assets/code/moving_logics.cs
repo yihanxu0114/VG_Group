@@ -109,7 +109,7 @@ public class moving_logic : MonoBehaviour
             else animScript.SetJumping(false);
         }
 
-        bool wantsToDig = Input.GetKey(KeyCode.J) && isGrounded;
+        bool wantsToDig = Input.GetMouseButton(1) && isGrounded;
         bool actuallyDigging = false;
 
         if (wantsToDig)

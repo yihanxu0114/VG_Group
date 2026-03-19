@@ -6,15 +6,20 @@ public class HotbarSystem : MonoBehaviour
     public GearManager gearManager;
     public PlayerInventory inv;
 
-    public int gearSlotCount = 5;
-    public int totalSlots = 10;
+    public int gearSlotCount = 8;
+    public int totalSlots = 13;
 
+    [Header("Gear Icons")]
     public Sprite portalIcon;
-    public Sprite bomb2Icon; 
+    public Sprite bomb2Icon;
     public Sprite bomb3Icon;
-    public Sprite bomb4Icon; 
+    public Sprite bomb4Icon;
     public Sprite bomb5Icon;
+    public Sprite bullet6Icon;
+    public Sprite bullet7Icon;
+    public Sprite bullet8Icon;
 
+    [Header("Material Icons")]
     public Sprite goldIcon;
     public Sprite diamondIcon;
     public Sprite rubyIcon;
@@ -22,18 +27,13 @@ public class HotbarSystem : MonoBehaviour
 
     int _gold, _diamond, _ruby, _emerald;
     int _bomb2, _bomb3, _bomb4, _bomb5;
-    bool _hasPortal, _hasBomb2, _hasBomb3, _hasBomb4, _hasBomb5;
+    int _bullet6, _bullet7, _bullet8;
+    bool _hasPortal;
 
     void Start()
     {
         if (hotbarUI == null) hotbarUI = FindObjectOfType<HotbarUI>();
-
-        hotbarUI.ClearAll();
-        hotbarUI.SetSlot(0, portalIcon, 1);
-        hotbarUI.SetSlot(1, bomb2Icon, 5);
-        hotbarUI.SetSlot(2, bomb3Icon, 5);
-        hotbarUI.SetSlot(3, bomb4Icon, 5);
-        hotbarUI.SetSlot(4, bomb5Icon, 5);
+        RefreshAll(true);
     }
 
     void Update()
@@ -44,10 +44,12 @@ public class HotbarSystem : MonoBehaviour
     private int GetItemCount(string targetName)
     {
         if (inv == null) return 0;
+
         foreach (var item in inv.myItems)
         {
             if (item.itemName == targetName) return item.count;
         }
+
         return 0;
     }
 
@@ -56,42 +58,55 @@ public class HotbarSystem : MonoBehaviour
         if (hotbarUI == null) return;
         if (gearManager == null) gearManager = FindObjectOfType<GearManager>();
         if (inv == null) inv = FindObjectOfType<PlayerInventory>();
+        if (inv == null) return;
 
-        int gold = inv != null ? inv.goldFragments : 0;
-        int diamond = inv != null ? inv.diamondFragments : 0;
-        int ruby = inv != null ? inv.rubyFragments : 0;
-        int emerald = inv != null ? inv.emeraldFragments : 0;
+        int gold = inv.goldFragments;
+        int diamond = inv.diamondFragments;
+        int ruby = inv.rubyFragments;
+        int emerald = inv.emeraldFragments;
 
         bool hasPortal = gearManager != null && gearManager.portalPrefab != null;
 
-        int bomb2 = GetItemCount("Bomb");     
-        int bomb3 = GetItemCount("BlueBomb"); 
-        int bomb4 = GetItemCount("RedBomb");  
+        int bomb2 = GetItemCount("Bomb");
+        int bomb3 = GetItemCount("BlueBomb");
+        int bomb4 = GetItemCount("RedBomb");
         int bomb5 = GetItemCount("GrayBomb");
 
-        bool hasBomb2 = bomb2 > 0;
-        bool hasBomb3 = bomb3 > 0;
-        bool hasBomb4 = bomb4 > 0;
-        bool hasBomb5 = bomb5 > 0;
+        int bullet6 = GetItemCount("Bullet6");
+        int bullet7 = GetItemCount("Bullet7");
+        int bullet8 = GetItemCount("Bullet8");
 
         if (!force &&
             gold == _gold && diamond == _diamond && ruby == _ruby && emerald == _emerald &&
             bomb2 == _bomb2 && bomb3 == _bomb3 && bomb4 == _bomb4 && bomb5 == _bomb5 &&
-            hasPortal == _hasPortal && hasBomb2 == _hasBomb2 && hasBomb3 == _hasBomb3 &&
-            hasBomb4 == _hasBomb4 && hasBomb5 == _hasBomb5)
+            bullet6 == _bullet6 && bullet7 == _bullet7 && bullet8 == _bullet8 &&
+            hasPortal == _hasPortal)
             return;
 
-        _gold = gold; _diamond = diamond; _ruby = ruby; _emerald = emerald;
-        _bomb2 = bomb2; _bomb3 = bomb3; _bomb4 = bomb4; _bomb5 = bomb5;
-        _hasPortal = hasPortal; _hasBomb2 = hasBomb2; _hasBomb3 = hasBomb3; _hasBomb4 = hasBomb4; _hasBomb5 = hasBomb5;
+        _gold = gold;
+        _diamond = diamond;
+        _ruby = ruby;
+        _emerald = emerald;
+        _bomb2 = bomb2;
+        _bomb3 = bomb3;
+        _bomb4 = bomb4;
+        _bomb5 = bomb5;
+        _bullet6 = bullet6;
+        _bullet7 = bullet7;
+        _bullet8 = bullet8;
+        _hasPortal = hasPortal;
 
         hotbarUI.ClearAll();
 
         hotbarUI.SetSlot(0, hasPortal ? portalIcon : null, hasPortal ? 1 : 0);
-        hotbarUI.SetSlot(1, hasBomb2 ? bomb2Icon : null, bomb2);
-        hotbarUI.SetSlot(2, hasBomb3 ? bomb3Icon : null, bomb3);
-        hotbarUI.SetSlot(3, hasBomb4 ? bomb4Icon : null, bomb4);
-        hotbarUI.SetSlot(4, hasBomb5 ? bomb5Icon : null, bomb5);
+        hotbarUI.SetSlot(1, bomb2 > 0 ? bomb2Icon : null, bomb2);
+        hotbarUI.SetSlot(2, bomb3 > 0 ? bomb3Icon : null, bomb3);
+        hotbarUI.SetSlot(3, bomb4 > 0 ? bomb4Icon : null, bomb4);
+        hotbarUI.SetSlot(4, bomb5 > 0 ? bomb5Icon : null, bomb5);
+
+        hotbarUI.SetSlot(5, bullet6 > 0 ? bullet6Icon : null, bullet6);
+        hotbarUI.SetSlot(6, bullet7 > 0 ? bullet7Icon : null, bullet7);
+        hotbarUI.SetSlot(7, bullet8 > 0 ? bullet8Icon : null, bullet8);
 
         int write = gearSlotCount;
         write = WriteMat(write, goldIcon, gold);
@@ -107,5 +122,11 @@ public class HotbarSystem : MonoBehaviour
 
         hotbarUI.SetSlot(index, icon, count);
         return index + 1;
+    }
+
+    public void SetSelectedSlot(int slotNumber)
+    {
+        if (hotbarUI == null) return;
+        hotbarUI.SetSelected(slotNumber - 1);
     }
 }
