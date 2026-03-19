@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class moving_logic : MonoBehaviour
 {
@@ -14,11 +15,14 @@ public class moving_logic : MonoBehaviour
     public float jetpackMaxTime = 5f;
     private float jetpackTimeLeft;
 
+    [Header("UI References")]
+    public Image fuelFill;
+
     [Header("Fall Damage Settings")]
-    public float safeFallDistance = 6f;    
-    public int fallDamageMultiplier = 5;   
-    private float highestYInAir;           
-    private PlayerHealth playerHealth;   
+    public float safeFallDistance = 6f;
+    public int fallDamageMultiplier = 5;
+    private float highestYInAir;
+    private PlayerHealth playerHealth;
 
     [Header("Digging Settings")]
     public float digDistance = 1.2f;
@@ -107,7 +111,11 @@ public class moving_logic : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, jumpSpeed);
         }
 
-        if (!isGrounded)
+        if (usingJetpack)
+        {
+            highestYInAir = transform.position.y;
+        }
+        else if (!isGrounded)
         {
             if (transform.position.y > highestYInAir)
             {
@@ -134,6 +142,11 @@ public class moving_logic : MonoBehaviour
         if (isGrounded)
         {
             highestYInAir = transform.position.y;
+        }
+
+        if (fuelFill != null)
+        {
+            fuelFill.fillAmount = GetJetpackFuelRatio();
         }
 
         if (animScript != null)
