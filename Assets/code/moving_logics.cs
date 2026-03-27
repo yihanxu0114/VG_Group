@@ -103,28 +103,26 @@ public class moving_logic : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, jumpSpeed);
         }
 
-        // ---- 修改后 ----
         bool wantsJetpack = Input.GetKey(KeyCode.Space);
         bool usingJetpack = false;
 
         if (wantsJetpack && jetpackTimeLeft > 0f)
         {
             usingJetpack = true;
-            jetpackAscending = true;                    // 标记"本次上升由背包发起"
+            jetpackAscending = true;
             rb.velocity = new Vector2(rb.velocity.x, jumpSpeed);
         }
 
-        // 只要是背包发起的上升，整段弧线都扣燃料
         if (jetpackAscending && !isGrounded)
         {
             if (rb.velocity.y > 0f)
             {
-                jetpackTimeLeft -= Time.deltaTime;      // 上升中持续扣
+                jetpackTimeLeft -= Time.deltaTime;
                 jetpackTimeLeft = Mathf.Max(jetpackTimeLeft, 0f);
             }
             else
             {
-                jetpackAscending = false;               // 开始下落，本次弧线结束
+                jetpackAscending = false;
             }
         }
 
