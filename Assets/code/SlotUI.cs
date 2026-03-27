@@ -6,17 +6,19 @@ public class SlotUI : MonoBehaviour
 {
     public Image icon;
     public TMP_Text countText;
-    public GameObject highlight;
+
+    public Color normalIconColor = Color.white;
+    public Color selectedIconColor = new Color(1f, 0.78f, 0.28f, 1f);
+
+    bool isSelected = false;
 
     public void Set(Sprite sprite, int count)
     {
-        Debug.Log("[SlotUI] Set called on " + gameObject.name + ", sprite = " + (sprite == null ? "NULL" : sprite.name));
-
         if (icon != null)
         {
             icon.sprite = sprite;
             icon.enabled = sprite != null;
-            icon.color = Color.white;
+            icon.color = isSelected ? selectedIconColor : normalIconColor;
         }
 
         if (countText != null)
@@ -28,11 +30,15 @@ public class SlotUI : MonoBehaviour
     public void Clear()
     {
         Set(null, 0);
-        if (highlight != null) highlight.SetActive(false);
     }
 
     public void SetSelected(bool on)
     {
-        if (highlight != null) highlight.SetActive(on);
+        isSelected = on;
+
+        if (icon != null && icon.enabled)
+        {
+            icon.color = on ? selectedIconColor : normalIconColor;
+        }
     }
 }

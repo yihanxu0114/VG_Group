@@ -96,7 +96,7 @@ public class GearManager : MonoBehaviour
         }
 
         GameObject newProjectile = Instantiate(bulletPrefab);
-        newProjectile.transform.position = transform.position;
+        newProjectile.transform.position = transform.position + Vector3.up * 0.5f;
         newProjectile.transform.rotation = aimPivot.rotation;
 
         Projectile projectile = newProjectile.GetComponent<Projectile>();
