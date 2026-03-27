@@ -165,6 +165,14 @@ MonoBehaviour:
   lifeTime: 3
   damage: 100
   noCollisionTime: 3
-  frames: []
+  frames:
+  - {fileID: 482299905, guid: 585f1357aeca940779afcffb3ccfb2ae, type: 3}
+  - {fileID: 1467496489, guid: 585f1357aeca940779afcffb3ccfb2ae, type: 3}
+  - {fileID: 1609166789, guid: 585f1357aeca940779afcffb3ccfb2ae, type: 3}
+  - {fileID: 610303544, guid: 585f1357aeca940779afcffb3ccfb2ae, type: 3}
+  - {fileID: -1822336723, guid: 585f1357aeca940779afcffb3ccfb2ae, type: 3}
+  - {fileID: -1095984636, guid: 585f1357aeca940779afcffb3ccfb2ae, type: 3}
+  - {fileID: -2055899038, guid: 585f1357aeca940779afcffb3ccfb2ae, type: 3}
+  - {fileID: 867106620, guid: 585f1357aeca940779afcffb3ccfb2ae, type: 3}
   fps: 12
   loop: 1

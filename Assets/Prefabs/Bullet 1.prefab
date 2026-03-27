@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 482299905, guid: 585f1357aeca940779afcffb3ccfb2ae, type: 3}
+  m_Sprite: {fileID: -1093617610, guid: 585f1357aeca940779afcffb3ccfb2ae, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -161,10 +161,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82616f147f31b4092a614f8df90a0a8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
+  speed: 50
   lifeTime: 3
   damage: 100
   noCollisionTime: 3
-  frames: []
+  frames:
+  - {fileID: -1093617610, guid: 585f1357aeca940779afcffb3ccfb2ae, type: 3}
+  - {fileID: 864680892, guid: 585f1357aeca940779afcffb3ccfb2ae, type: 3}
+  - {fileID: 2138171336, guid: 585f1357aeca940779afcffb3ccfb2ae, type: 3}
+  - {fileID: -1369742474, guid: 585f1357aeca940779afcffb3ccfb2ae, type: 3}
+  - {fileID: 485685792, guid: 585f1357aeca940779afcffb3ccfb2ae, type: 3}
+  - {fileID: -387947970, guid: 585f1357aeca940779afcffb3ccfb2ae, type: 3}
+  - {fileID: 774345760, guid: 585f1357aeca940779afcffb3ccfb2ae, type: 3}
+  - {fileID: 1140589617, guid: 585f1357aeca940779afcffb3ccfb2ae, type: 3}
   fps: 12
   loop: 1
