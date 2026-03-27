@@ -51,6 +51,9 @@ public class moving_logic : MonoBehaviour
     private Collider2D bombCol;
     private Collider2D playerCol;
 
+    [Header("jetpackAscending")]
+    private bool jetpackAscending = false;
+
     void Awake()
     {
         jetpackTimeLeft = jetpackMaxTime;
@@ -100,15 +103,29 @@ public class moving_logic : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, jumpSpeed);
         }
 
+        // ---- 修改后 ----
         bool wantsJetpack = Input.GetKey(KeyCode.Space);
         bool usingJetpack = false;
 
         if (wantsJetpack && jetpackTimeLeft > 0f)
         {
             usingJetpack = true;
-            jetpackTimeLeft -= Time.deltaTime;
-            jetpackTimeLeft = Mathf.Max(jetpackTimeLeft, 0f);
+            jetpackAscending = true;                    // 标记"本次上升由背包发起"
             rb.velocity = new Vector2(rb.velocity.x, jumpSpeed);
+        }
+
+        // 只要是背包发起的上升，整段弧线都扣燃料
+        if (jetpackAscending && !isGrounded)
+        {
+            if (rb.velocity.y > 0f)
+            {
+                jetpackTimeLeft -= Time.deltaTime;      // 上升中持续扣
+                jetpackTimeLeft = Mathf.Max(jetpackTimeLeft, 0f);
+            }
+            else
+            {
+                jetpackAscending = false;               // 开始下落，本次弧线结束
+            }
         }
 
         if (usingJetpack)
