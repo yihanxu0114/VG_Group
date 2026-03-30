@@ -1,57 +1,110 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class EnemyHealth : MonoBehaviour
 {
-    [Header("Health Setting")]
-    public int maxHealth = 30;
+    [Header("Health Settings")]
+    public int maxHealth = 100;
     private int currentHealth;
 
-    private SpriteRenderer spriteRenderer;
-    private Material originalMaterial;     
-    private Material whiteFlashMaterial;   
+    [Header("UI References")]
+    public Slider healthSlider;
+
+    [Header("Visual Feedback")]
+    public SpriteRenderer sr;
+    private Color originalColor;
+    private Coroutine visualCoroutine;
+
+    [Header("Split Settings (只在 Boss 身上勾选)")]
+    public bool canSplit = false;              
+    public GameObject smallSlimePrefab;       
+    public int minSplitCount = 2;             
+    public int maxSplitCount = 3;             
+    public float splitBurstForce = 5f;        
+
+    private bool isReallyDying = false;
 
     void Start()
     {
         currentHealth = maxHealth;
+        
+        if (sr == null) sr = GetComponent<SpriteRenderer>();
+        if (sr != null) originalColor = sr.color;
 
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        if (spriteRenderer != null)
+        if (healthSlider != null)
         {
-            originalMaterial = spriteRenderer.material;
-            whiteFlashMaterial = new Material(Shader.Find("GUI/Text Shader"));
+            healthSlider.maxValue = maxHealth;
+            healthSlider.value = currentHealth;
         }
     }
 
-    public void TakeDamage(int damageAmount)
+    public void TakeDamage(int damage)
     {
-        currentHealth -= damageAmount;
-        Debug.Log(gameObject.name + " be danmaged��get " + damageAmount + " danmage��");
+        if (isReallyDying) return; // 正在播死亡动画时无敌
 
-        if (spriteRenderer != null)
-        {
-            StartCoroutine(FlashWhite());
-        }
+        currentHealth -= damage;
+        
+        if (healthSlider != null) healthSlider.value = currentHealth;
+        
+        if (visualCoroutine != null) StopCoroutine(visualCoroutine);
+        visualCoroutine = StartCoroutine(VisualDamage());
 
         if (currentHealth <= 0)
         {
-            Die();
+            StartDeathPerformance();
         }
     }
 
-    IEnumerator FlashWhite()
+    void StartDeathPerformance()
     {
-        spriteRenderer.material = whiteFlashMaterial;
-        yield return new WaitForSeconds(0.1f);
-        if (spriteRenderer != null)
+        if (isReallyDying) return; 
+        isReallyDying = true; 
+        
+        currentHealth = 0; 
+        if (healthSlider != null) healthSlider.value = 0; 
+        
+        SlimeKingBoss bossAI = GetComponent<SlimeKingBoss>();
+        if (bossAI != null && canSplit) 
         {
-            spriteRenderer.material = originalMaterial;
+            bossAI.StartDeathSplitting();
+        }
+        else
+        {
+            ExecuteRealDeathAfterAnimation();
         }
     }
 
-    void Die()
+    public void ExecuteRealDeathAfterAnimation()
     {
-        Debug.Log(gameObject.name + " died��");
+        if (canSplit && smallSlimePrefab != null)
+        {
+            int numToSpawn = Random.Range(minSplitCount, maxSplitCount + 1); 
+            
+            for (int i = 0; i < numToSpawn; i++)
+            {
+                Vector3 spawnPos = transform.position + new Vector3(Random.Range(-0.8f, 0.8f), 0.5f, 0f);
+                GameObject newSlime = Instantiate(smallSlimePrefab, spawnPos, Quaternion.identity);
+                
+                Rigidbody2D rb = newSlime.GetComponent<Rigidbody2D>();
+                if (rb != null)
+                {
+                    Vector2 burstDir = new Vector2(Random.Range(-1f, 1f), 1f).normalized;
+                    rb.AddForce(burstDir * splitBurstForce, ForceMode2D.Impulse);
+                }
+            }
+        }
+
         Destroy(gameObject);
+    }
+
+    IEnumerator VisualDamage()
+    {
+        if (sr != null)
+        {
+            sr.color = Color.red;
+            yield return new WaitForSeconds(0.1f);
+            sr.color = originalColor;
+        }
     }
 }
