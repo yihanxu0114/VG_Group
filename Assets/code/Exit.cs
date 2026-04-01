@@ -9,21 +9,19 @@ public class PauseMenuController : MonoBehaviour
     public GameObject pauseMenuUI;
     public Button resumeButton;
     public Button exitButton;
-
-    public MonoBehaviour playerController; 
+    public MonoBehaviour playerController;
 
     private bool isPaused = false;
     private int selectedIndex = 0;
     private Button[] menuButtons;
 
-    void Awake()
-    {
-        menuButtons = new Button[] { resumeButton, exitButton };
-    }
-
     void Start()
     {
-        if (pauseMenuUI != null) pauseMenuUI.SetActive(false);
+        menuButtons = new Button[] { resumeButton, exitButton };
+
+        if (pauseMenuUI != null)
+            pauseMenuUI.SetActive(false);
+
         selectedIndex = 0;
     }
 
@@ -74,11 +72,13 @@ public class PauseMenuController : MonoBehaviour
     {
         isPaused = true;
 
-        if (playerController != null) playerController.enabled = false; 
+        if (playerController != null)
+            playerController.enabled = false;
 
         Time.timeScale = 0f;
 
-        if (pauseMenuUI != null) pauseMenuUI.SetActive(true);
+        if (pauseMenuUI != null)
+            pauseMenuUI.SetActive(true);
 
         selectedIndex = 0;
         StartCoroutine(SelectNextFrame());
@@ -90,10 +90,11 @@ public class PauseMenuController : MonoBehaviour
         SelectButton(selectedIndex);
     }
 
-    IEnumerator EnablePlayerNextFrame() 
+    IEnumerator EnablePlayerNextFrame()
     {
         yield return null;
-        if (playerController != null) playerController.enabled = true;
+        if (playerController != null)
+            playerController.enabled = true;
     }
 
     public void ResumeGame()
@@ -101,22 +102,25 @@ public class PauseMenuController : MonoBehaviour
         isPaused = false;
         Time.timeScale = 1f;
 
-        if (pauseMenuUI != null) pauseMenuUI.SetActive(false);
+        if (pauseMenuUI != null)
+            pauseMenuUI.SetActive(false);
 
         if (EventSystem.current != null)
             EventSystem.current.SetSelectedGameObject(null);
 
-        StartCoroutine(EnablePlayerNextFrame()); 
+        StartCoroutine(EnablePlayerNextFrame());
     }
 
     public void QuitGame()
-{
-    Time.timeScale = 1f;
+    {
+        Debug.Log("QuitGame clicked");
 
-#if UNITY_EDITOR
-    UnityEditor.EditorApplication.isPlaying = false;
-#else
-    SceneManager.LoadScene("MainMenu"); 
-#endif
-}
+        isPaused = false;
+        Time.timeScale = 1f;
+
+        if (EventSystem.current != null)
+            EventSystem.current.SetSelectedGameObject(null);
+
+        SceneManager.LoadScene("MainMenu");
+    }
 }
