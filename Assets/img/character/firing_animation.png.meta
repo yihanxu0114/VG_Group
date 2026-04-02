@@ -43,7 +43,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -95,7 +95,196 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: firing_animation_0
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 45
+        width: 90
+        height: 152
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d1a1b214e236ee94ca4fd184bb6f1a05
+      internalID: -471152608
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: firing_animation_2
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 45
+        width: 90
+        height: 152
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 77154496608591849b60dd3acce82d9a
+      internalID: -1763813604
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: firing_animation_3
+      rect:
+        serializedVersion: 2
+        x: 298
+        y: 45
+        width: 90
+        height: 152
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e60b11bd29d69ad48b6c288e553948fe
+      internalID: -310192311
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: firing_animation_4
+      rect:
+        serializedVersion: 2
+        x: 414
+        y: 45
+        width: 90
+        height: 152
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a153feae8eae5444bec3433c2d711c4
+      internalID: -350814457
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: firing_animation_5
+      rect:
+        serializedVersion: 2
+        x: 530
+        y: 45
+        width: 90
+        height: 152
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 417e4ac31b2c0554ea95bfab073dd7c4
+      internalID: -1099401629
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: firing_animation_6
+      rect:
+        serializedVersion: 2
+        x: 646
+        y: 45
+        width: 90
+        height: 152
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cf948953946d5de4d988ba5d772bf6e5
+      internalID: -466609573
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: firing_animation_7
+      rect:
+        serializedVersion: 2
+        x: 762
+        y: 45
+        width: 90
+        height: 152
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2c72697777adfa24b9375522819dbc4f
+      internalID: -2079638862
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: firing_animation_8
+      rect:
+        serializedVersion: 2
+        x: 878
+        y: 45
+        width: 94
+        height: 152
+      alignment: 9
+      pivot: {x: 0.4785, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3ce8a5f1993cf97488f966a300b87228
+      internalID: -395115882
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: firing_animation_10
+      rect:
+        serializedVersion: 2
+        x: 1000
+        y: 45
+        width: 90
+        height: 152
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9500b8c1479ffbe4c80bffeaeaff56a1
+      internalID: 1914875859
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -106,7 +295,19 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      firing_animation_0: -471152608
+      firing_animation_1: -1539730562
+      firing_animation_10: 1914875859
+      firing_animation_11: -98966064
+      firing_animation_2: -1763813604
+      firing_animation_3: -310192311
+      firing_animation_4: -350814457
+      firing_animation_5: -1099401629
+      firing_animation_6: -466609573
+      firing_animation_7: -2079638862
+      firing_animation_8: -395115882
+      firing_animation_9: 635455609
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
