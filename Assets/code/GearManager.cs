@@ -49,11 +49,13 @@ public class GearManager : MonoBehaviour
 
     SpriteRenderer _sr;
     PlayerInventory _inv;
+    Sprite_left_right_shift _spriteController; // ← 新增引用
 
     void Awake()
     {
         _sr = GetComponentInChildren<SpriteRenderer>();
         _inv = GetComponent<PlayerInventory>();
+        _spriteController = GetComponentInChildren<Sprite_left_right_shift>(); // ← 自动查找
     }
 
     public void UseCurrentGear(int slot)
@@ -70,6 +72,7 @@ public class GearManager : MonoBehaviour
         else if (slot == 8) Shoot(bulletSlot8, bulletName8, ref _nextShoot8Time, shootCooldown8);
         else Debug.Log($"No gear assigned for slot {slot}");
     }
+
     void Shoot(GameObject bulletPrefab, string bulletName, ref float nextShootTime, float cooldown)
     {
         if (bulletPrefab == null)
@@ -85,9 +88,7 @@ public class GearManager : MonoBehaviour
         }
 
         if (Time.time < nextShootTime)
-        {
             return;
-        }
 
         if (!TryConsumeItem(bulletName, 1))
         {
@@ -107,6 +108,10 @@ public class GearManager : MonoBehaviour
         }
 
         nextShootTime = Time.time + cooldown;
+
+        // ── 触发射击动画（三种子弹共用同一套动画）──
+        if (_spriteController != null)
+            _spriteController.TriggerShoot();
 
         Debug.Log("Shot bullet: " + bulletPrefab.name);
     }
@@ -188,13 +193,9 @@ public class GearManager : MonoBehaviour
         float facing = 1f;
 
         if (aimPivot != null)
-        {
             facing = aimPivot.right.x < 0 ? -1f : 1f;
-        }
         else if (_sr != null && _sr.flipX)
-        {
             facing = -1f;
-        }
 
         Vector3 spawnPos =
             transform.position +

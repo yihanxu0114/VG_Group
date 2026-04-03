@@ -17,14 +17,19 @@ public class Sprite_left_right_shift : MonoBehaviour
     public Sprite[] jetpackFrames;
     public float jetpackFrameRate = 10f;
     [Tooltip("启动动画的帧数，这些帧只播放一次，之后循环播放剩余帧")]
-    public int jetpackIntroFrames = 0; // 例如：如果设为3，则前3帧只播放一次
+    public int jetpackIntroFrames = 0;
 
-    // ================= NEW ADDITION: DIGGING ANIMATION =================
     [Header("Digging Animation")]
-    public Sprite[] digSideFrames; // from dig_00 to dig_07
-    public Sprite[] digDownFrames; 
+    public Sprite[] digSideFrames;
+    public Sprite[] digDownFrames;
     public float digFrameRate = 12f;
-    // ===================================================================
+
+    // ================= SHOOTING ANIMATION =================
+    [Header("Shooting Animation")]
+    [Tooltip("发射动画帧，三种子弹共用，只播放一遍")]
+    public Sprite[] shootFrames;
+    public float shootFrameRate = 20f;
+    // ======================================================
 
     private SpriteRenderer sr;
     private const float deadzone = 0.01f;
@@ -40,10 +45,16 @@ public class Sprite_left_right_shift : MonoBehaviour
     private int currentFrame = 0;
     private float jetpackFrameTimer = 0f;
     private int currentJetpackFrame = 0;
-    private bool hasPlayedJetpackIntro = false; // 是否已播放完启动动画
+    private bool hasPlayedJetpackIntro = false;
 
     private float digTimer = 0f;
     private int currentDigFrame = 0;
+
+    // ---- shooting state ----
+    private bool isShooting = false;
+    private float shootTimer = 0f;
+    private int currentShootFrame = 0;
+    // ------------------------
 
     void Awake()
     {
@@ -61,7 +72,14 @@ public class Sprite_left_right_shift : MonoBehaviour
             return;
         }
 
-        // Priority 1: jetpack animation
+        // Priority 1: Shooting (play once, then auto-exit)
+        if (isShooting)
+        {
+            HandleShootAnimation();
+            return;
+        }
+
+        // Priority 2: jetpack animation
         if (isUsingJetpack)
         {
             if (jetpackFrames != null && jetpackFrames.Length > 0)
@@ -70,48 +88,33 @@ public class Sprite_left_right_shift : MonoBehaviour
                 if (jetpackFrameTimer >= 1f / jetpackFrameRate)
                 {
                     jetpackFrameTimer = 0f;
-                    
-                    // 如果还在播放启动动画
+
                     if (!hasPlayedJetpackIntro && jetpackIntroFrames > 0)
                     {
                         currentJetpackFrame++;
-                        
-                        // 如果启动动画播放完毕
                         if (currentJetpackFrame >= jetpackIntroFrames)
                         {
                             hasPlayedJetpackIntro = true;
-                            // 从循环动画的起始帧开始（如果有启动帧）
-                            if (jetpackIntroFrames < jetpackFrames.Length)
-                            {
-                                currentJetpackFrame = jetpackIntroFrames;
-                            }
-                            else
-                            {
-                                // 如果启动帧数 >= 总帧数，从头循环
-                                currentJetpackFrame = 0;
-                            }
+                            currentJetpackFrame = jetpackIntroFrames < jetpackFrames.Length
+                                ? jetpackIntroFrames
+                                : 0;
                         }
                     }
                     else
                     {
-                        // 播放循环动画
                         currentJetpackFrame++;
-                        
-                        // 循环范围：从 jetpackIntroFrames 到最后一帧
                         int loopStart = Mathf.Min(jetpackIntroFrames, jetpackFrames.Length - 1);
                         if (currentJetpackFrame >= jetpackFrames.Length)
-                        {
                             currentJetpackFrame = loopStart;
-                        }
                     }
-                    
+
                     sr.sprite = jetpackFrames[currentJetpackFrame];
                 }
             }
             return;
         }
 
-        // Priority 2: jumping sprite
+        // Priority 3: jumping sprite
         if (isJumping)
         {
             if (jumpSprite != null)
@@ -119,7 +122,7 @@ public class Sprite_left_right_shift : MonoBehaviour
             return;
         }
 
-        // Priority 3: walking animation
+        // Priority 4: walking animation
         if (isWalking && walkingFrames != null && walkingFrames.Length > 0)
         {
             frameTimer += Time.deltaTime;
@@ -129,6 +132,33 @@ public class Sprite_left_right_shift : MonoBehaviour
                 currentFrame = (currentFrame + 1) % walkingFrames.Length;
                 sr.sprite = walkingFrames[currentFrame];
             }
+        }
+    }
+
+    // ── 每帧推进射击动画，播完最后一帧后自动结束 ──
+    void HandleShootAnimation()
+    {
+        if (shootFrames == null || shootFrames.Length == 0)
+        {
+            isShooting = false;
+            return;
+        }
+
+        shootTimer += Time.deltaTime;
+        if (shootTimer >= 1f / shootFrameRate)
+        {
+            shootTimer = 0f;
+            currentShootFrame++;
+
+            if (currentShootFrame >= shootFrames.Length)
+            {
+                // 动画播完，退出射击状态
+                isShooting = false;
+                currentShootFrame = 0;
+                return;
+            }
+
+            sr.sprite = shootFrames[currentShootFrame];
         }
     }
 
@@ -148,12 +178,21 @@ public class Sprite_left_right_shift : MonoBehaviour
         }
     }
 
+    // ── 外部调用：触发一次射击动画 ──
+    public void TriggerShoot()
+    {
+        if (isWalking || isJumping || isUsingJetpack || isDigging) return;
+
+        isShooting = true;
+        currentShootFrame = 0;
+        shootTimer = 0f;
+        sr.sprite = shootFrames[0]; // 立即显示第一帧
+    }
+
     public void SetFacing(float x)
     {
         if (Mathf.Abs(x) > deadzone)
-        {
             isWalking = true;
-        }
 
         if (x > deadzone)
             sr.flipX = false;
@@ -162,10 +201,8 @@ public class Sprite_left_right_shift : MonoBehaviour
         else
         {
             isWalking = false;
-            if (!isJumping && !isUsingJetpack && !isDigging)
-            {
+            if (!isJumping && !isUsingJetpack && !isDigging && !isShooting)
                 sr.sprite = rightDavid;
-            }
             currentFrame = 0;
             frameTimer = 0f;
         }
@@ -178,18 +215,16 @@ public class Sprite_left_right_shift : MonoBehaviour
 
     public void SetJetpack(bool usingJetpack)
     {
-        // 如果是开始使用喷气背包，重置动画状态
         if (usingJetpack && !isUsingJetpack)
         {
             currentJetpackFrame = 0;
             jetpackFrameTimer = 0f;
             hasPlayedJetpackIntro = false;
-            
-            // 立即显示第一帧
+
             if (jetpackFrames != null && jetpackFrames.Length > 0)
                 sr.sprite = jetpackFrames[0];
         }
-        
+
         isUsingJetpack = usingJetpack;
     }
 
@@ -198,21 +233,18 @@ public class Sprite_left_right_shift : MonoBehaviour
         isDigging = digging;
         isDiggingDown = down;
 
-        // every time we start digging, reset the animation to the first frame and timer
         if (digging)
         {
             currentDigFrame = 0;
             digTimer = 0f;
 
-            // set the sprite to the first frame of the appropriate digging animation
             Sprite[] currentAnim = isDiggingDown ? digDownFrames : digSideFrames;
             if (currentAnim != null && currentAnim.Length > 0)
                 sr.sprite = currentAnim[0];
         }
         else
         {
-            // when we stop digging, reset to idle sprite if not doing anything else
-            if (!isJumping && !isUsingJetpack && !isWalking)
+            if (!isJumping && !isUsingJetpack && !isWalking && !isShooting)
                 sr.sprite = rightDavid;
         }
     }
