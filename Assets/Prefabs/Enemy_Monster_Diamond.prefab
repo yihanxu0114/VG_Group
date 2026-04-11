@@ -204,4 +204,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c022957f9d23e0b44af40fef88950e76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 150
+  maxHealth: 120
+  healthSlider: {fileID: 0}
+  sr: {fileID: 0}
+  canSplit: 0
+  smallSlimePrefab: {fileID: 0}
+  minSplitCount: 2
+  maxSplitCount: 3
+  splitBurstForce: 5

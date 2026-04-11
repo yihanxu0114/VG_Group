@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   noCollisionTime: 2
-  damage: 100
+  damage: 250
   fuseTime: 5
   radius: 15
   obstacleMask:
