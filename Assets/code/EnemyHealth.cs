@@ -16,19 +16,19 @@ public class EnemyHealth : MonoBehaviour
     private Color originalColor;
     private Coroutine visualCoroutine;
 
-    [Header("Split Settings (只在 Boss 身上勾选)")]
-    public bool canSplit = false;              
-    public GameObject smallSlimePrefab;       
-    public int minSplitCount = 2;             
-    public int maxSplitCount = 3;             
-    public float splitBurstForce = 5f;        
+    [Header("Split Settings (Only on Boss)")]
+    public bool canSplit = false;
+    public GameObject smallSlimePrefab;
+    public int minSplitCount = 2;
+    public int maxSplitCount = 3;
+    public float splitBurstForce = 5f;
 
     private bool isReallyDying = false;
 
     void Start()
     {
         currentHealth = maxHealth;
-        
+
         if (sr == null) sr = GetComponent<SpriteRenderer>();
         if (sr != null) originalColor = sr.color;
 
@@ -41,12 +41,12 @@ public class EnemyHealth : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if (isReallyDying) return; // 正在播死亡动画时无敌
+        if (isReallyDying) return; 
 
         currentHealth -= damage;
-        
+
         if (healthSlider != null) healthSlider.value = currentHealth;
-        
+
         if (visualCoroutine != null) StopCoroutine(visualCoroutine);
         visualCoroutine = StartCoroutine(VisualDamage());
 
@@ -58,14 +58,14 @@ public class EnemyHealth : MonoBehaviour
 
     void StartDeathPerformance()
     {
-        if (isReallyDying) return; 
-        isReallyDying = true; 
-        
-        currentHealth = 0; 
-        if (healthSlider != null) healthSlider.value = 0; 
-        
+        if (isReallyDying) return;
+        isReallyDying = true;
+
+        currentHealth = 0;
+        if (healthSlider != null) healthSlider.value = 0;
+
         SlimeKingBoss bossAI = GetComponent<SlimeKingBoss>();
-        if (bossAI != null && canSplit) 
+        if (bossAI != null && canSplit)
         {
             bossAI.StartDeathSplitting();
         }
@@ -79,13 +79,13 @@ public class EnemyHealth : MonoBehaviour
     {
         if (canSplit && smallSlimePrefab != null)
         {
-            int numToSpawn = Random.Range(minSplitCount, maxSplitCount + 1); 
-            
+            int numToSpawn = Random.Range(minSplitCount, maxSplitCount + 1);
+
             for (int i = 0; i < numToSpawn; i++)
             {
                 Vector3 spawnPos = transform.position + new Vector3(Random.Range(-0.8f, 0.8f), 0.5f, 0f);
                 GameObject newSlime = Instantiate(smallSlimePrefab, spawnPos, Quaternion.identity);
-                
+
                 Rigidbody2D rb = newSlime.GetComponent<Rigidbody2D>();
                 if (rb != null)
                 {

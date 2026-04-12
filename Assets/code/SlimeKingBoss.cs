@@ -8,13 +8,13 @@ public class SlimeKingBoss : MonoBehaviour
     public State currentState = State.Walk;
 
     [Header("Animation Settings")]
-    public Sprite[] walkFrames;      
-    public Sprite[] attackFrames;    
-    public Sprite[] splitFrames;    
-    
+    public Sprite[] walkFrames;
+    public Sprite[] attackFrames;
+    public Sprite[] splitFrames;
+
     public float frameRate = 0.15f;
-    public float splitFrameRate = 0.08f; 
-    
+    public float splitFrameRate = 0.08f;
+
     private int currentFrame;
     private float animTimer;
     private SpriteRenderer spriteRenderer;
@@ -24,14 +24,20 @@ public class SlimeKingBoss : MonoBehaviour
     public bool movingLeft = true;
 
     [Header("Attack Settings")]
-    public float attackRange = 3.5f;    
-    public float attackCooldown = 2f;   
-    public int attackDamage = 25;       
-    public int damageFrame = 2;         
-    
+    public float attackRange = 3.5f;
+    public float attackCooldown = 2f;
+    public int attackDamage = 25;
+    public int damageFrame = 2;
+
     [Header("Knockback Settings")]
-    public float knockbackForceX = 15f; 
+    public float knockbackForceX = 15f;
     public float knockbackForceY = 8f;
+
+    [Header("Split Shrink Effect")]
+    public float targetSplitScale = 0.4f; 
+    private Vector3 originalScale;       
+    private float splitTimer = 0f;     
+    private float splitDuration = 1f;     
 
     private float attackTimer;
     private bool hasDamagedThisAnim;
@@ -42,7 +48,9 @@ public class SlimeKingBoss : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
-        
+
+        originalScale = transform.localScale;
+
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj != null) playerTransform = playerObj.transform;
     }
@@ -51,7 +59,11 @@ public class SlimeKingBoss : MonoBehaviour
     {
         if (currentState == State.Split)
         {
-            PlayAnimation(); 
+            splitTimer += Time.deltaTime;
+            float progress = Mathf.Clamp01(splitTimer / splitDuration);
+            transform.localScale = Vector3.Lerp(originalScale, originalScale * targetSplitScale, progress);
+
+            PlayAnimation();
             return;
         }
 
@@ -66,30 +78,34 @@ public class SlimeKingBoss : MonoBehaviour
     {
         if (currentState == State.Walk)
         {
-            // 正常巡逻
             rb.velocity = new Vector2(movingLeft ? -moveSpeed : moveSpeed, rb.velocity.y);
         }
         else
         {
-            // 攻击和分裂状态下，停在原地
             rb.velocity = new Vector2(0, rb.velocity.y);
         }
     }
 
     public void StartDeathSplitting()
     {
-        if (currentState == State.Split) return; 
-        
+        if (currentState == State.Split) return;
+
         currentState = State.Split;
         currentFrame = 0;
         animTimer = 0;
-        
+
+        if (splitFrames != null && splitFrames.Length > 0)
+        {
+            splitDuration = splitFrames.Length * splitFrameRate;
+        }
+        splitTimer = 0f;
+
         if (rb != null)
         {
             rb.velocity = Vector2.zero;
-            rb.bodyType = RigidbodyType2D.Kinematic; 
+            rb.bodyType = RigidbodyType2D.Kinematic;
         }
-        
+
         Collider2D col = GetComponent<Collider2D>();
         if (col != null) col.enabled = false;
     }
@@ -99,7 +115,7 @@ public class SlimeKingBoss : MonoBehaviour
         if (currentState == State.Attack || currentState == State.Split) return;
 
         float distance = Vector2.Distance(transform.position, playerTransform.position);
-        bool isPlayerInFront = (movingLeft && playerTransform.position.x < transform.position.x) || 
+        bool isPlayerInFront = (movingLeft && playerTransform.position.x < transform.position.x) ||
                                (!movingLeft && playerTransform.position.x > transform.position.x);
 
         if (isPlayerInFront && distance <= attackRange && attackTimer <= 0)
@@ -110,11 +126,11 @@ public class SlimeKingBoss : MonoBehaviour
 
     void ChangeState(State newState)
     {
-        if (currentState == State.Split) return; 
+        if (currentState == State.Split) return;
         currentState = newState;
         currentFrame = 0;
         animTimer = 0;
-        hasDamagedThisAnim = false; 
+        hasDamagedThisAnim = false;
     }
 
     void PlayAnimation()
@@ -130,10 +146,10 @@ public class SlimeKingBoss : MonoBehaviour
         {
             currentAnimArray = attackFrames;
         }
-        else 
+        else
         {
             currentAnimArray = splitFrames;
-            currentFrameRate = splitFrameRate; 
+            currentFrameRate = splitFrameRate;
         }
 
         if (currentAnimArray == null || currentAnimArray.Length == 0) return;
@@ -151,26 +167,26 @@ public class SlimeKingBoss : MonoBehaviour
                     EnemyHealth healthScript = GetComponent<EnemyHealth>();
                     if (healthScript != null)
                     {
-                        healthScript.ExecuteRealDeathAfterAnimation(); 
+                        healthScript.ExecuteRealDeathAfterAnimation();
                     }
-                    return; 
+                    return;
                 }
-                
+
                 currentFrame = 0;
                 if (currentState == State.Attack)
                 {
-                    attackTimer = attackCooldown; 
-                    ChangeState(State.Walk); 
+                    attackTimer = attackCooldown;
+                    ChangeState(State.Walk);
                 }
             }
 
             if (spriteRenderer != null)
             {
                 spriteRenderer.sprite = currentAnimArray[currentFrame];
-                
+
                 if (currentState != State.Split)
                 {
-                    spriteRenderer.flipX = !movingLeft; 
+                    spriteRenderer.flipX = !movingLeft;
                 }
             }
 
@@ -186,7 +202,7 @@ public class SlimeKingBoss : MonoBehaviour
     void ExecuteAttack()
     {
         float distance = Vector2.Distance(transform.position, playerTransform.position);
-        bool isPlayerInFront = (movingLeft && playerTransform.position.x < transform.position.x) || 
+        bool isPlayerInFront = (movingLeft && playerTransform.position.x < transform.position.x) ||
                                (!movingLeft && playerTransform.position.x > transform.position.x);
 
         if (isPlayerInFront && distance <= attackRange)
@@ -197,7 +213,7 @@ public class SlimeKingBoss : MonoBehaviour
             Rigidbody2D playerRb = playerTransform.GetComponent<Rigidbody2D>();
             if (playerRb != null)
             {
-                playerRb.velocity = Vector2.zero; 
+                playerRb.velocity = Vector2.zero;
                 float pushDirection = movingLeft ? -1f : 1f;
                 Vector2 knockbackVector = new Vector2(pushDirection * knockbackForceX, knockbackForceY);
                 playerRb.AddForce(knockbackVector, ForceMode2D.Impulse);
@@ -205,7 +221,7 @@ public class SlimeKingBoss : MonoBehaviour
                 moving_logic movementScript = playerTransform.GetComponent<moving_logic>();
                 if (movementScript != null)
                 {
-                    movementScript.stunTimer = 0.3f; 
+                    movementScript.stunTimer = 0.3f;
                 }
             }
         }
