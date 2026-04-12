@@ -1,0 +1,120 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "E:\\GitHub\\VG_Group\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{B263A131-AE44-E519-E06B-C4F306B1813E}|Assembly-CSharp.csproj|E:\\GitHub\\VG_Group\\assets\\code\\dragonboss.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B263A131-AE44-E519-E06B-C4F306B1813E}|Assembly-CSharp.csproj|solutionrelative:assets\\code\\dragonboss.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B263A131-AE44-E519-E06B-C4F306B1813E}|Assembly-CSharp.csproj|E:\\GitHub\\VG_Group\\assets\\code\\enemyhealth.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B263A131-AE44-E519-E06B-C4F306B1813E}|Assembly-CSharp.csproj|solutionrelative:assets\\code\\enemyhealth.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B263A131-AE44-E519-E06B-C4F306B1813E}|Assembly-CSharp.csproj|e:\\github\\vg_group\\assets\\code\\bossmissile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B263A131-AE44-E519-E06B-C4F306B1813E}|Assembly-CSharp.csproj|solutionrelative:assets\\code\\bossmissile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B263A131-AE44-E519-E06B-C4F306B1813E}|Assembly-CSharp.csproj|e:\\github\\vg_group\\assets\\code\\slimekingboss.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B263A131-AE44-E519-E06B-C4F306B1813E}|Assembly-CSharp.csproj|solutionrelative:assets\\code\\slimekingboss.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B263A131-AE44-E519-E06B-C4F306B1813E}|Assembly-CSharp.csproj|E:\\GitHub\\VG_Group\\assets\\code\\moving_logics.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B263A131-AE44-E519-E06B-C4F306B1813E}|Assembly-CSharp.csproj|solutionrelative:assets\\code\\moving_logics.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B263A131-AE44-E519-E06B-C4F306B1813E}|Assembly-CSharp.csproj|E:\\GitHub\\VG_Group\\assets\\code\\playerhealth.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B263A131-AE44-E519-E06B-C4F306B1813E}|Assembly-CSharp.csproj|solutionrelative:assets\\code\\playerhealth.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 5,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "BossMissile.cs",
+              "DocumentMoniker": "E:\\GitHub\\VG_Group\\Assets\\code\\BossMissile.cs",
+              "RelativeDocumentMoniker": "Assets\\code\\BossMissile.cs",
+              "ToolTip": "E:\\GitHub\\VG_Group\\Assets\\code\\BossMissile.cs",
+              "RelativeToolTip": "Assets\\code\\BossMissile.cs",
+              "ViewState": "AgIAAD4AAAAAAAAAAAAQwE0AAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-12T19:20:39.762Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "SlimeKingBoss.cs",
+              "DocumentMoniker": "E:\\GitHub\\VG_Group\\Assets\\code\\SlimeKingBoss.cs",
+              "RelativeDocumentMoniker": "Assets\\code\\SlimeKingBoss.cs",
+              "ToolTip": "E:\\GitHub\\VG_Group\\Assets\\code\\SlimeKingBoss.cs",
+              "RelativeToolTip": "Assets\\code\\SlimeKingBoss.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAADwvx4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-12T18:11:36.541Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "EnemyHealth.cs",
+              "DocumentMoniker": "E:\\GitHub\\VG_Group\\Assets\\code\\EnemyHealth.cs",
+              "RelativeDocumentMoniker": "Assets\\code\\EnemyHealth.cs",
+              "ToolTip": "E:\\GitHub\\VG_Group\\Assets\\code\\EnemyHealth.cs",
+              "RelativeToolTip": "Assets\\code\\EnemyHealth.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAADwvx4AAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-12T18:06:22.421Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "PlayerHealth.cs",
+              "DocumentMoniker": "E:\\GitHub\\VG_Group\\Assets\\code\\PlayerHealth.cs",
+              "RelativeDocumentMoniker": "Assets\\code\\PlayerHealth.cs",
+              "ToolTip": "E:\\GitHub\\VG_Group\\Assets\\code\\PlayerHealth.cs",
+              "RelativeToolTip": "Assets\\code\\PlayerHealth.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-19T22:35:38.313Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "moving_logics.cs",
+              "DocumentMoniker": "E:\\GitHub\\VG_Group\\Assets\\code\\moving_logics.cs",
+              "RelativeDocumentMoniker": "Assets\\code\\moving_logics.cs",
+              "ToolTip": "E:\\GitHub\\VG_Group\\Assets\\code\\moving_logics.cs",
+              "RelativeToolTip": "Assets\\code\\moving_logics.cs",
+              "ViewState": "AgIAANMAAAAAAAAAAAAUwOEAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-19T22:24:30.096Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "DragonBoss.cs",
+              "DocumentMoniker": "E:\\GitHub\\VG_Group\\Assets\\code\\DragonBoss.cs",
+              "RelativeDocumentMoniker": "Assets\\code\\DragonBoss.cs",
+              "ToolTip": "E:\\GitHub\\VG_Group\\Assets\\code\\DragonBoss.cs",
+              "RelativeToolTip": "Assets\\code\\DragonBoss.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-14T22:51:40.206Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

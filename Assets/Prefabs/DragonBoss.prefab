@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 2831195277563174667}
   m_Layer: 8
   m_Name: DragonBoss
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -151,8 +151,14 @@ MonoBehaviour:
   movingLeft: 0
   missilePrefab: {fileID: 157729412353000367, guid: 4a17e2ba5a1163f4b8905700a4785f84, type: 3}
   firePoint: {fileID: 2436229527829088350}
-  attackCooldown: 1
+  initialAttackCooldown: 1.5
+  initialMissileSpeed: 8
   fireFrame: 1
+  lightningPrefab: {fileID: 7471895088260505351, guid: edd609fdfc365e84e84c4e09c13a07c2, type: 3}
+  lightningCount: 9
+  lightningSpacing: 3
+  cooldownReduction: 0.4
+  speedIncrease: 2
 --- !u!60 &8640116698782008426
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -774,7 +780,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c022957f9d23e0b44af40fef88950e76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 1500
+  maxHealth: 100
+  currentHealth: 0
   healthSlider: {fileID: 0}
   sr: {fileID: 0}
   canSplit: 0
