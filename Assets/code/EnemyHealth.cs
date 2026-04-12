@@ -16,7 +16,7 @@ public class EnemyHealth : MonoBehaviour
     private Color originalColor;
     private Coroutine visualCoroutine;
 
-    [Header("Split Settings (只在 Boss 身上勾选)")]
+    [Header("Split Settings (Only on Boss)")]
     public bool canSplit = false;              
     public GameObject smallSlimePrefab;       
     public int minSplitCount = 2;             
@@ -41,7 +41,7 @@ public class EnemyHealth : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if (isReallyDying) return; // 正在播死亡动画时无敌
+        if (isReallyDying) return; 
 
         currentHealth -= damage;
         
