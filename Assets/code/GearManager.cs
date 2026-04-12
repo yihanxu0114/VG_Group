@@ -49,13 +49,13 @@ public class GearManager : MonoBehaviour
 
     SpriteRenderer _sr;
     PlayerInventory _inv;
-    Sprite_left_right_shift _spriteController; // ← 新增引用
+    Sprite_left_right_shift _spriteController; 
 
     void Awake()
     {
         _sr = GetComponentInChildren<SpriteRenderer>();
         _inv = GetComponent<PlayerInventory>();
-        _spriteController = GetComponentInChildren<Sprite_left_right_shift>(); // ← 自动查找
+        _spriteController = GetComponentInChildren<Sprite_left_right_shift>(); 
     }
 
     public void UseCurrentGear(int slot)
@@ -109,7 +109,6 @@ public class GearManager : MonoBehaviour
 
         nextShootTime = Time.time + cooldown;
 
-        // ── 触发射击动画（三种子弹共用同一套动画）──
         if (_spriteController != null)
             _spriteController.TriggerShoot();
 

@@ -8,16 +8,16 @@ public class BossMissile : MonoBehaviour
     [HideInInspector] public Vector2 direction;
 
     [Header("Animation Setting")]
-    public Sprite[] frames;          // 拖入动画帧（按顺序）
-    public int fps = 12;             // 每秒播放帧数（可自由设置）
-    public bool loop = true;         // 是否循环播放
+    public Sprite[] frames;          
+    public int fps = 12;             
+    public bool loop = true;      
 
     private Rigidbody2D rb;
     private SpriteRenderer sr;
 
     private int currentFrame = 0;
     private float frameTimer = 0f;
-    private float frameDuration;     // 每帧持续时间
+    private float frameDuration;   
 
     void Start()
     {
@@ -29,10 +29,8 @@ public class BossMissile : MonoBehaviour
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, 0, angle);
 
-        // 根据 fps 计算每帧时长
         frameDuration = (fps > 0) ? 1f / fps : 0.1f;
 
-        // 初始化第一帧
         if (frames != null && frames.Length > 0)
             sr.sprite = frames[0];
     }
@@ -61,9 +59,9 @@ public class BossMissile : MonoBehaviour
             if (currentFrame >= frames.Length)
             {
                 if (loop)
-                    currentFrame = 0;       // 循环：回到第一帧
+                    currentFrame = 0;      
                 else
-                    currentFrame = frames.Length - 1; // 不循环：停在最后一帧
+                    currentFrame = frames.Length - 1;
             }
 
             sr.sprite = frames[currentFrame];

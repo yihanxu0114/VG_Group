@@ -3,15 +3,14 @@ using UnityEngine;
 public class EnemyMonster : MonoBehaviour
 {
     [Header("Anim Setting")]
-    public Sprite[] walkFrames;      // walk animation frames
-    public Sprite[] attackFrames;    // attack animation frames
-    public float frameRate = 0.15f;  // animation frame rate (time per frame)
+    public Sprite[] walkFrames;      
+    public Sprite[] attackFrames;    
+    public float frameRate = 0.15f;  
 
     private int currentFrame;
     private float animTimer;
     private SpriteRenderer spriteRenderer;
 
-    // if true, play attack animation and stop moving; if false, play walk animation and move
     private bool isAttacking = false;
 
     [Header("Moving Setting")]
@@ -44,12 +43,11 @@ public class EnemyMonster : MonoBehaviour
 
     void FixedUpdate()
     {
-        // if currently attacking, stop horizontal movement; otherwise, keep moving
         if (isAttacking)
         {
             rb.velocity = new Vector2(0, rb.velocity.y);
         }
-        else // if not attacking, keep moving
+        else 
         {
             Move();
         }
@@ -59,13 +57,11 @@ public class EnemyMonster : MonoBehaviour
     {
         if (movingLeft)
         {
-            // left walk
             rb.velocity = new Vector2(-speed, rb.velocity.y);
             spriteRenderer.flipX = true;
         }
         else
         {
-            // right walk
             rb.velocity = new Vector2(speed, rb.velocity.y);
             spriteRenderer.flipX = false;
         }
@@ -102,10 +98,8 @@ public class EnemyMonster : MonoBehaviour
             {
                 if (targetPlayer != null)
                 {
-                    // 1. calc distance
                     float distance = Vector2.Distance(transform.position, targetPlayer.transform.position);
 
-                    // 2. calc direction (is player in front?)
                     bool isPlayerInFront = false;
                     if (movingLeft && targetPlayer.transform.position.x < transform.position.x)
                     {
@@ -116,7 +110,6 @@ public class EnemyMonster : MonoBehaviour
                         isPlayerInFront = true;
                     }
 
-                    // 3. calc height difference (is player on top?)
                     float heightDifference = targetPlayer.transform.position.y - transform.position.y;
                     bool isNotOnTop = heightDifference < 0.8f;
                     if (distance <= attackRange && isPlayerInFront && isNotOnTop)
@@ -125,7 +118,7 @@ public class EnemyMonster : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log("Monster's Attack Miss£¡");
+                        Debug.Log("Monster's Attack Missï¿½ï¿½");
                     }
                 }
 
@@ -137,11 +130,9 @@ public class EnemyMonster : MonoBehaviour
     {
         if (targetPlayer == null) return;
 
-        // 1. deal damage
         PlayerHealth playerHealth = targetPlayer.GetComponent<PlayerHealth>();
         if (playerHealth != null) playerHealth.TakeDamage(damageAmount);
 
-        // 2. handle knockback: get the Rigidbody2D component from the target player object and apply a knockback force if it exists
         Rigidbody2D playerRb = targetPlayer.GetComponent<Rigidbody2D>();
         if (playerRb != null)
         {
@@ -159,7 +150,6 @@ public class EnemyMonster : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // 1. hit the player (only trigger attack if player is in front and not on top)
         if (collision.gameObject.CompareTag("Player"))
         {
             GameObject player = collision.gameObject;
@@ -187,10 +177,9 @@ public class EnemyMonster : MonoBehaviour
             }
             else
             {
-                Debug.Log("Monster's Attack Miss£¡");
+                Debug.Log("Monster's Attack Missï¿½ï¿½");
             }
         }
-        // 2. hit a wall or obstacle, reverse direction
         else
         {
             Vector2 contactNormal = collision.contacts[0].normal;

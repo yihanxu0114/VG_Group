@@ -21,7 +21,6 @@ public class ParallaxBackground : MonoBehaviour
     {
         Vector3 delta = cameraTransform.position - lastCameraPos;
 
-        // ✅ 方向反转（由 -= 改为 +=）
         transform.position += new Vector3(
             delta.x * parallaxEffectMultiplier.x, 
             delta.y * parallaxEffectMultiplier.y, 

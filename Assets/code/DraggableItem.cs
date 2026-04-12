@@ -22,15 +22,15 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     // 1. start dragging
     public void OnBeginDrag(PointerEventData eventData)
     {
-        originalPosition = rectTransform.position; // record original position in case we need to snap back
-        canvasGroup.alpha = 0.6f; // become semi-transparent to indicate dragging
-        canvasGroup.blocksRaycasts = false; // important: allow raycasts to pass through so we can detect drop targets
+        originalPosition = rectTransform.position; 
+        canvasGroup.alpha = 0.6f; 
+        canvasGroup.blocksRaycasts = false; 
     }
 
     // 2. during dragging
     public void OnDrag(PointerEventData eventData)
     {
-        rectTransform.position = Input.mousePosition; // let the item follow the mouse cursor
+        rectTransform.position = Input.mousePosition; 
     }
 
     // 3. end dragging

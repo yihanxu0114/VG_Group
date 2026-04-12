@@ -48,10 +48,8 @@ public class SettingsManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // 每次切场景后，重新找当前场景里的 overlay
         FindBrightnessOverlayInScene();
 
-        // 如果这个场景也有 slider，也可以重新绑定
         FindSlidersInScene();
         SetupUI();
 

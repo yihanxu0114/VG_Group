@@ -19,8 +19,8 @@ public class EnemySlime : MonoBehaviour
     public int damageAmount = 10;
 
     [Header("Hitting Back Setting")]
-    public float knockbackForceX = 10f; // horizontal knockback force when hitting the player
-    public float knockbackForceY = 5f;  // upward knockback force when hitting the player
+    public float knockbackForceX = 10f; 
+    public float knockbackForceY = 5f;  
 
     private Rigidbody2D rb;
 
@@ -80,11 +80,9 @@ public class EnemySlime : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            // deal damage to the player
             PlayerHealth playerHealth = collision.gameObject.GetComponent<PlayerHealth>();
             if (playerHealth != null) playerHealth.TakeDamage(damageAmount);
 
-            // hit the player back with knockback
             Rigidbody2D playerRb = collision.gameObject.GetComponent<Rigidbody2D>();
             if (playerRb != null)
             {
@@ -106,22 +104,18 @@ public class EnemySlime : MonoBehaviour
     }
     private void OnCollisionStay2D(Collision2D collision)
     {
-        // 2. if it's not the player, we want to check if it's a wall and adjust direction accordingly
         if (!collision.gameObject.CompareTag("Player"))
         {
-            // get the normal of the collision to determine which side the wall is on
             Vector2 contactNormal = collision.contacts[0].normal;
 
-            // if the wall is on the left (wall's push is to the right, X > 0.5), and the slime is currently moving left
             if (contactNormal.x > 0.5f && movingLeft)
             {
-                movingLeft = false; // let it move right
+                movingLeft = false; 
                 Flip();
             }
-            // if the wall is on the right (wall's push is to the left, X < -0.5), and the slime is currently moving right
             else if (contactNormal.x < -0.5f && !movingLeft)
             {
-                movingLeft = true; // let it move left
+                movingLeft = true;
                 Flip();
             }
         }

@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement; // restart game
+using UnityEngine.SceneManagement; 
 using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
     [Header("Health Settings")]
-    public int maxHealth = 100;     // maximum health
+    public int maxHealth = 100; 
     private int currentHealth;
 
     public bool isDead = false;
@@ -97,7 +97,6 @@ public class PlayerHealth : MonoBehaviour
         Invoke("RestartGame", 2.5f);
     }
 
-    // restart game
     void RestartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -111,7 +110,6 @@ public class PlayerHealth : MonoBehaviour
             style.normal.textColor = Color.red;
             style.alignment = TextAnchor.MiddleCenter;
 
-            // GAME OVER
             GUI.Label(new Rect(Screen.width / 2 - 100, Screen.height / 2 - 50, 200, 100), "GAME OVER", style);
 
             style.fontSize = 20;

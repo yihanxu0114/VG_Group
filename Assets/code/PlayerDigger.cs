@@ -6,24 +6,21 @@ public class PlayerDigger : MonoBehaviour
 {
     void Start()
     {
-        //Make sure the player is in the cube
         float snapX = Mathf.Round(transform.position.x);
         float snapY = Mathf.Round(transform.position.y);
         transform.position = new Vector3(snapX, snapY, transform.position.z);
     }
-    // Player Setting
     [Header("Movement Settings")]
-    public float moveSpeed = 5f;          // moving speed
-    public float gridSize = 1f;           // moving space
+    public float moveSpeed = 5f;         
+    public float gridSize = 1f;      
 
     [Header("Digging Settings")]
-    public float digDuration = 0.2f;      // digging take time
-    public LayerMask groundLayer;         // Ground Layer
+    public float digDuration = 0.2f;    
+    public LayerMask groundLayer;    
 
     [Header("Input Settings")]
-    public float inputBufferTime = 0.15f; // Combination key fault tolerance time
+    public float inputBufferTime = 0.15f; 
 
-    // Internal State
     private enum State { Idle, WaitingForInput, Acting }
     private State currentState = State.Idle;
 
@@ -47,14 +44,12 @@ public class PlayerDigger : MonoBehaviour
                 HandleBufferState();
                 break;
             case State.Acting:
-                // don't do any action when having action
                 break;
         }
     }
 
     void HandleIdleState()
     {
-        // Press "J"
         if (Input.GetKeyDown(KeyCode.J))
         {
             currentState = State.WaitingForInput;
@@ -78,12 +73,10 @@ public class PlayerDigger : MonoBehaviour
         }
         else if (bufferTimer <= 0)
         {
-            //Debug.Log("Input timeout, cancel action.");
             currentState = State.Idle;
         }
     }
 
-    // Digging & Moving
 
     void AttemptAction(Vector2 direction)
     {
@@ -98,21 +91,14 @@ public class PlayerDigger : MonoBehaviour
 
         if (hit.collider != null)
         {
-            // Case A: There is an obstacle ahead -> Perform excavation
-            //Debug.Log($"{direction} There is an obstacle ahead£¬Perform excavation");
             StartCoroutine(DigRoutine(hit.collider.gameObject, direction));
         }
         else
         {
-            // Case B: No obstacles ahead -> Proceed with movement
-            //Debug.Log($"{direction} No obstacles ahead£¬Proceed with movement");
             StartCoroutine(MoveRoutine(direction));
         }
     }
 
-    // Animator Part
-
-    // Digging
     IEnumerator DigRoutine(GameObject targetTile, Vector2 dir)
     {
         if (animator != null)
@@ -137,7 +123,6 @@ public class PlayerDigger : MonoBehaviour
         currentState = State.Idle;
     }
 
-    // Correct Position
     IEnumerator MoveRoutine(Vector2 direction)
     {
         Vector3 startPos = transform.position;
@@ -148,7 +133,6 @@ public class PlayerDigger : MonoBehaviour
         float elapsedTime = 0;
         float moveTime = 1f / moveSpeed; 
 
-        // 2. smooth moving
         while (elapsedTime < moveTime)
         {
             transform.position = Vector3.Lerp(startPos, endPos, elapsedTime / moveTime);

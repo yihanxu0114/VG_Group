@@ -7,7 +7,6 @@ public class RepeatBackground : MonoBehaviour
     public Camera targetCamera;
     public GameObject bgPrefab;
 
-    // 视差已移除，固定为 0（不暴露到 Inspector）
     private const float parallax = 0f;
 
     [Header("图片缩放")]
@@ -57,7 +56,6 @@ public class RepeatBackground : MonoBehaviour
 
     void LateUpdate()
     {
-        // 先移动父节点（视差偏移）——现在 parallax 固定为 0
         Vector3 camPos = targetCamera.transform.position;
         transform.position = new Vector3(
             camPos.x * parallax,
@@ -65,7 +63,6 @@ public class RepeatBackground : MonoBehaviour
             transform.position.z
         );
 
-        // 再刷新格子
         Vector2Int origin = GetOrigin();
         if (origin != lastOrigin)
             RefreshGrid(origin);

@@ -135,7 +135,6 @@ public class Sprite_left_right_shift : MonoBehaviour
         }
     }
 
-    // ── 每帧推进射击动画，播完最后一帧后自动结束 ──
     void HandleShootAnimation()
     {
         if (shootFrames == null || shootFrames.Length == 0)
@@ -152,7 +151,6 @@ public class Sprite_left_right_shift : MonoBehaviour
 
             if (currentShootFrame >= shootFrames.Length)
             {
-                // 动画播完，退出射击状态
                 isShooting = false;
                 currentShootFrame = 0;
                 return;
@@ -178,7 +176,6 @@ public class Sprite_left_right_shift : MonoBehaviour
         }
     }
 
-    // ── 外部调用：触发一次射击动画 ──
     public void TriggerShoot()
     {
         if (isWalking || isJumping || isUsingJetpack || isDigging) return;
@@ -186,7 +183,7 @@ public class Sprite_left_right_shift : MonoBehaviour
         isShooting = true;
         currentShootFrame = 0;
         shootTimer = 0f;
-        sr.sprite = shootFrames[0]; // 立即显示第一帧
+        sr.sprite = shootFrames[0]; 
     }
 
     public void SetFacing(float x)

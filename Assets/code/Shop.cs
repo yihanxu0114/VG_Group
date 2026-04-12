@@ -131,7 +131,7 @@ public class Shop : MonoBehaviour
             bool success = currentPlayer.BuyItem(itemName);
             if (success)
             {
-                Debug.Log($"Store£ºSell Successfully {itemName}£¡");
+                Debug.Log($"Storeï¿½ï¿½Sell Successfully {itemName}ï¿½ï¿½");
             }
         }
     }
