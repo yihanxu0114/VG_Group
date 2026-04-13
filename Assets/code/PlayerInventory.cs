@@ -6,11 +6,11 @@ using System.Collections.Generic;
 [System.Serializable]
 public class ShopItemData
 {
-    public string itemName;     
-    public int count = 0;          
+    public string itemName;
+    public int count = 0;
     public int price;
     public GameObject inventorySlotObj;
-    public TextMeshProUGUI uiText;  
+    public TextMeshProUGUI uiText;
 }
 
 public class PlayerInventory : MonoBehaviour
@@ -25,13 +25,13 @@ public class PlayerInventory : MonoBehaviour
     public int emeraldPrice = 100;
     public int rubyPrice = 150;
     public int diamondPrice = 200;
-    
+
     public TextMeshProUGUI moneyText;
 
     [Header("Shop & Inventory")]
     public List<ShopItemData> myItems = new List<ShopItemData>();
 
-    public int winMoney = 150;
+    [Header("Win Settings")]
     public GameObject winPanel;
     public AudioSource sfxSource;
     public AudioClip winClip;
@@ -41,16 +41,32 @@ public class PlayerInventory : MonoBehaviour
 
     void Start()
     {
-        if (winPanel != null) winPanel.SetActive(false);
+        if (winPanel != null)
+        {
+            winPanel.SetActive(false);
+        }
+
         UpdateUI();
     }
 
     public void CollectItem(ValuableBlock.Type type)
     {
-        if (type == ValuableBlock.Type.Gold) goldFragments++;
-        else if (type == ValuableBlock.Type.Diamond) diamondFragments++;
-        else if (type == ValuableBlock.Type.Ruby) rubyFragments++;
-        else if (type == ValuableBlock.Type.Emerald) emeraldFragments++;
+        if (type == ValuableBlock.Type.Gold)
+        {
+            goldFragments++;
+        }
+        else if (type == ValuableBlock.Type.Diamond)
+        {
+            diamondFragments++;
+        }
+        else if (type == ValuableBlock.Type.Ruby)
+        {
+            rubyFragments++;
+        }
+        else if (type == ValuableBlock.Type.Emerald)
+        {
+            emeraldFragments++;
+        }
     }
 
     public void SellOneItem(ValuableBlock.Type type)
@@ -75,8 +91,8 @@ public class PlayerInventory : MonoBehaviour
             emeraldFragments--;
             money += emeraldPrice;
         }
+
         UpdateUI();
-        CheckWin();
     }
 
     public void SellAllItems()
@@ -94,7 +110,6 @@ public class PlayerInventory : MonoBehaviour
             rubyFragments = 0;
             emeraldFragments = 0;
             UpdateUI();
-            CheckWin();
         }
     }
 
@@ -106,27 +121,30 @@ public class PlayerInventory : MonoBehaviour
             {
                 if (money >= item.price)
                 {
-                    money -= item.price; 
-                    item.count++;     
-                    UpdateUI();         
-                    Debug.Log($"Buy {targetItemName} successfully！current：{item.count}");
+                    money -= item.price;
+                    item.count++;
+                    UpdateUI();
+                    Debug.Log($"Buy {targetItemName} successfully! current: {item.count}");
                     return true;
                 }
                 else
                 {
-                    Debug.Log($"don't have enough money {targetItemName}！");
+                    Debug.Log($"Not enough money to buy {targetItemName}!");
                     return false;
                 }
             }
         }
 
-        Debug.LogError($"Error：Bag system doesn't have {targetItemName} ！");
+        Debug.LogError($"Error: Inventory system does not contain {targetItemName}!");
         return false;
     }
 
     public void UpdateUI()
     {
-        if (moneyText != null) moneyText.text = "$ " + money.ToString();
+        if (moneyText != null)
+        {
+            moneyText.text = "$ " + money.ToString();
+        }
 
         foreach (var item in myItems)
         {
@@ -135,7 +153,11 @@ public class PlayerInventory : MonoBehaviour
                 if (item.count > 0)
                 {
                     item.inventorySlotObj.SetActive(true);
-                    if (item.uiText != null) item.uiText.text = "x" + item.count.ToString();
+
+                    if (item.uiText != null)
+                    {
+                        item.uiText.text = "x" + item.count.ToString();
+                    }
                 }
                 else
                 {
@@ -145,21 +167,68 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
-    void CheckWin()
+    public void WinGame()
     {
-        if (hasWon) return;
-        if (money < winMoney) return;
+        if (hasWon)
+        {
+            return;
+        }
 
         hasWon = true;
-        if (winPanel != null) winPanel.SetActive(true);
-        if (sfxSource != null && winClip != null) sfxSource.PlayOneShot(winClip);
+
+        DisableAllGameplayInput();
+
+        if (winPanel != null)
+        {
+            winPanel.SetActive(true);
+        }
+
+        if (sfxSource != null && winClip != null)
+        {
+            sfxSource.PlayOneShot(winClip);
+        }
+
         Time.timeScale = 0f;
+    }
+
+    void DisableAllGameplayInput()
+    {
+        MonoBehaviour[] playerScripts = GetComponents<MonoBehaviour>();
+        foreach (MonoBehaviour script in playerScripts)
+        {
+            if (script != null && script != this)
+            {
+                script.enabled = false;
+            }
+        }
+
+        DisableScriptsOnObject("Canvas-Main");
+        DisableScriptsOnObject("Canvas-Shop");
+        DisableScriptsOnObject("PortalSystem");
+        DisableScriptsOnObject("Shop");
+        DisableScriptsOnObject("PauseMenuController");
+    }
+
+    void DisableScriptsOnObject(string objectName)
+    {
+        GameObject obj = GameObject.Find(objectName);
+        if (obj == null) return;
+
+        MonoBehaviour[] scripts = obj.GetComponentsInChildren<MonoBehaviour>(true);
+        foreach (MonoBehaviour script in scripts)
+        {
+            if (script != null)
+            {
+                script.enabled = false;
+            }
+        }
     }
 
     public void RestartLevel()
     {
+        Debug.Log("Restart clicked");
         Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void GoToMainMenu()

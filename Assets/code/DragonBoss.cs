@@ -31,7 +31,7 @@ public class DragonBoss : MonoBehaviour
     public int lightningCount = 7;
     public float lightningSpacing = 2.5f;
 
-    // --- 【全新：动态进化参数】 ---
+    
     [Tooltip("time")]
     public float cooldownReduction = 0.4f;
     [Tooltip("speed")]
