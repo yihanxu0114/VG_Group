@@ -1,6 +1,8 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using System.Collections.Generic;
 
 [System.Serializable]
@@ -15,12 +17,14 @@ public class ShopItemData
 
 public class PlayerInventory : MonoBehaviour
 {
+    [Header("Money & Materials")]
     public int money = 0;
     public int goldFragments = 0;
     public int diamondFragments = 0;
     public int rubyFragments = 0;
     public int emeraldFragments = 0;
 
+    [Header("Sell Prices")]
     public int goldPrice = 50;
     public int emeraldPrice = 100;
     public int rubyPrice = 150;
@@ -37,10 +41,16 @@ public class PlayerInventory : MonoBehaviour
     public AudioClip winClip;
     public string mainMenuSceneName = "MainMenu";
 
+    [Header("Optional Win Buttons")]
+    public Button restartButton;
+    public Button mainMenuButton;
+
     private bool hasWon = false;
 
     void Start()
     {
+        Time.timeScale = 1f;
+
         if (winPanel != null)
         {
             winPanel.SetActive(false);
@@ -188,6 +198,23 @@ public class PlayerInventory : MonoBehaviour
             sfxSource.PlayOneShot(winClip);
         }
 
+        if (EventSystem.current != null)
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+        }
+
+        if (EventSystem.current != null)
+        {
+            if (mainMenuButton != null)
+            {
+                EventSystem.current.SetSelectedGameObject(mainMenuButton.gameObject);
+            }
+            else if (restartButton != null)
+            {
+                EventSystem.current.SetSelectedGameObject(restartButton.gameObject);
+            }
+        }
+
         Time.timeScale = 0f;
     }
 
@@ -233,6 +260,7 @@ public class PlayerInventory : MonoBehaviour
 
     public void GoToMainMenu()
     {
+        Debug.Log("Main Menu clicked");
         Time.timeScale = 1f;
         SceneManager.LoadScene(mainMenuSceneName);
     }
