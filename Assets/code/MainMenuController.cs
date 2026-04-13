@@ -10,6 +10,11 @@ public class MainMenuController : MonoBehaviour
     public GameObject settingsPanel;
     public GameObject informationPanel;
 
+    [Header("Information Sub Panels")]
+    public GameObject controlsPanel;
+    public GameObject objectivePanel;
+    public GameObject itemsPanel;
+
     private void Start()
     {
         if (settingsPanel != null)
@@ -17,6 +22,15 @@ public class MainMenuController : MonoBehaviour
 
         if (informationPanel != null)
             informationPanel.SetActive(false);
+
+        if (controlsPanel != null)
+            controlsPanel.SetActive(false);
+
+        if (objectivePanel != null)
+            objectivePanel.SetActive(false);
+
+        if (itemsPanel != null)
+            itemsPanel.SetActive(false);
     }
 
     public void PlayGame()
@@ -37,15 +51,65 @@ public class MainMenuController : MonoBehaviour
     }
 
     public void OpenInformation()
+{
+    Debug.Log("OpenInformation on object: " + gameObject.name);
+
+    if (informationPanel != null)
+        informationPanel.SetActive(true);
+
+    if (controlsPanel != null)
     {
-        if (informationPanel != null)
-            informationPanel.SetActive(true);
+        controlsPanel.SetActive(false);
+        Debug.Log("controlsPanel after false = " + controlsPanel.activeSelf);
     }
+
+    if (objectivePanel != null)
+        objectivePanel.SetActive(false);
+
+    if (itemsPanel != null)
+        itemsPanel.SetActive(false);
+}
 
     public void CloseInformation()
     {
         if (informationPanel != null)
             informationPanel.SetActive(false);
+    }
+
+    public void ShowControls()
+    {
+        if (controlsPanel != null)
+            controlsPanel.SetActive(true);
+
+        if (objectivePanel != null)
+            objectivePanel.SetActive(false);
+
+        if (itemsPanel != null)
+            itemsPanel.SetActive(false);
+    }
+
+    public void ShowObjective()
+    {
+        if (controlsPanel != null)
+            controlsPanel.SetActive(false);
+
+        if (objectivePanel != null)
+            objectivePanel.SetActive(true);
+
+        if (itemsPanel != null)
+            itemsPanel.SetActive(false);
+    }
+
+    public void ShowItems()
+    {
+        if (controlsPanel != null)
+            controlsPanel.SetActive(false);
+
+        if (objectivePanel != null)
+            objectivePanel.SetActive(false);
+
+        if (itemsPanel != null)
+            itemsPanel.SetActive(true);
     }
 
     public void QuitGame()
