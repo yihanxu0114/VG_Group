@@ -63,6 +63,7 @@
     <Compile Include="Assets\code\PlayerHealth.cs" />
     <Compile Include="Assets\code\Sprite_left_right_shift.cs" />
     <Compile Include="Assets\code\EnemySlime.cs" />
+    <Compile Include="Assets\code\HowToPlayPanelController.cs" />
     <Compile Include="Assets\code\BulletShootAnimation.cs" />
     <Compile Include="Assets\code\moving_logics.cs" />
     <Compile Include="Assets\code\ValuableBlock.cs" />
