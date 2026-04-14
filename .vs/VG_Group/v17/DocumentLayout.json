@@ -11,7 +11,7 @@
       "RelativeMoniker": "D:0:0:{B263A131-AE44-E519-E06B-C4F306B1813E}|Assembly-CSharp.csproj|solutionrelative:assets\\code\\bossmissile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B263A131-AE44-E519-E06B-C4F306B1813E}|Assembly-CSharp.csproj|e:\\github\\vg_group\\assets\\code\\lightningbolt.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{B263A131-AE44-E519-E06B-C4F306B1813E}|Assembly-CSharp.csproj|E:\\GitHub\\VG_Group\\assets\\code\\lightningbolt.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B263A131-AE44-E519-E06B-C4F306B1813E}|Assembly-CSharp.csproj|solutionrelative:assets\\code\\lightningbolt.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -50,8 +50,7 @@
               "RelativeToolTip": "Assets\\code\\LightningBolt.cs",
               "ViewState": "AgIAAH4AAAAAAAAAAAAiwJAAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-12T20:19:10.48Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-12T20:19:10.48Z"
             },
             {
               "$type": "Document",
@@ -63,8 +62,7 @@
               "RelativeToolTip": "Assets\\code\\BossMissile.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-12T19:20:39.762Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-12T19:20:39.762Z"
             },
             {
               "$type": "Document",
@@ -122,7 +120,7 @@
               "RelativeDocumentMoniker": "Assets\\code\\DragonBoss.cs",
               "ToolTip": "E:\\GitHub\\VG_Group\\Assets\\code\\DragonBoss.cs",
               "RelativeToolTip": "Assets\\code\\DragonBoss.cs",
-              "ViewState": "AgIAAAoAAAAAAAAAAAAAwB0AAAAmAAAAAAAAAA==",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAAwCIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-14T22:51:40.206Z",
               "EditorCaption": ""

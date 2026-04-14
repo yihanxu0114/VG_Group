@@ -22,20 +22,20 @@ public class DragonBoss : MonoBehaviour
     [Header("Initial Attack Settings")]
     public GameObject missilePrefab;
     public Transform firePoint;
-    public float initialAttackCooldown = 2.5f; 
-    public float initialMissileSpeed = 8f;   
+    public float initialAttackCooldown = 2.5f;
+    public float initialMissileSpeed = 8f;
     public int fireFrame = 2;
 
     [Header("Lightning & Evolution Settings")]
     public GameObject lightningPrefab;
     public int lightningCount = 7;
     public float lightningSpacing = 2.5f;
-
-    
-    [Tooltip("time")]
     public float cooldownReduction = 0.4f;
-    [Tooltip("speed")]
     public float speedIncrease = 2f;
+
+    [Header("Body Collision Settings")]
+    public int bodyDamage = 10;
+    private float lastBodyDamageTime = -999f;
 
     private float currentAttackCooldown;
     private float currentMissileSpeed;
@@ -89,13 +89,9 @@ public class DragonBoss : MonoBehaviour
     void EvolveBoss()
     {
         SummonLightningRow();
-
         lightningCount += 2;
-
         currentAttackCooldown = Mathf.Max(0.5f, currentAttackCooldown - cooldownReduction);
-
         currentMissileSpeed += speedIncrease;
-
     }
 
     void SummonLightningRow()
@@ -197,8 +193,29 @@ public class DragonBoss : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player") ||
-            collision.gameObject.GetComponent<BossMissile>() != null ||
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            if (Time.time >= lastBodyDamageTime + 1.0f)
+            {
+                PlayerHealth ph = collision.gameObject.GetComponent<PlayerHealth>();
+                if (ph != null) ph.TakeDamage(bodyDamage);
+
+                Rigidbody2D playerRb = collision.gameObject.GetComponent<Rigidbody2D>();
+                if (playerRb != null)
+                {
+                    playerRb.velocity = Vector2.zero;
+                    float pushDirection = (collision.transform.position.x > transform.position.x) ? 1f : -1f;
+                    playerRb.AddForce(new Vector2(pushDirection * 15f, 8f), ForceMode2D.Impulse);
+
+                    moving_logic movementScript = collision.gameObject.GetComponent<moving_logic>();
+                    if (movementScript != null) movementScript.stunTimer = 0.3f;
+                }
+                lastBodyDamageTime = Time.time;
+            }
+            return;
+        }
+
+        if (collision.gameObject.GetComponent<BossMissile>() != null ||
             collision.gameObject.GetComponent<LightningBolt>() != null) return;
 
         if (collision.contacts.Length > 0)
