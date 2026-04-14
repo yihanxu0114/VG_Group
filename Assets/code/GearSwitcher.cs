@@ -30,6 +30,9 @@ public class GearSwitcher : MonoBehaviour
 
     void Update()
     {
+        if (PauseMenuController.IsPaused)
+            return;
+
         if (Input.GetKeyDown(KeyCode.Alpha1)) SetSlot(1);
         if (Input.GetKeyDown(KeyCode.Alpha2)) SetSlot(2);
         if (Input.GetKeyDown(KeyCode.Alpha3)) SetSlot(3);
@@ -40,7 +43,7 @@ public class GearSwitcher : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha8)) SetSlot(8);
         if (Input.GetKeyDown(KeyCode.Alpha9)) SetSlot(9);
 
-        // 额外 4 个槽位
+        // extra 4 slots
         if (Input.GetKeyDown(KeyCode.Z)) SetSlot(10);
         if (Input.GetKeyDown(KeyCode.X)) SetSlot(11);
         if (Input.GetKeyDown(KeyCode.C)) SetSlot(12);

@@ -16,37 +16,37 @@ public class Shop : MonoBehaviour
     public TextMeshProUGUI rubyCountText;
     public TextMeshProUGUI emeraldCountText;
 
-    private bool isPlayerInRange = false; // player is in the shop area or not
-    private PlayerInventory currentPlayer; // reference to the player's inventory, so we can call sell functions
+    private bool isPlayerInRange = false;
+    private PlayerInventory currentPlayer;
 
     void Start()
     {
-        // when the game starts, make sure the shop UI is hidden
-        if (shopUI != null) shopUI.SetActive(false);
+        if (shopUI != null)
+            shopUI.SetActive(false);
     }
 
     void Update()
     {
-        // only allow opening the shop if the player is in range and presses E
+        if (PauseMenuController.IsPaused)
+            return;
+
         if (isPlayerInRange && Input.GetKeyDown(KeyCode.E))
         {
-            // if the shop UI is already active, this will close it; if it's closed, this will open it
             if (shopUI != null)
             {
                 bool isActive = shopUI.activeSelf;
-                shopUI.SetActive(!isActive); // switch the active state of the shop UI
+                shopUI.SetActive(!isActive);
 
                 if (!isActive && currentPlayer != null)
                 {
                     UpdateShopDisplay(currentPlayer);
                 }
 
-                Time.timeScale = isActive ? 1 : 0;
+                Time.timeScale = isActive ? 1f : 0f;
             }
         }
     }
 
-    // player enters the shop area
     private void OnTriggerEnter2D(Collider2D other)
     {
         PlayerInventory inv = other.GetComponent<PlayerInventory>();
@@ -61,21 +61,28 @@ public class Shop : MonoBehaviour
     {
         if (shopUI == null) return;
         if (other == null || other.gameObject == null) return;
+
         if (other.GetComponent<PlayerInventory>() != null)
         {
             isPlayerInRange = false;
             currentPlayer = null;
             shopUI.SetActive(false);
+
+            if (!PauseMenuController.IsPaused)
+            {
+                Time.timeScale = 1f;
+            }
         }
     }
 
     public void OnSellButtonClick()
     {
+        if (PauseMenuController.IsPaused)
+            return;
+
         if (currentPlayer != null)
         {
             currentPlayer.SellAllItems();
-
-            // CloseShop(); 
         }
     }
 
@@ -83,10 +90,13 @@ public class Shop : MonoBehaviour
     {
         if (shopUI != null)
         {
-            shopUI.SetActive(false); 
+            shopUI.SetActive(false);
         }
 
-        Time.timeScale = 1;
+        if (!PauseMenuController.IsPaused)
+        {
+            Time.timeScale = 1f;
+        }
     }
 
     public void UpdateShopDisplay(PlayerInventory playerInv)
@@ -97,41 +107,56 @@ public class Shop : MonoBehaviour
 
         if (playerInv.goldFragments > 0)
         {
-            goldItemObj.SetActive(true);
-            goldCountText.text = "x" + playerInv.goldFragments;
+            if (goldItemObj != null) goldItemObj.SetActive(true);
+            if (goldCountText != null) goldCountText.text = "x" + playerInv.goldFragments;
         }
-        else goldItemObj.SetActive(false);
+        else
+        {
+            if (goldItemObj != null) goldItemObj.SetActive(false);
+        }
 
         if (playerInv.diamondFragments > 0)
         {
-            diamondItemObj.SetActive(true);
-            diamondCountText.text = "x" + playerInv.diamondFragments;
+            if (diamondItemObj != null) diamondItemObj.SetActive(true);
+            if (diamondCountText != null) diamondCountText.text = "x" + playerInv.diamondFragments;
         }
-        else diamondItemObj.SetActive(false);
+        else
+        {
+            if (diamondItemObj != null) diamondItemObj.SetActive(false);
+        }
 
         if (playerInv.rubyFragments > 0)
         {
             if (rubyItemObj != null) rubyItemObj.SetActive(true);
             if (rubyCountText != null) rubyCountText.text = "x" + playerInv.rubyFragments;
         }
-        else if (rubyItemObj != null) rubyItemObj.SetActive(false);
+        else
+        {
+            if (rubyItemObj != null) rubyItemObj.SetActive(false);
+        }
 
         if (playerInv.emeraldFragments > 0)
         {
             if (emeraldItemObj != null) emeraldItemObj.SetActive(true);
             if (emeraldCountText != null) emeraldCountText.text = "x" + playerInv.emeraldFragments;
         }
-        else if (emeraldItemObj != null) emeraldItemObj.SetActive(false);
+        else
+        {
+            if (emeraldItemObj != null) emeraldItemObj.SetActive(false);
+        }
     }
 
     public void OnBuyItemClick(string itemName)
     {
+        if (PauseMenuController.IsPaused)
+            return;
+
         if (currentPlayer != null)
         {
             bool success = currentPlayer.BuyItem(itemName);
             if (success)
             {
-                Debug.Log($"Store��Sell Successfully {itemName}��");
+                Debug.Log($"Store Sell Successfully {itemName}");
             }
         }
     }

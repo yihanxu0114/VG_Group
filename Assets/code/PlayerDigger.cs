@@ -4,29 +4,30 @@ using UnityEngine;
 
 public class PlayerDigger : MonoBehaviour
 {
-    void Start()
-    {
-        float snapX = Mathf.Round(transform.position.x);
-        float snapY = Mathf.Round(transform.position.y);
-        transform.position = new Vector3(snapX, snapY, transform.position.z);
-    }
     [Header("Movement Settings")]
-    public float moveSpeed = 5f;         
-    public float gridSize = 1f;      
+    public float moveSpeed = 5f;
+    public float gridSize = 1f;
 
     [Header("Digging Settings")]
-    public float digDuration = 0.2f;    
-    public LayerMask groundLayer;    
+    public float digDuration = 0.2f;
+    public LayerMask groundLayer;
 
     [Header("Input Settings")]
-    public float inputBufferTime = 0.15f; 
+    public float inputBufferTime = 0.15f;
 
     private enum State { Idle, WaitingForInput, Acting }
     private State currentState = State.Idle;
 
     private float bufferTimer = 0f;
     private Vector3 targetPosition;
-    private Animator animator; 
+    private Animator animator;
+
+    void Start()
+    {
+        float snapX = Mathf.Round(transform.position.x);
+        float snapY = Mathf.Round(transform.position.y);
+        transform.position = new Vector3(snapX, snapY, transform.position.z);
+    }
 
     void Awake()
     {
@@ -35,6 +36,11 @@ public class PlayerDigger : MonoBehaviour
 
     void Update()
     {
+        if (PauseMenuController.IsPaused)
+        {
+            return;
+        }
+
         switch (currentState)
         {
             case State.Idle:
@@ -77,16 +83,17 @@ public class PlayerDigger : MonoBehaviour
         }
     }
 
-
     void AttemptAction(Vector2 direction)
     {
         currentState = State.Acting;
+
         if (direction.x != 0)
         {
             Vector3 newScale = transform.localScale;
             newScale.x = (direction.x > 0) ? 1 : -1;
             transform.localScale = newScale;
         }
+
         RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, gridSize, groundLayer);
 
         if (hit.collider != null)
@@ -131,17 +138,21 @@ public class PlayerDigger : MonoBehaviour
         Vector3 endPos = new Vector3(targetX, targetY, 0);
 
         float elapsedTime = 0;
-        float moveTime = 1f / moveSpeed; 
+        float moveTime = 1f / moveSpeed;
 
         while (elapsedTime < moveTime)
         {
+            if (PauseMenuController.IsPaused)
+            {
+                yield break;
+            }
+
             transform.position = Vector3.Lerp(startPos, endPos, elapsedTime / moveTime);
             elapsedTime += Time.deltaTime;
-            yield return null; 
+            yield return null;
         }
-        transform.position = endPos;
 
+        transform.position = endPos;
         currentState = State.Idle;
     }
-
 }
