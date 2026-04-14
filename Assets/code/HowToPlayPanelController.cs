@@ -33,6 +33,11 @@ public class HowToPlayPanelController : MonoBehaviour
         }
     }
 
+    public void BackToHowToPlayMenu()
+    {
+        HideAllContentPanels();
+    }
+
     public void ShowControls()
     {
         if (controlsPanel != null) controlsPanel.SetActive(true);
