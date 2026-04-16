@@ -14,6 +14,7 @@ public class MainMenuController : MonoBehaviour
     public GameObject controlsPanel;
     public GameObject objectivePanel;
     public GameObject itemsPanel;
+    public GameObject resourcesPanel;
 
     private void Start()
     {
@@ -31,6 +32,9 @@ public class MainMenuController : MonoBehaviour
 
         if (itemsPanel != null)
             itemsPanel.SetActive(false);
+
+        if (resourcesPanel != null)
+            resourcesPanel.SetActive(false);
     }
 
     public void PlayGame()
@@ -51,24 +55,22 @@ public class MainMenuController : MonoBehaviour
     }
 
     public void OpenInformation()
-{
-    Debug.Log("OpenInformation on object: " + gameObject.name);
-
-    if (informationPanel != null)
-        informationPanel.SetActive(true);
-
-    if (controlsPanel != null)
     {
-        controlsPanel.SetActive(false);
-        Debug.Log("controlsPanel after false = " + controlsPanel.activeSelf);
+        if (informationPanel != null)
+            informationPanel.SetActive(true);
+
+        if (controlsPanel != null)
+            controlsPanel.SetActive(false);
+
+        if (objectivePanel != null)
+            objectivePanel.SetActive(false);
+
+        if (itemsPanel != null)
+            itemsPanel.SetActive(false);
+
+        if (resourcesPanel != null)
+            resourcesPanel.SetActive(false);
     }
-
-    if (objectivePanel != null)
-        objectivePanel.SetActive(false);
-
-    if (itemsPanel != null)
-        itemsPanel.SetActive(false);
-}
 
     public void CloseInformation()
     {
@@ -86,6 +88,9 @@ public class MainMenuController : MonoBehaviour
 
         if (itemsPanel != null)
             itemsPanel.SetActive(false);
+
+        if (resourcesPanel != null)
+            resourcesPanel.SetActive(false);
     }
 
     public void ShowObjective()
@@ -98,6 +103,9 @@ public class MainMenuController : MonoBehaviour
 
         if (itemsPanel != null)
             itemsPanel.SetActive(false);
+
+        if (resourcesPanel != null)
+            resourcesPanel.SetActive(false);
     }
 
     public void ShowItems()
@@ -110,6 +118,48 @@ public class MainMenuController : MonoBehaviour
 
         if (itemsPanel != null)
             itemsPanel.SetActive(true);
+
+        if (resourcesPanel != null)
+            resourcesPanel.SetActive(false);
+    }
+
+    public void ShowResources()
+    {
+        if (controlsPanel != null)
+            controlsPanel.SetActive(false);
+
+        if (objectivePanel != null)
+            objectivePanel.SetActive(false);
+
+        if (itemsPanel != null)
+            itemsPanel.SetActive(false);
+
+        if (resourcesPanel != null)
+            resourcesPanel.SetActive(true);
+    }
+
+    public void CloseControls()
+    {
+        if (controlsPanel != null)
+            controlsPanel.SetActive(false);
+    }
+
+    public void CloseObjective()
+    {
+        if (objectivePanel != null)
+            objectivePanel.SetActive(false);
+    }
+
+    public void CloseItems()
+    {
+        if (itemsPanel != null)
+            itemsPanel.SetActive(false);
+    }
+
+    public void CloseResources()
+    {
+        if (resourcesPanel != null)
+            resourcesPanel.SetActive(false);
     }
 
     public void QuitGame()

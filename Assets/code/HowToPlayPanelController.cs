@@ -7,12 +7,14 @@ public class HowToPlayPanelController : MonoBehaviour
     public GameObject controlsPanel;
     public GameObject objectivePanel;
     public GameObject itemsPanel;
+    public GameObject resourcesPanel;
 
     void Start()
     {
         if (controlsPanel != null) controlsPanel.SetActive(false);
         if (objectivePanel != null) objectivePanel.SetActive(false);
         if (itemsPanel != null) itemsPanel.SetActive(false);
+        if (resourcesPanel != null) resourcesPanel.SetActive(false);
     }
 
     public void OpenPanel()
@@ -23,6 +25,7 @@ public class HowToPlayPanelController : MonoBehaviour
         if (controlsPanel != null) controlsPanel.SetActive(false);
         if (objectivePanel != null) objectivePanel.SetActive(false);
         if (itemsPanel != null) itemsPanel.SetActive(false);
+        if (resourcesPanel != null) resourcesPanel.SetActive(false);
     }
 
     public void ClosePanel()
@@ -36,6 +39,7 @@ public class HowToPlayPanelController : MonoBehaviour
         if (controlsPanel != null) controlsPanel.SetActive(true);
         if (objectivePanel != null) objectivePanel.SetActive(false);
         if (itemsPanel != null) itemsPanel.SetActive(false);
+        if (resourcesPanel != null) resourcesPanel.SetActive(false);
     }
 
     public void ShowObjective()
@@ -43,6 +47,7 @@ public class HowToPlayPanelController : MonoBehaviour
         if (controlsPanel != null) controlsPanel.SetActive(false);
         if (objectivePanel != null) objectivePanel.SetActive(true);
         if (itemsPanel != null) itemsPanel.SetActive(false);
+        if (resourcesPanel != null) resourcesPanel.SetActive(false);
     }
 
     public void ShowItems()
@@ -50,20 +55,38 @@ public class HowToPlayPanelController : MonoBehaviour
         if (controlsPanel != null) controlsPanel.SetActive(false);
         if (objectivePanel != null) objectivePanel.SetActive(false);
         if (itemsPanel != null) itemsPanel.SetActive(true);
+        if (resourcesPanel != null) resourcesPanel.SetActive(false);
+    }
+
+    public void ShowResources()
+    {
+        if (controlsPanel != null) controlsPanel.SetActive(false);
+        if (objectivePanel != null) objectivePanel.SetActive(false);
+        if (itemsPanel != null) itemsPanel.SetActive(false);
+        if (resourcesPanel != null) resourcesPanel.SetActive(true);
     }
 
     public void CloseControls()
     {
-        if (controlsPanel != null) controlsPanel.SetActive(false);
+        if (controlsPanel != null)
+            controlsPanel.SetActive(false);
     }
 
     public void CloseObjective()
     {
-        if (objectivePanel != null) objectivePanel.SetActive(false);
+        if (objectivePanel != null)
+            objectivePanel.SetActive(false);
     }
 
     public void CloseItems()
     {
-        if (itemsPanel != null) itemsPanel.SetActive(false);
+        if (itemsPanel != null)
+            itemsPanel.SetActive(false);
+    }
+
+    public void CloseResources()
+    {
+        if (resourcesPanel != null)
+            resourcesPanel.SetActive(false);
     }
 }
