@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class HowToPlayPanelController : MonoBehaviour
@@ -12,25 +10,25 @@ public class HowToPlayPanelController : MonoBehaviour
 
     void Start()
     {
-        ShowControls();
+        if (controlsPanel != null) controlsPanel.SetActive(false);
+        if (objectivePanel != null) objectivePanel.SetActive(false);
+        if (itemsPanel != null) itemsPanel.SetActive(false);
     }
 
     public void OpenPanel()
     {
         if (howToPlayPanel != null)
-        {
             howToPlayPanel.SetActive(true);
-        }
 
-        ShowControls();
+        if (controlsPanel != null) controlsPanel.SetActive(false);
+        if (objectivePanel != null) objectivePanel.SetActive(false);
+        if (itemsPanel != null) itemsPanel.SetActive(false);
     }
 
     public void ClosePanel()
     {
         if (howToPlayPanel != null)
-        {
             howToPlayPanel.SetActive(false);
-        }
     }
 
     public void ShowControls()
@@ -52,5 +50,20 @@ public class HowToPlayPanelController : MonoBehaviour
         if (controlsPanel != null) controlsPanel.SetActive(false);
         if (objectivePanel != null) objectivePanel.SetActive(false);
         if (itemsPanel != null) itemsPanel.SetActive(true);
+    }
+
+    public void CloseControls()
+    {
+        if (controlsPanel != null) controlsPanel.SetActive(false);
+    }
+
+    public void CloseObjective()
+    {
+        if (objectivePanel != null) objectivePanel.SetActive(false);
+    }
+
+    public void CloseItems()
+    {
+        if (itemsPanel != null) itemsPanel.SetActive(false);
     }
 }
