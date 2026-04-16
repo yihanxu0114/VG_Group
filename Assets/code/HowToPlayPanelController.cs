@@ -12,7 +12,7 @@ public class HowToPlayPanelController : MonoBehaviour
 
     void Start()
     {
-        HideAllContentPanels();
+        ShowControls();
     }
 
     public void OpenPanel()
@@ -22,7 +22,7 @@ public class HowToPlayPanelController : MonoBehaviour
             howToPlayPanel.SetActive(true);
         }
 
-        HideAllContentPanels();
+        ShowControls();
     }
 
     public void ClosePanel()
@@ -31,11 +31,6 @@ public class HowToPlayPanelController : MonoBehaviour
         {
             howToPlayPanel.SetActive(false);
         }
-    }
-
-    public void BackToHowToPlayMenu()
-    {
-        HideAllContentPanels();
     }
 
     public void ShowControls()
@@ -57,12 +52,5 @@ public class HowToPlayPanelController : MonoBehaviour
         if (controlsPanel != null) controlsPanel.SetActive(false);
         if (objectivePanel != null) objectivePanel.SetActive(false);
         if (itemsPanel != null) itemsPanel.SetActive(true);
-    }
-
-    private void HideAllContentPanels()
-    {
-        if (controlsPanel != null) controlsPanel.SetActive(false);
-        if (objectivePanel != null) objectivePanel.SetActive(false);
-        if (itemsPanel != null) itemsPanel.SetActive(false);
     }
 }

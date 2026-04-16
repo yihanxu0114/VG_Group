@@ -6,9 +6,14 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenuController : MonoBehaviour
 {
+    public static bool IsPaused = false;
+
+    [Header("Pause Menu UI")]
     public GameObject pauseMenuUI;
     public Button resumeButton;
     public Button exitButton;
+
+    [Header("Optional Main Player Script")]
     public MonoBehaviour playerController;
 
     private bool isPaused = false;
@@ -22,6 +27,8 @@ public class PauseMenuController : MonoBehaviour
         if (pauseMenuUI != null)
             pauseMenuUI.SetActive(false);
 
+        isPaused = false;
+        IsPaused = false;
         selectedIndex = 0;
     }
 
@@ -29,8 +36,10 @@ public class PauseMenuController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (!isPaused) PauseGame();
-            else ResumeGame();
+            if (!isPaused)
+                PauseGame();
+            else
+                ResumeGame();
         }
 
         if (isPaused)
@@ -41,6 +50,8 @@ public class PauseMenuController : MonoBehaviour
 
     void HandleKeyboardNavigation()
     {
+        if (menuButtons == null || menuButtons.Length == 0) return;
+
         if (Input.GetKeyDown(KeyCode.W))
         {
             selectedIndex = (selectedIndex - 1 + menuButtons.Length) % menuButtons.Length;
@@ -61,7 +72,9 @@ public class PauseMenuController : MonoBehaviour
 
     void SelectButton(int index)
     {
-        var btn = menuButtons[index];
+        if (menuButtons == null || index < 0 || index >= menuButtons.Length) return;
+
+        Button btn = menuButtons[index];
         if (btn == null || EventSystem.current == null) return;
 
         EventSystem.current.SetSelectedGameObject(null);
@@ -71,6 +84,7 @@ public class PauseMenuController : MonoBehaviour
     public void PauseGame()
     {
         isPaused = true;
+        IsPaused = true;
 
         if (playerController != null)
             playerController.enabled = false;
@@ -84,22 +98,11 @@ public class PauseMenuController : MonoBehaviour
         StartCoroutine(SelectNextFrame());
     }
 
-    IEnumerator SelectNextFrame()
-    {
-        yield return null;
-        SelectButton(selectedIndex);
-    }
-
-    IEnumerator EnablePlayerNextFrame()
-    {
-        yield return null;
-        if (playerController != null)
-            playerController.enabled = true;
-    }
-
     public void ResumeGame()
     {
         isPaused = false;
+        IsPaused = false;
+
         Time.timeScale = 1f;
 
         if (pauseMenuUI != null)
@@ -116,11 +119,26 @@ public class PauseMenuController : MonoBehaviour
         Debug.Log("QuitGame clicked");
 
         isPaused = false;
+        IsPaused = false;
         Time.timeScale = 1f;
 
         if (EventSystem.current != null)
             EventSystem.current.SetSelectedGameObject(null);
 
         SceneManager.LoadScene("MainMenu");
+    }
+
+    IEnumerator SelectNextFrame()
+    {
+        yield return null;
+        SelectButton(selectedIndex);
+    }
+
+    IEnumerator EnablePlayerNextFrame()
+    {
+        yield return null;
+
+        if (playerController != null)
+            playerController.enabled = true;
     }
 }
