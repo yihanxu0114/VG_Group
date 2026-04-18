@@ -32,7 +32,6 @@ public class Dynamite : MonoBehaviour
         Invoke(nameof(Explode), fuseTime);
     }
 
- 
     public void InitIgnorePlayer(Collider2D[] playerCols, float seconds)
     {
         if (playerCols == null || playerCols.Length == 0) return;
@@ -44,16 +43,28 @@ public class Dynamite : MonoBehaviour
     private IEnumerator IgnoreRoutine(Collider2D[] playerCols, float seconds)
     {
         foreach (var mc in myCols)
+        {
             foreach (var pc in playerCols)
+            {
                 if (mc != null && pc != null)
+                {
                     Physics2D.IgnoreCollision(mc, pc, true);
+                }
+            }
+        }
 
         yield return new WaitForSeconds(seconds);
 
         foreach (var mc in myCols)
+        {
             foreach (var pc in playerCols)
+            {
                 if (mc != null && pc != null)
+                {
                     Physics2D.IgnoreCollision(mc, pc, false);
+                }
+            }
+        }
     }
 
     private void Explode()
@@ -76,7 +87,10 @@ public class Dynamite : MonoBehaviour
                 sr.sortingLayerName = mySr.sortingLayerName;
                 sr.sortingOrder = mySr.sortingOrder + 10;
             }
-            else sr.sortingOrder = 100;
+            else
+            {
+                sr.sortingOrder = 100;
+            }
 
             ExplosionAnimator animator = explosion.AddComponent<ExplosionAnimator>();
             animator.frames = explosionFrames;
@@ -88,17 +102,38 @@ public class Dynamite : MonoBehaviour
 
         foreach (var hit in hits)
         {
+            if (hit == null) continue;
+
+            // skip explosion-immune objects
+            if (hit.GetComponentInParent<ExplosionImmune>() != null)
+            {
+                continue;
+            }
+
             Portal p = hit.GetComponent<Portal>();
-            if (p != null) { Destroy(p.gameObject); continue; }
+            if (p != null)
+            {
+                Destroy(p.gameObject);
+                continue;
+            }
 
             BlockDynamite b = hit.GetComponent<BlockDynamite>();
-            if (b != null) b.Break();
+            if (b != null)
+            {
+                b.Break();
+            }
 
             PlayerHealth player = hit.GetComponentInParent<PlayerHealth>();
-            if (player != null) player.TakeDamage(damage);
+            if (player != null)
+            {
+                player.TakeDamage(damage);
+            }
 
             EnemyHealth enemy = hit.GetComponentInParent<EnemyHealth>();
-            if (enemy != null) enemy.TakeDamage(damage);
+            if (enemy != null)
+            {
+                enemy.TakeDamage(damage);
+            }
         }
 
         Destroy(gameObject);
