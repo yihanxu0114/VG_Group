@@ -196,16 +196,16 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 7159ebf99dc71374dab8cfb1f9cca3d2, type: 3}
   - {fileID: 21300000, guid: 82830906efb933949a9d0b50de879be9, type: 3}
   splitFrames:
-  - {fileID: -1811434711, guid: 18242b78334c96744a126ef47aa9b778, type: 3}
-  - {fileID: 1352891671, guid: 18242b78334c96744a126ef47aa9b778, type: 3}
-  - {fileID: 276375810, guid: 18242b78334c96744a126ef47aa9b778, type: 3}
-  - {fileID: 845089762, guid: 18242b78334c96744a126ef47aa9b778, type: 3}
-  - {fileID: 273343134, guid: 18242b78334c96744a126ef47aa9b778, type: 3}
-  - {fileID: -1760513167, guid: 18242b78334c96744a126ef47aa9b778, type: 3}
-  - {fileID: 1812594834, guid: 18242b78334c96744a126ef47aa9b778, type: 3}
-  - {fileID: 1736879484, guid: 18242b78334c96744a126ef47aa9b778, type: 3}
-  - {fileID: 1551016899, guid: 18242b78334c96744a126ef47aa9b778, type: 3}
-  - {fileID: 390063933, guid: 18242b78334c96744a126ef47aa9b778, type: 3}
+  - {fileID: 625580997, guid: ea84ad117455c5644af1351d38762bcb, type: 3}
+  - {fileID: 1213461112, guid: ea84ad117455c5644af1351d38762bcb, type: 3}
+  - {fileID: 2058706446, guid: ea84ad117455c5644af1351d38762bcb, type: 3}
+  - {fileID: 1311012907, guid: ea84ad117455c5644af1351d38762bcb, type: 3}
+  - {fileID: 317671820, guid: ea84ad117455c5644af1351d38762bcb, type: 3}
+  - {fileID: -1231069156, guid: ea84ad117455c5644af1351d38762bcb, type: 3}
+  - {fileID: -245097706, guid: ea84ad117455c5644af1351d38762bcb, type: 3}
+  - {fileID: -2038329711, guid: ea84ad117455c5644af1351d38762bcb, type: 3}
+  - {fileID: -1494969435, guid: ea84ad117455c5644af1351d38762bcb, type: 3}
+  - {fileID: 289140565, guid: ea84ad117455c5644af1351d38762bcb, type: 3}
   frameRate: 0.15
   splitFrameRate: 0.08
   moveSpeed: 2
@@ -229,7 +229,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c022957f9d23e0b44af40fef88950e76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 80
+  maxHealth: 45
+  currentHealth: 0
   healthSlider: {fileID: 0}
   sr: {fileID: 0}
   canSplit: 1
